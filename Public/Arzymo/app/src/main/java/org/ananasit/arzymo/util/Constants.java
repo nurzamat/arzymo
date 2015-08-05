@@ -18,4 +18,7 @@ public final class Constants {
 
     public static final int MAX_IMAGES = 5;
 
+    public static final String ADD_POST_MODE = "add_post";
+    public static final String POSTS_MODE = "posts";
+
 }

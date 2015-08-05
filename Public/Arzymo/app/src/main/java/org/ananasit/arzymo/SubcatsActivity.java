@@ -10,17 +10,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import org.ananasit.arzymo.adapter.ListAdapter;
+import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
 
 
 public class SubcatsActivity extends ActionBarActivity {
 
     private ListAdapter adapter;
+    private String mode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subcats);
+
+        Intent intent = getIntent();
+        if(intent != null)
+            mode = intent.getStringExtra("mode");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -45,9 +51,16 @@ public class SubcatsActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                GlobalVar.SubCategory = GlobalVar.Category.getSubcats().get(position);
-                Intent in = new Intent(SubcatsActivity.this, PostsActivity.class);
-                startActivity(in);
+                GlobalVar.Category = GlobalVar.Category.getSubcats().get(position);
+                if(mode.equals(Constants.POSTS_MODE))
+                {
+                    Intent in = new Intent(SubcatsActivity.this, PostsActivity.class);
+                    startActivity(in);
+                }else
+                {
+                    CategoriesActivity.fa.finish();
+                    finish();
+                }
             }
         });
     }

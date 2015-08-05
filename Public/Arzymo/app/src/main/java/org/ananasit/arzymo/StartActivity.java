@@ -88,10 +88,10 @@ public class StartActivity extends ActionBarActivity {
                                 cat = new Category();
                                 cat.setId(objCat.getString("id"));
                                 cat.setName(objCat.getString("name"));
+                                cat.setIdParent(objCat.getString("idCategory"));
                                 subcats.add(cat);
                             }
 
-                            category.setHasSubcat(true);
                             category.setSubcats(subcats);
                         }
                         GlobalVar._categories.add(category);

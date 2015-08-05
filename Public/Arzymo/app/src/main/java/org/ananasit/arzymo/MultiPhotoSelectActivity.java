@@ -26,16 +26,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
 import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
 
 public class MultiPhotoSelectActivity extends ActionBarActivity {
     private ArrayList<String> imageUrls;
@@ -132,12 +129,7 @@ public class MultiPhotoSelectActivity extends ActionBarActivity {
         } else {
 
             Log.d("SelectedImages", selectImages);
-
-            //Intent in = new Intent(MultiPhotoSelectActivity.this, HomeActivity.class);
-            //if(GlobalVar.profile_edit)
-            //    in.putExtra("case", 2); //profile
-           // else in.putExtra("case", 6); //post
-           // startActivity(in);
+            finish();
         }
     }
     /*private void startImageGalleryActivity(int position) {

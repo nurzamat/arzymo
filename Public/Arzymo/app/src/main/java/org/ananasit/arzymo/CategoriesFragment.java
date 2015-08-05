@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import org.ananasit.arzymo.adapter.ListAdapter;
+import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
 
 /**
@@ -54,10 +55,10 @@ public class CategoriesFragment extends Fragment
                 if (GlobalVar.Category.getSubcats() != null && GlobalVar.Category.getSubcats().size() > 0)
                 {
                     in = new Intent(getActivity(), SubcatsActivity.class);
+                    in.putExtra("mode", Constants.POSTS_MODE);
                 }
                 else
                 {
-                    GlobalVar.SubCategory = null;
                     in = new Intent(getActivity(), PostsActivity.class);
                 }
                 getActivity().startActivity(in);

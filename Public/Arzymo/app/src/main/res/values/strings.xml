@@ -23,4 +23,17 @@
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="title_activity_multi_photo_select">MultiPhotoSelectActivity</string>
     <string name="select">Выбрать</string>
+
+    <string-array name="price_currencies">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
+        <item>KGS</item>
+        <item>KZT</item>
+        <item>BYR</item>
+        <item>UAH</item>
+        <item>TJS</item>
+        <item>AZN</item>
+    </string-array>
+
 </resources>

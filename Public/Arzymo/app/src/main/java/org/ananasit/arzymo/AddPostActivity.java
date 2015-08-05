@@ -1,8 +1,6 @@
 package org.ananasit.arzymo;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.view.PagerAdapter;
@@ -20,18 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.arzymo.lib.CirclePageIndicator;
+import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
-import org.ananasit.arzymo.util.PutRequest;
 import org.json.JSONObject;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class AddPostActivity extends ActionBarActivity {
 
@@ -39,26 +31,26 @@ public class AddPostActivity extends ActionBarActivity {
     ViewPager mPager;
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
+    Toolbar toolbar;
     String content = "";
-    String category = "";
-    String category_name = "";
     String price = "";
     String price_currency;
     String result;
-    Activity context;
-    boolean mode = true; // add mode = 1, edit mode = 0;
-    String url;
+    String url = "";
     String id = "";
     EditText etContent;
     EditText etPrice;
-    public static Context ctx;
+    boolean mode = true; // add mode = 1, edit mode = 0;
+    Button categoryBtn;
+    Button postBtn;
+    Category category = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
         //toolbar.setSubtitle(GlobalVar.SubCategory.getName());
@@ -78,31 +70,16 @@ public class AddPostActivity extends ActionBarActivity {
         //spinner job
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
                 R.array.price_currencies, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> adapter_category = ArrayAdapter.createFromResource(context,
-                R.array.categories_ru, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-        Button postBtn = (Button) findViewById(R.id.btnPost);
-        Button categoryBtn = (Button) findViewById(R.id.btnCategory);
-        if(GlobalVar.SelectedCategory != null)
-        {
-            categoryBtn.setText(GlobalVar.SelectedCategory.getName());
-            this.category = GlobalVar.SelectedCategory.getId();
-        }
-        else if(!category_name.equals(""))
-        {
-            categoryBtn.setText(category_name);
-        }
+        postBtn = (Button) findViewById(R.id.btnPost);
+        categoryBtn = (Button) findViewById(R.id.btnCategory);
 
-        if(!mode) //edit
-            postBtn.setText(R.string.save);
-        else
-            postBtn.setText(R.string.add);
+        postBtn.setText(R.string.add);
 
         etContent.setText(content);
         etPrice.setText(price);
@@ -119,6 +96,7 @@ public class AddPostActivity extends ActionBarActivity {
                         // Showing selected spinner item
                         //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> arg0) {
                         // TODO Auto-generated method stub
@@ -126,17 +104,10 @@ public class AddPostActivity extends ActionBarActivity {
                 }
         );
 
-        int color = getResources().getColor(R.color.blue_dark);
-        mAdapter = new PlaceSlidesFragmentAdapter(context);
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-        mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        mIndicator.setFillColor(color);
-        mIndicator.setStrokeColor(color);
-        mIndicator.setRadius(5);
-        mIndicator.setViewPager(mPager);
-        mIndicator.setSnap(true);
+        //for edit
+        this.id = GlobalVar._Post.getId();
+        this.url = ApiHelper.POST_URL + id + "/";
+        //ViewPagerWork();
 
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,12 +123,43 @@ public class AddPostActivity extends ActionBarActivity {
                 //GlobalVar.postPrice = etPrice.getText().toString().trim();
                 //GlobalVar.postPriceCurrency = price_currency;
                 //GlobalVar.SelectedCategory = null; //main
-                //Intent in = new Intent(context, HomeActivity.class);
+                Intent in = new Intent(AddPostActivity.this, CategoriesActivity.class);
                 //in.putExtra("case", 8); //categories
-                //startActivity(in);
+                startActivity(in);
             }
         });
 
+    }
+
+    private void ViewPagerWork() {
+        int color = getResources().getColor(R.color.blue_dark);
+        mAdapter = new PlaceSlidesFragmentAdapter(AddPostActivity.this);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        mIndicator.setFillColor(color);
+        mIndicator.setStrokeColor(color);
+        mIndicator.setRadius(5);
+        mIndicator.setViewPager(mPager);
+        mIndicator.setSnap(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Log.d("AddPostActivity", "resumed");
+        if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
+        {
+            categoryBtn.setText(GlobalVar.Category.getName());
+            this.category = GlobalVar.Category;
+        }
+        else this.category = null;
+        ViewPagerWork();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Log.d("AddPostActivity", "paused");
     }
 
     @Override
@@ -185,97 +187,41 @@ public class AddPostActivity extends ActionBarActivity {
     private void postButton() {
         if(!validate())
         {
-            Toast.makeText(context, "Заполните все поля", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddPostActivity.this, "Заполните все поля", Toast.LENGTH_LONG).show();
         }
         else
         {
             if (mode)
             {
-                HttpAsyncTask task = new HttpAsyncTask();
+                AddPostTask task = new AddPostTask();
                 task.execute(ApiHelper.SEND_POST_URL);
             }
             else
             {   //use volley or async
                 //VolleyPut();
-
                 //async task
-                ProgressDialog pdialog = ProgressDialog.show(context, "","Загрузка...", true);
-                pdialog.show();
                 putHttpAsyncTask task = new putHttpAsyncTask();
-                task.execute(url);
-                pdialog.dismiss();
+                task.execute();
             }
         }
     }
-/*
-    private void VolleyPut() {
-        PutRequest pr = new PutRequest(url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        if(GlobalVar.image_paths.size() > 0)
-                        {
-                            Intent in = new Intent(context, EditImageActivity.class);
-                            startActivity(in);
-                        }
-                        else
-                        {
-                            Toast.makeText(context, "Сохранено", Toast.LENGTH_SHORT).show();
-                            Intent in = new Intent(context, HomeActivity.class);
-                            in.putExtra("case", 1);
-                            startActivity(in);
 
-                            //clear images
-                            GlobalVar._bitmaps.clear();
-                            GlobalVar.image_paths.clear();
-                            GlobalVar._Post = null;
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
-                        // hide the progress dialog
-                        Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ){
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-
-                params.put("category", category);
-                params.put("content", content);
-                params.put("price", price);
-                params.put("price_currency", price_currency);
-                params.put("api_key", ApiHelper.API_KEY);
-
-                return params;
-            }
-        };
-        AppController appcon = AppController.getInstance();
-        appcon.addToRequestQueue(pr);
-    }
-*/
     private boolean validate(){
 
         content = etContent.getText().toString().trim();
         price = etPrice.getText().toString().trim();
 
-        return (!content.equals("") && !price.equals("") && !category.equals("") && !price_currency.equals(""));
+        return (!content.equals("") && !price.equals("") && category != null && !price_currency.equals(""));
     }
 
     // add mode
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+    private class AddPostTask extends AsyncTask<String, Void, String> {
 
         ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(context, "","Загрузка...", true);
+            dialog = ProgressDialog.show(AddPostActivity.this, "","Загрузка...", true);
             dialog.show();
         }
 
@@ -288,7 +234,16 @@ public class AddPostActivity extends ActionBarActivity {
                 ApiHelper api = new ApiHelper();
 
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("category", category);
+                if(category.getIdParent().equals(""))
+                {
+                    jsonObject.put("id_category", category.getId());
+                    jsonObject.put("id_subcategory", 0);
+                }
+                else
+                {
+                    jsonObject.put("id_category", category.getIdParent());
+                    jsonObject.put("id_subcategory", category.getId());
+                }
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
@@ -328,7 +283,7 @@ public class AddPostActivity extends ActionBarActivity {
         protected void onPostExecute(String result)
         {
             dialog.dismiss();
-            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
            // Intent in = new Intent(context, HomeActivity.class);
             //in.putExtra("case", 1);
             //startActivity(in);
@@ -346,7 +301,7 @@ public class AddPostActivity extends ActionBarActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            pdialog = ProgressDialog.show(context, "","Загрузка...", true);
+            pdialog = ProgressDialog.show(AddPostActivity.this, "","Загрузка...", true);
             pdialog.show();
         }
 
@@ -357,7 +312,16 @@ public class AddPostActivity extends ActionBarActivity {
                 ApiHelper api = new ApiHelper();
 
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("category", category);
+                if(category.getIdParent().equals(""))
+                {
+                    jsonObject.put("id_category", category.getId());
+                    jsonObject.put("id_subcategory", 0);
+                }
+                else
+                {
+                    jsonObject.put("id_category", category.getIdParent());
+                    jsonObject.put("id_subcategory", category.getId());
+                }
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
@@ -367,7 +331,7 @@ public class AddPostActivity extends ActionBarActivity {
             }
             catch (Exception ex)
             {
-                Log.d("AddPostFragment", "Exeption: " + ex.getMessage());
+                Log.d("AddPostFragment", "Exception: " + ex.getMessage());
                 return "Ошибка";
             }
 
@@ -380,7 +344,7 @@ public class AddPostActivity extends ActionBarActivity {
             pdialog.dismiss();
             if(!result.equals(""))
             {
-                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
             }
             else
             {
@@ -391,7 +355,7 @@ public class AddPostActivity extends ActionBarActivity {
                 }
                 else
                 {
-                    Toast.makeText(context, "Сохранено", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPostActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
                     //Intent in = new Intent(context, HomeActivity.class);
                     //in.putExtra("case", 1);
                     //startActivity(in);

@@ -1,14 +1,18 @@
 package org.ananasit.arzymo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.ananasit.arzymo.adapter.ListAdapter;
+import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
 
 
@@ -16,12 +20,13 @@ public class CategoriesActivity extends ActionBarActivity {
 
     private ListView listView;
     private ListAdapter adapter;
+    public static Activity fa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
-
+        fa = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         //toolbar.setSubtitle(GlobalVar.Category.getName());
@@ -40,6 +45,26 @@ public class CategoriesActivity extends ActionBarActivity {
 
         adapter =  new ListAdapter(this, GlobalVar._categories);
         listView.setAdapter(adapter);
+
+        // Click event for single list row
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
+                GlobalVar.Category = GlobalVar._categories.get(position);
+                Intent in;
+                if (GlobalVar.Category.getSubcats() != null && GlobalVar.Category.getSubcats().size() > 0) {
+                    in = new Intent(CategoriesActivity.this, SubcatsActivity.class);
+                    in.putExtra("mode", Constants.ADD_POST_MODE);
+                    startActivity(in);
+                } else
+                {
+                    finish();
+                }
+            }
+        });
     }
 
     @Override

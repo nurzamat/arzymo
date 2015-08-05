@@ -19,9 +19,8 @@ public class PostsActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        if(GlobalVar.SubCategory != null)
-        toolbar.setSubtitle(GlobalVar.SubCategory.getName());
-        else toolbar.setSubtitle(GlobalVar.Category.getName());
+        if(GlobalVar.Category != null)
+        toolbar.setSubtitle(GlobalVar.Category.getName());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
