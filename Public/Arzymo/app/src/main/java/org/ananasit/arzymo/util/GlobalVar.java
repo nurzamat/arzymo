@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class GlobalVar {
 
     public static String Phone = "";
-    public static String Token = "";
+    public static String Client_key = "c524ef7fb40e1f9b79f041dd8d47fcdb";//for testing
     public static String Uid = "";
     public static ArrayList<Category> _categories = new ArrayList<Category>();
     public static ArrayList<Bitmap> _bitmaps = new ArrayList<Bitmap>();

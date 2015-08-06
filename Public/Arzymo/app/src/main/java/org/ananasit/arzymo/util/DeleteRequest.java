@@ -42,7 +42,7 @@ public class DeleteRequest extends StringRequest {
         Map<String, String> params = new HashMap<String, String>();
         //params.put("User-Agent", "Nintendo Gameboy");
         //params.put("Accept-Language", "fr");
-        params.put("Authorization", "Token " + GlobalVar.Token);
+        params.put("Authorization", GlobalVar.Client_key);
         return params;
     }
 

@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.Image;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,12 +29,10 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,8 +44,8 @@ public class ApiHelper {
     public static final String ARZYMO_URL = "http://192.168.0.109";
     public static final String CODE_URL = ARZYMO_URL + "/api/user/registration/";
     public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
-    public static final String POST_URL = "";
-    public static final String SEND_POST_URL = "";
+    public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
+    public static final String SEND_POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
     public static final String HITCOUNT_URL = "";
 
     public JSONObject getCode(String phone) throws ApiException, IOException,
@@ -206,7 +203,7 @@ public class ApiHelper {
         post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
         if(token_auth)
-            post.setHeader("Authorization", "Token " + GlobalVar.Token);
+            post.setHeader("Authorization", GlobalVar.Client_key);
 
         HttpResponse response = client.execute(post);
         return response;
@@ -224,7 +221,7 @@ public class ApiHelper {
         putRequest.setHeader("Accept", "application/json");
         putRequest.setHeader("Content-type", "application/json");
         if(token_auth)
-            putRequest.setHeader("Authorization", "Token " + GlobalVar.Token);
+            putRequest.setHeader("Authorization", GlobalVar.Client_key);
 
         HttpResponse response = client.execute(putRequest);
         return response;
@@ -264,13 +261,13 @@ public class ApiHelper {
             {
                 HttpPost httppost = new HttpPost(url);
                 HttpEntity reqEntity = MultipartEntityBuilder.create()
-                        .addPart("original_image", bin)
+                        .addPart("image", bin)
                                 //.addPart("comment", comment)
                                 //.addPart("original_image",bab)   //for sending bitmap
                         .build();
 
                 httppost.setEntity(reqEntity);
-                httppost.setHeader("Authorization", "Token " + GlobalVar.Token);
+                httppost.setHeader("Authorization", GlobalVar.Client_key);
 
                 Log.d("executing request", httppost.getRequestLine().toString());
 
@@ -285,7 +282,7 @@ public class ApiHelper {
                         .build();
 
                 httpput.setEntity(reqEntity);
-                httpput.setHeader("Authorization", "Token " + GlobalVar.Token);
+                httpput.setHeader("Authorization", GlobalVar.Client_key);
 
                 response = client.execute(httpput);
             }

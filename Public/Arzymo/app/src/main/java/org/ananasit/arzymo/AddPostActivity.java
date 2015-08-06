@@ -105,8 +105,11 @@ public class AddPostActivity extends ActionBarActivity {
         );
 
         //for edit
-        this.id = GlobalVar._Post.getId();
-        this.url = ApiHelper.POST_URL + id + "/";
+        if(GlobalVar._Post != null)
+        {
+            this.id = GlobalVar._Post.getId();
+            this.url = ApiHelper.POST_URL + "/" + id + "/";
+        }
         //ViewPagerWork();
 
         postBtn.setOnClickListener(new View.OnClickListener() {
@@ -236,23 +239,27 @@ public class AddPostActivity extends ActionBarActivity {
                 JSONObject jsonObject = new JSONObject();
                 if(category.getIdParent().equals(""))
                 {
-                    jsonObject.put("id_category", category.getId());
-                    jsonObject.put("id_subcategory", 0);
+                    jsonObject.put("idCategory", category.getId());
+                    jsonObject.put("idSubcategory", 0);
                 }
                 else
                 {
-                    jsonObject.put("id_category", category.getIdParent());
-                    jsonObject.put("id_subcategory", category.getId());
+                    jsonObject.put("idCategory", category.getIdParent());
+                    jsonObject.put("idSubcategory", category.getId());
                 }
+                jsonObject.put("title", "test");
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
                 jsonObject.put("api_key", ApiHelper.API_KEY);
+                jsonObject.put("city", "bishkek");
+                jsonObject.put("country", "kg");
 
                 JSONObject obj = api.sendPost(jsonObject);
-                if(obj.has("id"))
+                if(obj.has("post_id"))
                 {
-                    String url = ApiHelper.POST_URL + obj.getString("id") + "/images/";
+
+                    String url = ApiHelper.POST_URL + "/" + obj.getString("post_id") + "/images";
                     int length = GlobalVar.image_paths.size();
                     if(length > 0)
                     {
@@ -263,16 +270,17 @@ public class AddPostActivity extends ActionBarActivity {
                                 continue;
                         }
                     }
+
                     result = "Добавлено";
                 }
                 else result = "Ошибка";
 
-                Log.d("AddPostFragment", "Token: " + GlobalVar.Token);
+                Log.d("AddPostFragment", "Client_key: " + GlobalVar.Client_key);
             }
             catch (Exception ex)
             {
                 String exText = ex.getMessage();
-                Log.d("AddPostFragment", "Exeption: " + exText);
+                Log.d("AddPostFragment", "Exception: " + exText);
                 return "Ошибка";
             }
 
