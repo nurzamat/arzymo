@@ -6,9 +6,9 @@ import java.util.ArrayList;
  * Created by nurzamat on 8/3/15.
  */
 public class Post{
-    private String id, content, username;
     private String thumbnailUrl = "";
-    private String price, price_currency = "";
+    private String id, content, price, price_currency, hitcount = "";
+    private User user = null;
     private Category category = null;
     //private ArrayList<String> image_urls;
     private ArrayList<Image> images;
@@ -64,12 +64,20 @@ public class Post{
         this.price_currency = price_currency;
     }
 
-    public String getUsername() {
-        return username;
+    public String getHitcount() {
+        return hitcount;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setHitcount(String _hitcount) {
+        this.hitcount = _hitcount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User _user) {
+        this.user = _user;
     }
 
     public ArrayList<Image> getImages() {

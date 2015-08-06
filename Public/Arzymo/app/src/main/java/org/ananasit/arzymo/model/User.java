@@ -2,10 +2,8 @@ package org.ananasit.arzymo.model;
 
 public class User
 {
-    private String id, client_key, name, phone, email, avatar, password;
-    private boolean isLogedIn = false;
-    private boolean isRegistered = false;
-    private boolean isActivated = false;
+    private String id, name, phone, email;
+    private String avatarUrl = "";
 
     public User() {
     }
@@ -16,14 +14,6 @@ public class User
     }
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getClient_key() {
-        return client_key;
-    }
-
-    public void setClient_key(String _client_key) {
-        this.client_key = _client_key;
     }
 
     public String getName() {
@@ -51,48 +41,13 @@ public class User
         this.email = _email;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatar(String _avatar) {
-        this.avatar = _avatar;
+    public void setAvatarUrl(String _avatarUrl) {
+        this.avatarUrl = _avatarUrl;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String _pass)
-    {
-        this.password = _pass;
-    }
-
-    public boolean isLogedIn() {
-        return isLogedIn;
-    }
-
-    public void setLogedIn(boolean _loged)
-    {
-        this.isLogedIn = _loged;
-    }
-
-    public boolean isRegistered() {
-        return isRegistered;
-    }
-
-    public void setRegistered(boolean _reged)
-    {
-        this.isRegistered = _reged;
-    }
-
-    public boolean isActivated() {
-        return isActivated;
-    }
-
-    public void setActivated(boolean _act)
-    {
-        this.isActivated = _act;
-    }
 
 }

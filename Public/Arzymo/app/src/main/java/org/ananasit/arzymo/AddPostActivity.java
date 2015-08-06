@@ -122,12 +122,7 @@ public class AddPostActivity extends ActionBarActivity {
         categoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //GlobalVar.postContent = etContent.getText().toString().trim();
-                //GlobalVar.postPrice = etPrice.getText().toString().trim();
-                //GlobalVar.postPriceCurrency = price_currency;
-                //GlobalVar.SelectedCategory = null; //main
                 Intent in = new Intent(AddPostActivity.this, CategoriesActivity.class);
-                //in.putExtra("case", 8); //categories
                 startActivity(in);
             }
         });
