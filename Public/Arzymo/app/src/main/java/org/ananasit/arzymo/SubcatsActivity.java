@@ -10,14 +10,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import org.ananasit.arzymo.adapter.ListAdapter;
+import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
+
+import java.util.ArrayList;
 
 
 public class SubcatsActivity extends ActionBarActivity {
 
     private ListAdapter adapter;
     private String mode = "";
+    private ArrayList<Category> _subcats = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +47,16 @@ public class SubcatsActivity extends ActionBarActivity {
         });
 
         ListView listView = (ListView) findViewById(R.id.list);
-
-        adapter =  new ListAdapter(this, GlobalVar.Category.getSubcats());
+        _subcats = GlobalVar.Category.getSubcats();
+        adapter =  new ListAdapter(this, _subcats);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                GlobalVar.Category = GlobalVar.Category.getSubcats().get(position);
+                if(_subcats != null)
+                GlobalVar.Category = _subcats.get(position);
                 if(mode.equals(Constants.POSTS_MODE))
                 {
                     Intent in = new Intent(SubcatsActivity.this, PostsActivity.class);
