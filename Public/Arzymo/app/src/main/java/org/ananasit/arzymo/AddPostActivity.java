@@ -192,7 +192,7 @@ public class AddPostActivity extends ActionBarActivity {
             if (mode)
             {
                 AddPostTask task = new AddPostTask();
-                task.execute(ApiHelper.SEND_POST_URL);
+                task.execute(ApiHelper.POST_URL);
             }
             else
             {   //use volley or async

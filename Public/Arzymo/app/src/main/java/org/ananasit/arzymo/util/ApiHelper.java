@@ -42,10 +42,12 @@ public class ApiHelper {
     public static final String TAG = "[API]";
     public static final String API_KEY = "7dbe69719ab6a99e677f4a1948b6c5b82162c40c";
     public static final String ARZYMO_URL = "http://192.168.0.109";
-    public static final String CODE_URL = ARZYMO_URL + "/api/user/registration/";
+    public static final String CODE_URL = ARZYMO_URL + "/api/user/registration";
     public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
     public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
-    public static final String SEND_POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
+    public static final String CATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/category";
+    public static final String SUBCATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/subcategory";
+    public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
     public static final String HITCOUNT_URL = "";
 
     public JSONObject getCode(String phone) throws ApiException, IOException,
@@ -98,9 +100,9 @@ public class ApiHelper {
     public JSONObject sendPost(JSONObject jsonObject)
             throws ApiException, IOException, JSONException {
 
-        Log.i(TAG, "Sending request to: " + SEND_POST_URL);
-        HttpResponse response = requestPost(SEND_POST_URL, jsonObject, true);
-        //HttpResponse response = multipart_request(SEND_POST_URL);
+        Log.i(TAG, "Sending request to: " + POST_URL);
+        HttpResponse response = requestPost(POST_URL, jsonObject, true);
+        //HttpResponse response = multipart_request(POST_URL);
 
         String responseStr = responseToStr(response);
 
@@ -332,6 +334,22 @@ public class ApiHelper {
             //Log.d(TAG, ex.getMessage());
         }
         return urls;
+    }
+
+    public static String getCategoryUrl(int page)
+    {
+        if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
+        {
+            if(GlobalVar.Category.getIdParent().equals(""))
+            {
+                return CATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page;
+            }
+            else
+            {
+                return SUBCATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page;
+            }
+        }
+        return "";
     }
 
     public static boolean isConnected(Context context)
