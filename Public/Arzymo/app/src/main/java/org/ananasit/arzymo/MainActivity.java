@@ -233,7 +233,6 @@ public class MainActivity extends ActionBarActivity {
                 break;
             }
             case 4: {
-                u.setLogedIn(false);
                 SharedPreferences sp = getSharedPreferences(Constants.PELIKAN, 0);
                 SharedPreferences.Editor Ed = sp.edit();
                 Ed.putBoolean(Constants.PELIKAN_LOGEDIN, false);
