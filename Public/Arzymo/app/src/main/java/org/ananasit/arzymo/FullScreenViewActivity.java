@@ -1,17 +1,41 @@
 package org.ananasit.arzymo;
 
+import android.os.AsyncTask;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.ananasit.arzymo.adapter.FullScreenImageAdapter;
+import org.ananasit.arzymo.model.Post;
+import org.ananasit.arzymo.util.ApiHelper;
+import org.ananasit.arzymo.util.GlobalVar;
+import org.json.JSONObject;
+
 
 public class FullScreenViewActivity extends ActionBarActivity {
+
+    private FullScreenImageAdapter adapter;
+    private ViewPager viewPager;
+    private Post p = GlobalVar._Post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_view);
+
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this);
+
+        viewPager.setAdapter(adapter);
+        if(!p.getUser().getPhone().equals(GlobalVar.Phone))
+        {
+            //HttpAsyncTask task = new HttpAsyncTask();
+            //task.execute(ApiHelper.HITCOUNT_URL);
+        }
     }
 
     @Override
@@ -34,5 +58,45 @@ public class FullScreenViewActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            try
+            {
+                ApiHelper api = new ApiHelper();
+
+                JSONObject jsonObject = new JSONObject();
+                //jsonObject.put("hitcount_pk", p.getHitcountId());
+                jsonObject.put("api_key", ApiHelper.API_KEY);
+
+                JSONObject obj = api.sendHitcount(jsonObject);
+                if(obj.getString("status").equals("success"))
+                {
+                    return "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+                return "Ошибка";
+            }
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+        }
     }
 }

@@ -89,8 +89,8 @@ public class PostListAdapter extends BaseAdapter {
         ImageButton chat = (ImageButton) convertView.findViewById(R.id.show_chat);
 
         // getting post data for the row
-        Post m = postItems.get(position);
-        String image_url = m.getThumbnailUrl();
+        Post p = postItems.get(position);
+        String image_url = p.getThumbnailUrl();
         // thumbnail image
         if(image_url.equals(""))
             thumbNail.setDefaultImageResId(R.drawable.default_img);
@@ -98,19 +98,19 @@ public class PostListAdapter extends BaseAdapter {
         if(thumbNail.getDrawable() != null)
             spin.setVisibility(View.GONE);
 
-        if(m.getUser() != null)
-        avatar.setImageUrl(m.getUser().getAvatarUrl(), imageLoader);
+        if(p.getUser() != null)
+        avatar.setImageUrl(p.getUser().getAvatarUrl(), imageLoader);
         // title
-        content.setText(m.getContent());
-        hitcount.setText(m.getHitcount());
+        content.setText(p.getContent());
+        hitcount.setText(p.getHitcount());
         // username
-        if(m.getUser() != null)
-        displayed_name.setText(m.getUser().getPhone());
-        if(m.getCategory() != null)
-        category_name.setText(m.getCategory().getName());
+        if(p.getUser() != null)
+        displayed_name.setText(p.getUser().getPhone());
+        if(p.getCategory() != null)
+        category_name.setText(p.getCategory().getName());
 
         // price
-        price.setText(String.valueOf(m.getPrice()));
+        price.setText(String.valueOf(p.getPrice()));
 
         // image view click listener
         thumbnail_id = thumbNail.getId();
@@ -118,7 +118,7 @@ public class PostListAdapter extends BaseAdapter {
         call_id = call.getId();
         chat_id = chat.getId();
 
-        if(m.getUser() != null && m.getUser().getPhone().equals(GlobalVar.Phone))
+        if(p.getUser() != null && p.getUser().getPhone().equals(GlobalVar.Phone))
         {
             call.setVisibility(View.INVISIBLE);
             chat.setVisibility(View.INVISIBLE);
@@ -129,10 +129,10 @@ public class PostListAdapter extends BaseAdapter {
             chat.setVisibility(View.VISIBLE);
         }
 
-        thumbNail.setOnClickListener(new OnImageClickListener(thumbnail_id, position, m));
-        menu.setOnClickListener(new OnImageClickListener(menu_id, position, m));
-        call.setOnClickListener(new OnImageClickListener(call_id, position, m));
-        chat.setOnClickListener(new OnImageClickListener(chat_id, position, m));
+        thumbNail.setOnClickListener(new OnImageClickListener(thumbnail_id, position, p));
+        menu.setOnClickListener(new OnImageClickListener(menu_id, position, p));
+        call.setOnClickListener(new OnImageClickListener(call_id, position, p));
+        chat.setOnClickListener(new OnImageClickListener(chat_id, position, p));
 
         return convertView;
     }
@@ -142,14 +142,14 @@ public class PostListAdapter extends BaseAdapter {
 
         int _position;
         int _view_id = 0;
-        Post _m;
+        Post _p;
 
         // constructors
         public OnImageClickListener(int view_id, int _position, Post m)
         {
             this._view_id = view_id;
             this._position = _position;
-            this._m = m;
+            this._p = m;
         }
 
         @Override
@@ -158,9 +158,9 @@ public class PostListAdapter extends BaseAdapter {
             // launch full screen activity
             if(_view_id == thumbnail_id)
             {
-                if(_m.getImages() != null && _m.getImages().size() > 0)
+                if(_p.getImages() != null && _p.getImages().size() > 0)
                 {
-                    GlobalVar._Post = _m;
+                    GlobalVar._Post = _p;
                     Intent i = new Intent(activity, FullScreenViewActivity.class);
                     activity.startActivity(i);
                 }
@@ -172,7 +172,7 @@ public class PostListAdapter extends BaseAdapter {
                 {
                     if (!GlobalVar.Phone.equals("") && !GlobalVar.Client_key.equals(""))
                     {
-                        String phone = _m.getUser().getPhone();
+                        String phone = _p.getUser().getPhone();
                         boolean isPhone = PhoneNumberUtils.isGlobalPhoneNumber("+"+phone);
                         if(isPhone)
                         {
@@ -220,7 +220,7 @@ public class PostListAdapter extends BaseAdapter {
                         }
                         if(title.equals("Позвонить"))
                         {
-                            String phone = _m.getUser().getPhone();
+                            String phone = _p.getUser().getPhone();
                             boolean isPhone = PhoneNumberUtils.isGlobalPhoneNumber("+"+phone);
                             if(isPhone)
                             {

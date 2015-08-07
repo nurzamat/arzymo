@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <trade.mozan.lib.CirclePageIndicator
+    <org.ananasit.arzymo.lib.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

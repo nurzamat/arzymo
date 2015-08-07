@@ -61,7 +61,8 @@ public class SubcatsActivity extends ActionBarActivity {
                 {
                     Intent in = new Intent(SubcatsActivity.this, PostsActivity.class);
                     startActivity(in);
-                }else
+                }
+                else
                 {
                     CategoriesActivity.fa.finish();
                     finish();

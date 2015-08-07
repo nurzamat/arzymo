@@ -3,18 +3,15 @@ package org.ananasit.arzymo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-
 import org.ananasit.arzymo.adapter.PostListAdapter;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
