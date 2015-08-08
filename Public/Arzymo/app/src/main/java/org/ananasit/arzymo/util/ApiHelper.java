@@ -50,6 +50,7 @@ public class ApiHelper {
     public static final String CATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/category";
     public static final String SUBCATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/subcategory";
     public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
+    public static final String IMAGES_URL = ARZYMO_URL + "/mobylive/v1/images";
     public static final String HITCOUNT_URL = "";
 
     public JSONObject getCode(String phone) throws ApiException, IOException,

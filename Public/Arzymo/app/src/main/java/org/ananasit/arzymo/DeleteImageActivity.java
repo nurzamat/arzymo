@@ -23,14 +23,14 @@ public class DeleteImageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        final int position = i.getIntExtra("position", 0);
+        //final int position = i.getIntExtra("position", 0);
         String image_id = i.getStringExtra("image_id");
 
         pDialog = new ProgressDialog(DeleteImageActivity.this);
         // Showing progress dialog before making http request
         pDialog.setMessage("Загрузка...");
         pDialog.show();
-        String url = ApiHelper.POST_URL + GlobalVar._Post.getId() + "/image/" + image_id;
+        String url = ApiHelper.IMAGES_URL + "/" + image_id;
         //finish();
         DeleteRequest dr = new DeleteRequest(url,
                 new Response.Listener<String>()
