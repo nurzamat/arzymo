@@ -358,21 +358,19 @@ public class ApiHelper {
         {
             for(Iterator<Category> i = GlobalVar._categories.iterator(); i.hasNext(); ) {
                 Category item = i.next();
-                if(item != null)
+
+                if(!item.getIdParent().equals(""))
                 {
-                    if(!item.getIdParent().equals(""))
+                    if(item.getIdParent().equals(id_category) && item.getId().equals(id_subcategory))
                     {
-                        if(item.getIdParent().equals(id_category) && item.getId().equals(id_subcategory))
-                        {
-                            category = item;
-                        }
+                        category = item;
                     }
-                    else
+                }
+                else
+                {
+                    if(item.getId().equals(id_category))
                     {
-                        if(item.getId().equals(id_category))
-                        {
-                            category = item;
-                        }
+                        category = item;
                     }
                 }
             }
