@@ -28,11 +28,11 @@ public class FullScreenViewActivity extends ActionBarActivity {
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
-        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this);
+        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, p);
 
         viewPager.setAdapter(adapter);
         User client = AppController.getInstance().getUser();
-        if(client != null && p.getUser() != client)
+        if(client != null && !p.getUser().getId().equals(client.getId()))
         {
             //HttpAsyncTask task = new HttpAsyncTask();
             //task.execute(ApiHelper.HITCOUNT_URL);

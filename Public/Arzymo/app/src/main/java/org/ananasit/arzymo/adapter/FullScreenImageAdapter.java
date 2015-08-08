@@ -18,9 +18,8 @@ import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.DeleteImageActivity;
 import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.model.Image;
+import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
-import org.ananasit.arzymo.util.GlobalVar;
-
 import java.util.ArrayList;
 
 /**
@@ -31,13 +30,15 @@ public class FullScreenImageAdapter extends PagerAdapter {
     private Activity _activity;
     private ArrayList<Image> _images;
     private LayoutInflater inflater;
+    private Post post;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     User client = AppController.getInstance().getUser();
 
     // constructor
-    public FullScreenImageAdapter(Activity activity) {
+    public FullScreenImageAdapter(Activity activity, Post _post) {
         this._activity = activity;
-        this._images = GlobalVar._Post.getImages();
+        this.post = _post;
+        this._images = _post.getImages();
     }
 
     @Override
@@ -72,7 +73,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
         btnClose = (ImageButton) viewLayout.findViewById(R.id.btnClose);
         btnDelete = (ImageButton) viewLayout.findViewById(R.id.btnDelete);
 
-
         // thumbnail image
         //if(_images.get(position).getUrl().equals(""))
         //   imgDisplay.setDefaultImageResId(R.drawable.default_img);
@@ -90,7 +90,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
             }
         });
 
-        if(client != null && GlobalVar._Post.getUser() == client)
+        if(client != null && post.getUser().getId().equals(client.getId()))
         {
             // delete button click event
             btnDelete.setVisibility(View.VISIBLE);

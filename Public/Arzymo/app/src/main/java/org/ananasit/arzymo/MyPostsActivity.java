@@ -101,6 +101,7 @@ public class MyPostsActivity extends ActionBarActivity {
                                     post.setPriceCurrency(obj.getString("price_currency"));
                                     category = ApiHelper.getCategoryByIds(obj.getString("id_category"), obj.getString("id_subcategory"));
                                     post.setCategory(category);
+                                    post.setUser(appcon.getUser());
                                     jimages = obj.getJSONArray("images");
                                     if(jimages.length() > 0)
                                     {
