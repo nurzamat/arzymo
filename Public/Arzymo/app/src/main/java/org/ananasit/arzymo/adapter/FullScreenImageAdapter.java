@@ -90,7 +90,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
             }
         });
 
-        if(client != null && GlobalVar._Post.getUser().getPhone().equals(client.getPhone()))
+        if(client != null && GlobalVar._Post.getUser() == client)
         {
             // delete button click event
             btnDelete.setVisibility(View.VISIBLE);

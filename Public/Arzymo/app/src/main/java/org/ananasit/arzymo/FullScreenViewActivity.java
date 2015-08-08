@@ -32,7 +32,7 @@ public class FullScreenViewActivity extends ActionBarActivity {
 
         viewPager.setAdapter(adapter);
         User client = AppController.getInstance().getUser();
-        if(client != null && !p.getUser().getPhone().equals(client.getPhone()))
+        if(client != null && p.getUser() != client)
         {
             //HttpAsyncTask task = new HttpAsyncTask();
             //task.execute(ApiHelper.HITCOUNT_URL);
