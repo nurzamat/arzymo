@@ -5,8 +5,8 @@ package org.ananasit.arzymo.model;
  */
 public class Image {
 
-    private String id;
-    private String url;
+    private String id = "";
+    private String url = "";
 
     public Image(String _id, String _url)
     {

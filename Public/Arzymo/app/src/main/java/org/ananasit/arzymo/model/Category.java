@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class Category
 {
-    private String id;
+    private String id = "";
     private String idParent = "";
-    private String name;
+    private String name = "";
     private ArrayList<Category> subcats = null;
 
     public Category()

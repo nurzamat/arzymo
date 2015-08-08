@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import org.ananasit.arzymo.AppController;
-import org.ananasit.arzymo.model.Image;
+import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -349,6 +349,40 @@ public class ApiHelper {
             return POST_URL + "/user/" + user_id + "/" + page;
         }
         return "";
+    }
+
+    public static Category getCategoryByIds(String id_category, String id_subcategory)
+    {
+        Category category = null;
+        try
+        {
+            for(Iterator<Category> i = GlobalVar._categories.iterator(); i.hasNext(); ) {
+                Category item = i.next();
+                if(item != null)
+                {
+                    if(!item.getIdParent().equals(""))
+                    {
+                        if(item.getIdParent().equals(id_category) && item.getId().equals(id_subcategory))
+                        {
+                            category = item;
+                        }
+                    }
+                    else
+                    {
+                        if(item.getId().equals(id_category))
+                        {
+                            category = item;
+                        }
+                    }
+                }
+            }
+        }
+        catch (NullPointerException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        return category;
     }
 
     public static boolean isConnected(Context context)

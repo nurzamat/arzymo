@@ -7,11 +7,14 @@ import java.util.ArrayList;
  */
 public class Post{
     private String thumbnailUrl = "";
-    private String id, content, price, price_currency, hitcount = "";
+    private String id = "";
+    private String content = "";
+    private String price = "";
+    private String price_currency = "";
+    private String hitcount = "";
     private User user = null;
     private Category category = null;
-    //private ArrayList<String> image_urls;
-    private ArrayList<Image> images;
+    private ArrayList<Image> images = null;
 
     public Post() {
     }

@@ -2,7 +2,12 @@ package org.ananasit.arzymo.model;
 
 public class User
 {
-    private String id, client_key, name, phone, email, avatarUrl = "";
+    private String id = "";
+    private String client_key = "";
+    private String name = "";
+    private String phone = "";
+    private String email = "";
+    private String avatarUrl = "";
 
     public User() {
     }

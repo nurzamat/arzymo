@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import org.ananasit.arzymo.adapter.MyPostListAdapter;
+import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
@@ -87,6 +88,7 @@ public class MyPostsActivity extends ActionBarActivity {
                             next = next + 1;
                             JSONArray jimages;
                             JSONObject obj;
+                            Category category;
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
 
@@ -97,7 +99,8 @@ public class MyPostsActivity extends ActionBarActivity {
                                     post.setHitcount(obj.getString("hitcount"));
                                     post.setPrice(obj.getString("price"));
                                     post.setPriceCurrency(obj.getString("price_currency"));
-                                    post.setCategory(GlobalVar.Category);
+                                    category = ApiHelper.getCategoryByIds(obj.getString("id_category"), obj.getString("id_subcategory"));
+                                    post.setCategory(category);
                                     jimages = obj.getJSONArray("images");
                                     if(jimages.length() > 0)
                                     {

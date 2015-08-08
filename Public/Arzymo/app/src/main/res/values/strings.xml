@@ -45,6 +45,6 @@
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="title_activity_delete_post">DeletePostActivity</string>
     <string name="title_activity_delete_image">DeleteImageActivity</string>
-    <string name="title_activity_my_posts">MyPostsActivity</string>
+    <string name="title_activity_my_posts">Мои объявления</string>
 
 </resources>
