@@ -42,5 +42,9 @@
         <item>AZN</item>
     </string-array>
     <string name="title_activity_full_screen_view">FullScreenViewActivity</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_delete_post">DeletePostActivity</string>
+    <string name="title_activity_delete_image">DeleteImageActivity</string>
+    <string name="title_activity_my_posts">MyPostsActivity</string>
 
 </resources>

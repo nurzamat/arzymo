@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
-    String TITLES[] = {"История вызовов", "Ваши таксисты", "Настройки", "Выход"};
+    String TITLES[] = {"Главная", "Мои объявления", "Настройки", "Выход"};
     int ICONS[] = {R.drawable.call_history, R.drawable.car, R.drawable.settings, R.drawable.ic_exit};
 
     //Similarly we Create a String Resource for the name and email in the header view
@@ -223,8 +223,8 @@ public class MainActivity extends ActionBarActivity {
                 break;
             }
             case 2: {
-                //Intent in = new Intent(MainActivity.this, DriversActivity.class);
-                //startActivity(in);
+                Intent in = new Intent(MainActivity.this, MyPostsActivity.class);
+                startActivity(in);
                 break;
             }
             case 3: {

@@ -2,8 +2,7 @@ package org.ananasit.arzymo.model;
 
 public class User
 {
-    private String id, name, phone, email;
-    private String avatarUrl = "";
+    private String id, client_key, name, phone, email, avatarUrl = "";
 
     public User() {
     }
@@ -12,8 +11,17 @@ public class User
     {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getClient_key() {
+        return client_key;
+    }
+
+    public void setClient_key(String _client_key) {
+        this.client_key = _client_key;
     }
 
     public String getName() {

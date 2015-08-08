@@ -9,6 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 
+import org.ananasit.arzymo.AppController;
+import org.ananasit.arzymo.model.User;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +45,9 @@ public class DeleteRequest extends StringRequest {
         Map<String, String> params = new HashMap<String, String>();
         //params.put("User-Agent", "Nintendo Gameboy");
         //params.put("Accept-Language", "fr");
-        params.put("Authorization", GlobalVar.Client_key);
+        User user = AppController.getInstance().getUser();
+
+        params.put("Authorization", user.getClient_key());
         return params;
     }
 

@@ -270,7 +270,6 @@ public class AddPostActivity extends ActionBarActivity {
                 }
                 else result = "Ошибка";
 
-                Log.d("AddPostFragment", "Client_key: " + GlobalVar.Client_key);
             }
             catch (Exception ex)
             {

@@ -9,6 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 
+import org.ananasit.arzymo.AppController;
+import org.ananasit.arzymo.model.User;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,9 +43,10 @@ public class PutRequest extends StringRequest {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
+        User user = AppController.getInstance().getUser();
         //params.put("Accept", "application/json");
         params.put("Content-type", "application/json");
-        params.put("Authorization", GlobalVar.Client_key);
+        params.put("Authorization", user.getClient_key());
         return params;
     }
 

@@ -52,6 +52,18 @@
             android:name=".FullScreenViewActivity"
             android:label="@string/title_activity_full_screen_view" >
         </activity>
+        <activity
+            android:name=".DeleteImageActivity"
+            android:label="@string/title_activity_delete_image" >
+        </activity>
+        <activity
+            android:name=".DeletePostActivity"
+            android:label="@string/title_activity_delete_post" >
+        </activity>
+        <activity
+            android:name=".MyPostsActivity"
+            android:label="@string/title_activity_my_posts" >
+        </activity>
     </application>
 
 </manifest>

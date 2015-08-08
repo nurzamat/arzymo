@@ -77,10 +77,10 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnMenu2"
-            android:visibility="visible"
+            android:id="@+id/btnMenu"
             android:layout_below="@+id/separator"
-            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
             android:background="@drawable/show_menu"/>
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/avatar"
@@ -89,7 +89,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="2dp"
             android:layout_below="@+id/separator"
-            android:layout_toRightOf="@+id/btnMenu2"/>
+            android:layout_alignParentLeft="true"/>
 
         <!-- displayed_name -->
         <TextView
@@ -110,22 +110,5 @@
             android:layout_below="@+id/displayed_name"
             android:layout_toRightOf="@+id/avatar"/>
 
-        <ImageButton
-            android:id="@+id/show_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/show_phone"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@+id/separator"
-            android:layout_toLeftOf="@+id/show_chat"/>
-        <ImageButton
-            android:id="@+id/show_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/show_chat"
-            android:layout_marginTop="2dp"
-            android:layout_below="@+id/separator"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </FrameLayout>

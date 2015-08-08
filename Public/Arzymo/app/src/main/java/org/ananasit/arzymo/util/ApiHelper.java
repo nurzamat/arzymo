@@ -6,7 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.model.Image;
+import org.ananasit.arzymo.model.User;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -197,6 +199,7 @@ public class ApiHelper {
             throws IOException, IllegalStateException,
             JSONException {
 
+        User user = AppController.getInstance().getUser();
         DefaultHttpClient client = (DefaultHttpClient) getNewHttpClient();
 
         HttpPost post = new HttpPost(url);
@@ -205,7 +208,7 @@ public class ApiHelper {
         post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
         if(token_auth)
-            post.setHeader("Authorization", GlobalVar.Client_key);
+            post.setHeader("Authorization", user.getClient_key());
 
         HttpResponse response = client.execute(post);
         return response;
@@ -215,6 +218,7 @@ public class ApiHelper {
             throws IOException, IllegalStateException,
             JSONException {
 
+        User user = AppController.getInstance().getUser();
         DefaultHttpClient client = (DefaultHttpClient) getNewHttpClient();
 
         HttpPut putRequest = new HttpPut(url);
@@ -223,7 +227,7 @@ public class ApiHelper {
         putRequest.setHeader("Accept", "application/json");
         putRequest.setHeader("Content-type", "application/json");
         if(token_auth)
-            putRequest.setHeader("Authorization", GlobalVar.Client_key);
+            putRequest.setHeader("Authorization", user.getClient_key());
 
         HttpResponse response = client.execute(putRequest);
         return response;
@@ -243,6 +247,8 @@ public class ApiHelper {
     }
 
     public HttpResponse multipart_request(String url, String path, boolean mode) {
+
+        User user = AppController.getInstance().getUser();
 
         DefaultHttpClient client = (DefaultHttpClient) getNewHttpClient();
         try {
@@ -269,7 +275,7 @@ public class ApiHelper {
                         .build();
 
                 httppost.setEntity(reqEntity);
-                httppost.setHeader("Authorization", GlobalVar.Client_key);
+                httppost.setHeader("Authorization", user.getClient_key());
 
                 Log.d("executing request", httppost.getRequestLine().toString());
 
@@ -284,7 +290,7 @@ public class ApiHelper {
                         .build();
 
                 httpput.setEntity(reqEntity);
-                httpput.setHeader("Authorization", GlobalVar.Client_key);
+                httpput.setHeader("Authorization", user.getClient_key());
 
                 response = client.execute(httpput);
             }
@@ -320,23 +326,7 @@ public class ApiHelper {
         return "";
     }
 
-    public static ArrayList<String> getImageUrls(ArrayList<Image> images)
-    {
-        ArrayList<String> urls = new ArrayList<String>();
-        try {
-            for(Iterator<Image> i = images.iterator(); i.hasNext(); ) {
-                Image item = i.next();
-                urls.add(item.getUrl());
-            }
-        }
-        catch (Exception ex)
-        {
-            //Log.d(TAG, ex.getMessage());
-        }
-        return urls;
-    }
-
-    public static String getCategoryUrl(int page)
+    public static String getCategoryPostsUrl(int page)
     {
         if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
         {
@@ -348,6 +338,15 @@ public class ApiHelper {
             {
                 return SUBCATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page;
             }
+        }
+        return "";
+    }
+
+    public static String getMyPostsUrl(String user_id, int page)
+    {
+        if(!user_id.equals(""))
+        {
+            return POST_URL + "/user/" + user_id + "/" + page;
         }
         return "";
     }

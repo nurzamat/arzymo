@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import org.ananasit.arzymo.adapter.FullScreenImageAdapter;
 import org.ananasit.arzymo.model.Post;
+import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.json.JSONObject;
@@ -25,13 +26,13 @@ public class FullScreenViewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_view);
 
-
         viewPager = (ViewPager) findViewById(R.id.pager);
 
         adapter = new FullScreenImageAdapter(FullScreenViewActivity.this);
 
         viewPager.setAdapter(adapter);
-        if(!p.getUser().getPhone().equals(GlobalVar.Phone))
+        User client = AppController.getInstance().getUser();
+        if(client != null && !p.getUser().getPhone().equals(client.getPhone()))
         {
             //HttpAsyncTask task = new HttpAsyncTask();
             //task.execute(ApiHelper.HITCOUNT_URL);

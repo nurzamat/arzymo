@@ -1,6 +1,8 @@
 package org.ananasit.arzymo.util;
 
 import android.widget.AbsListView;
+
+import org.ananasit.arzymo.MyPostsActivity;
 import org.ananasit.arzymo.PostsActivity;
 
 /**
@@ -9,6 +11,7 @@ import org.ananasit.arzymo.PostsActivity;
 public class EndlessScrollListener implements AbsListView.OnScrollListener {
 
     private PostsActivity postsActivity;
+    private MyPostsActivity myPostsActivity;
     private int visibleThreshold = 5;
     private int currentPage = 0;
     private int previousTotal = 0;
@@ -20,6 +23,12 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
 
     public EndlessScrollListener(PostsActivity _postsActivity, int visibleThreshold) {
         this.postsActivity = _postsActivity;
+        this.myPostsActivity = null;
+        this.visibleThreshold = visibleThreshold;
+    }
+    public EndlessScrollListener(MyPostsActivity _myPostsActivity, int visibleThreshold) {
+        this.myPostsActivity = _myPostsActivity;
+        this.postsActivity = null;
         this.visibleThreshold = visibleThreshold;
     }
 
@@ -34,8 +43,10 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
             }
         }
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            if (postsActivity.next > 0)
-                postsActivity.VolleyRequest(ApiHelper.getCategoryUrl(postsActivity.next));
+            if (postsActivity != null && postsActivity.next > 0)
+                postsActivity.VolleyRequest(ApiHelper.getCategoryPostsUrl(postsActivity.next));
+            if (myPostsActivity != null && myPostsActivity.next > 0)
+                myPostsActivity.VolleyRequest(ApiHelper.getMyPostsUrl(myPostsActivity.user_id, myPostsActivity.next));
             loading = true;
         }
     }

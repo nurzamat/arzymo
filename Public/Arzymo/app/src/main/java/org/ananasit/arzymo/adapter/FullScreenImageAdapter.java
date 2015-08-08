@@ -18,6 +18,7 @@ import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.DeleteImageActivity;
 import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.model.Image;
+import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.GlobalVar;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
     private ArrayList<Image> _images;
     private LayoutInflater inflater;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    User client = AppController.getInstance().getUser();
 
     // constructor
     public FullScreenImageAdapter(Activity activity) {
@@ -88,7 +90,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
             }
         });
 
-        if(GlobalVar._Post.getUser().getPhone().equals(GlobalVar.Phone))
+        if(client != null && GlobalVar._Post.getUser().getPhone().equals(client.getPhone()))
         {
             // delete button click event
             btnDelete.setVisibility(View.VISIBLE);

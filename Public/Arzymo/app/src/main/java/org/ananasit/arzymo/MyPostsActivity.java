@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import org.ananasit.arzymo.adapter.PostListAdapter;
+import org.ananasit.arzymo.adapter.MyPostListAdapter;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
@@ -23,34 +23,30 @@ import org.ananasit.arzymo.util.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostsActivity extends ActionBarActivity {
+public class MyPostsActivity extends ActionBarActivity {
 
-    private static final String TAG =  "[category_posts response]";
+    private static final String TAG =  "[my_posts response]";
     private List<Post> postList = new ArrayList<Post>();
     private ListView listView;
-    private PostListAdapter adapter;
+    private MyPostListAdapter adapter;
     private TextView emptyText;
     AppController appcon;
     public int next = 1;
+    public String user_id = "";
     ProgressBar spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_posts);
+        setContentView(R.layout.activity_my_posts);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
-        if(GlobalVar.Category != null)
-        toolbar.setSubtitle(GlobalVar.Category.getName());
-
+        //toolbar.setSubtitle("some");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +58,17 @@ public class PostsActivity extends ActionBarActivity {
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
-        adapter = new PostListAdapter(PostsActivity.this, postList);
+        adapter = new MyPostListAdapter(MyPostsActivity.this, postList);
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 
         appcon = AppController.getInstance();
         spin.setVisibility(View.VISIBLE);
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1));
+        if(appcon.getUser() != null)
+            user_id = appcon.getUser().getId();
+        VolleyRequest(ApiHelper.getMyPostsUrl(user_id, 1));
         listView.setOnScrollListener(new EndlessScrollListener(this, 1));
+
     }
 
     public void VolleyRequest(String url) {
@@ -160,7 +159,7 @@ public class PostsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_posts, menu);
+        getMenuInflater().inflate(R.menu.menu_my_posts, menu);
         return true;
     }
 

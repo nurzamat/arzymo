@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.ananasit.arzymo.model.Category;
+import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.json.JSONArray;
@@ -117,6 +118,17 @@ public class StartActivity extends ActionBarActivity {
             }
             else
             {
+                //todo
+                AppController appcon = AppController.getInstance();
+                User user = new User();
+                user.setId("20");
+                user.setClient_key("c524ef7fb40e1f9b79f041dd8d47fcdb");
+                user.setAvatarUrl("");
+                user.setName("Nurzamat");
+                user.setPhone("996772143126");
+                user.setEmail("nurzamat@gmail.com");
+                appcon.setUser(user);
+                //
                 Intent in = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(in);
                 finish();
