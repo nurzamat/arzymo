@@ -87,7 +87,6 @@ public class MyPostsActivity extends ActionBarActivity {
                             next = next + 1;
                             JSONArray jimages;
                             JSONObject obj;
-                            User user;
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
 
@@ -98,14 +97,6 @@ public class MyPostsActivity extends ActionBarActivity {
                                     post.setHitcount(obj.getString("hitcount"));
                                     post.setPrice(obj.getString("price"));
                                     post.setPriceCurrency(obj.getString("price_currency"));
-
-                                    user = new User();
-                                    user.setId(obj.getString("user_id"));
-                                    user.setName(obj.getString("user_name"));
-                                    user.setPhone(obj.getString("user_phone"));
-                                    user.setAvatarUrl("");//todo
-                                    post.setUser(user);
-
                                     post.setCategory(GlobalVar.Category);
                                     jimages = obj.getJSONArray("images");
                                     if(jimages.length() > 0)
