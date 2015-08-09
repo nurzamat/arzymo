@@ -190,7 +190,8 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_add_post) {
-            Intent in = new Intent(MainActivity.this, AddPostActivity.class);
+            //Intent in = new Intent(MainActivity.this, AddPostActivity.class);
+            Intent in = new Intent(MainActivity.this, AddPostTabbedActivity.class);
             startActivity(in);
         }
 

@@ -78,6 +78,10 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        <activity
+            android:name=".AddPostTabbedActivity"
+            android:label="@string/title_activity_add_post_tabbed" >
+        </activity>
     </application>
 
 </manifest>
