@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import org.ananasit.arzymo.adapter.ViewPagerAdapter;
+import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.SlidingTabLayout;
 
 public class AddPostTabbedActivity extends ActionBarActivity {
@@ -41,7 +42,7 @@ public class AddPostTabbedActivity extends ActionBarActivity {
         });
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs, Constants.ADD_POST_MODE);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);

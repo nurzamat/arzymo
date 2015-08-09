@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.ananasit.arzymo.adapter.ViewPagerAdapter;
+import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.SlidingTabLayout;
 
 
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getActivity().getSupportFragmentManager(),Titles,Numboftabs);
+        adapter =  new ViewPagerAdapter(getActivity().getSupportFragmentManager(),Titles,Numboftabs, Constants.HOME_MODE);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) rootView.findViewById(R.id.pager);

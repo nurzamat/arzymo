@@ -20,5 +20,6 @@ public final class Constants {
 
     public static final String ADD_POST_MODE = "add_post";
     public static final String POSTS_MODE = "posts";
+    public static final String HOME_MODE = "home";
 
 }
