@@ -226,6 +226,7 @@ public class EditPostActivity extends ActionBarActivity {
     private class putHttpAsyncTask extends AsyncTask<String, Void, String> {
 
         ProgressDialog pdialog;
+        String result = "";
 
         @Override
         protected void onPreExecute() {
@@ -257,15 +258,20 @@ public class EditPostActivity extends ActionBarActivity {
                 jsonObject.put("price_currency", price_currency);
                 jsonObject.put("api_key", ApiHelper.API_KEY);
 
-                JSONObject obj = api.editPost(url, jsonObject); // will be checked for status ok
+                JSONObject obj = api.editPost(url, jsonObject);
+                if(obj.getBoolean("error"))
+                {
+                    result = "error";
+                }
+                else result = "";
             }
             catch (Exception ex)
             {
                 Log.d(TAG, "Exception: " + ex.getMessage());
-                return "Ошибка";
+                result = ex.getMessage();
             }
 
-            return "";
+            return result;
         }
 
         @Override
@@ -278,23 +284,15 @@ public class EditPostActivity extends ActionBarActivity {
             }
             else
             {
-                if(GlobalVar.image_paths.size() > 0)
-                {
-                    //Intent in = new Intent(context, EditImageActivity.class);
-                    //startActivity(in);
-                }
-                else
-                {
-                    Toast.makeText(EditPostActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPostActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
 
-                    //clear images
-                    GlobalVar._bitmaps.clear();
-                    GlobalVar.image_paths.clear();
-                    GlobalVar._Post = null;
+                //clear images
+                GlobalVar._bitmaps.clear();
+                GlobalVar.image_paths.clear();
+                GlobalVar._Post = null;
 
-                    Intent in = new Intent(EditPostActivity.this, MyPostsActivity.class);
-                    startActivity(in);
-                }
+                Intent in = new Intent(EditPostActivity.this, MyPostsActivity.class);
+                startActivity(in);
             }
         }
     }
