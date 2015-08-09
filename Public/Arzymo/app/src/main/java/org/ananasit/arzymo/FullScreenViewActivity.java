@@ -20,6 +20,7 @@ public class FullScreenViewActivity extends ActionBarActivity {
     private FullScreenImageAdapter adapter;
     private ViewPager viewPager;
     private Post p = GlobalVar._Post;
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,12 @@ public class FullScreenViewActivity extends ActionBarActivity {
 
         viewPager.setAdapter(adapter);
         User client = AppController.getInstance().getUser();
+
         if(client != null && !p.getUser().getId().equals(client.getId()))
         {
-            //HttpAsyncTask task = new HttpAsyncTask();
-            //task.execute(ApiHelper.HITCOUNT_URL);
+            url = ApiHelper.POST_URL + "/" + p.getId() + "/hitcount";
+            HitcountTask task = new HitcountTask();
+            task.execute(url);
         }
     }
 
@@ -61,7 +64,7 @@ public class FullScreenViewActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+    private class HitcountTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -74,21 +77,16 @@ public class FullScreenViewActivity extends ActionBarActivity {
             try
             {
                 ApiHelper api = new ApiHelper();
-
-                JSONObject jsonObject = new JSONObject();
-                //jsonObject.put("hitcount_pk", p.getHitcountId());
-                jsonObject.put("api_key", ApiHelper.API_KEY);
-
-                JSONObject obj = api.sendHitcount(jsonObject);
-                if(obj.getString("status").equals("success"))
+                JSONObject obj = api.sendHitcount(url);
+                if(obj.getBoolean("error"))
                 {
-                    return "success";
+                    return "error";
                 }
             }
             catch (Exception ex)
             {
                 ex.printStackTrace();
-                return "Ошибка";
+                return "error";
             }
 
             return "";

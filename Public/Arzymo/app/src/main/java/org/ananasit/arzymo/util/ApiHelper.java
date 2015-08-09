@@ -51,7 +51,6 @@ public class ApiHelper {
     public static final String SUBCATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/subcategory";
     public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
     public static final String IMAGES_URL = ARZYMO_URL + "/mobylive/v1/images";
-    public static final String HITCOUNT_URL = "";
 
     public JSONObject getCode(String phone) throws ApiException, IOException,
             JSONException {
@@ -113,13 +112,14 @@ public class ApiHelper {
         return new JSONObject(responseStr);
     }
 
-    public JSONObject sendHitcount(JSONObject jsonObject)
+    public JSONObject sendHitcount(String url)
             throws ApiException, IOException, JSONException {
 
-        Log.i(TAG, "Sending request to: " + HITCOUNT_URL);
-        HttpResponse response = requestPost(HITCOUNT_URL, jsonObject, false);
+        Log.i(TAG, "Sending request to: " + url);
+        HttpResponse response = requestGet(url);
         String responseStr = responseToStr(response);
         Log.i(TAG, "Response: " + responseStr);
+
         return new JSONObject(responseStr);
     }
 
