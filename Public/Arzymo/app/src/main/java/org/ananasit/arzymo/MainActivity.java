@@ -211,6 +211,8 @@ public class MainActivity extends ActionBarActivity {
         switch (position) {
             case 0: {
                 //fragment = new ProfileFragment();
+                Intent in = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(in);
                 break;
             }
             case 1: {
@@ -228,8 +230,8 @@ public class MainActivity extends ActionBarActivity {
                 break;
             }
             case 3: {
-                //Intent in = new Intent(MainActivity.this, SettingsActivity.class);
-                //startActivity(in);
+                Intent in = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(in);
                 break;
             }
             case 4: {
