@@ -253,6 +253,7 @@ public class EditPostActivity extends ActionBarActivity {
                     jsonObject.put("id_category", category.getIdParent());
                     jsonObject.put("id_subcategory", category.getId());
                 }
+                jsonObject.put("title", "test");
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
