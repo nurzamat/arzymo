@@ -24,6 +24,7 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.DeletePostActivity;
+import org.ananasit.arzymo.EditPostActivity;
 import org.ananasit.arzymo.FullScreenViewActivity;
 import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.model.Post;
@@ -219,15 +220,14 @@ public class MyPostListAdapter extends BaseAdapter {
         }
         public void editPost()
         {
+            GlobalVar.Category = _m.getCategory();
             GlobalVar._Post = _m;
-            //GlobalVar.Mode = false;
             GlobalVar._bitmaps.clear();
             GlobalVar.image_paths.clear();
             GlobalVar.mSparseBooleanArray.clear();
 
-            //Intent in = new Intent(activity, HomeActivity.class);
-            //in.putExtra("case", 6);
-            //activity.startActivity(in);
+            Intent in = new Intent(activity, EditPostActivity.class);
+            activity.startActivity(in);
         }
     }
 

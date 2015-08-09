@@ -21,31 +21,37 @@ import android.widget.Toast;
 import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.arzymo.lib.CirclePageIndicator;
 import org.ananasit.arzymo.model.Category;
+import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.json.JSONObject;
 
-public class AddPostActivity extends ActionBarActivity {
+import java.util.regex.Pattern;
 
-    private static final String TAG =  "[add post response]";
+public class EditPostActivity extends ActionBarActivity {
+
+    private static final String TAG =  "[edit post response]";
     ViewPager mPager;
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
     Toolbar toolbar;
+    String url = "";
     String content = "";
     String price = "";
     String price_currency;
-    String result;
     EditText etContent;
     EditText etPrice;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
     Button categoryBtn;
-    Button postBtn;
-    Category category = null;
+    Button saveBtn;
+    Category category = GlobalVar.Category;
+    Post post = GlobalVar._Post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_post);
+        setContentView(R.layout.activity_edit_post);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -65,19 +71,16 @@ public class AddPostActivity extends ActionBarActivity {
         etContent = (EditText) findViewById(R.id.content);
         etPrice = (EditText) findViewById(R.id.price);
         //spinner job
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+        adapter = ArrayAdapter.createFromResource(EditPostActivity.this,
                 R.array.price_currencies, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-        postBtn = (Button) findViewById(R.id.btnPost);
+        saveBtn = (Button) findViewById(R.id.btnPost);
         categoryBtn = (Button) findViewById(R.id.btnCategory);
-        etContent.setText(content);
-        etPrice.setText(price);
-        spinner.setSelection(adapter.getPosition(price_currency));
 
         spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -98,42 +101,28 @@ public class AddPostActivity extends ActionBarActivity {
                 }
         );
 
-        //ViewPagerWork();
-
-        postBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postButton();
+                saveButton();
             }
         });
 
         categoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(AddPostActivity.this, CategoriesActivity.class);
+                Intent in = new Intent(EditPostActivity.this, CategoriesActivity.class);
                 startActivity(in);
             }
         });
 
-    }
-
-    private void ViewPagerWork() {
-        int color = getResources().getColor(R.color.blue_dark);
-        mAdapter = new PlaceSlidesFragmentAdapter(AddPostActivity.this);
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-        mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        mIndicator.setFillColor(color);
-        mIndicator.setStrokeColor(color);
-        mIndicator.setRadius(5);
-        mIndicator.setViewPager(mPager);
-        mIndicator.setSnap(true);
+        Fill();
+        //ViewPagerWork();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //Log.d("AddPostActivity", "resumed");
         if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
         {
             categoryBtn.setText(GlobalVar.Category.getName());
@@ -145,13 +134,12 @@ public class AddPostActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //Log.d("AddPostActivity", "paused");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_post, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_post, menu);
         return true;
     }
 
@@ -170,15 +158,60 @@ public class AddPostActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void postButton() {
+    private void Fill()
+    {
+        try
+        {
+            this.url = ApiHelper.POST_URL + "/" + post.getId();
+            this.content = post.getContent();
+            this.price_currency = post.getPriceCurrency();
+
+            String raw_price = post.getPrice();
+            if (raw_price.contains("."))
+            {
+                String[] parts = raw_price.split(Pattern.quote("."));
+                this.price = parts[0].replaceAll("\\D+","") + "." + parts[1].replaceAll("\\D+","");
+            }
+            else
+            {
+                this.price = "";
+            }
+
+            etContent.setText(content);
+            etPrice.setText(price);
+            spinner.setSelection(adapter.getPosition(price_currency));
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    private void ViewPagerWork() {
+        int color = getResources().getColor(R.color.blue_dark);
+        mAdapter = new PlaceSlidesFragmentAdapter(EditPostActivity.this);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        mIndicator.setFillColor(color);
+        mIndicator.setStrokeColor(color);
+        mIndicator.setRadius(5);
+        mIndicator.setViewPager(mPager);
+        mIndicator.setSnap(true);
+    }
+
+    private void saveButton() {
         if(!validate())
         {
-            Toast.makeText(AddPostActivity.this, "Заполните все поля", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditPostActivity.this, "Заполните все поля", Toast.LENGTH_LONG).show();
         }
         else
         {
-            AddPostTask task = new AddPostTask();
-            task.execute(ApiHelper.POST_URL);
+            //use volley or async
+            //VolleyPut();
+            //async task
+            putHttpAsyncTask task = new putHttpAsyncTask();
+            task.execute();
         }
     }
 
@@ -190,86 +223,79 @@ public class AddPostActivity extends ActionBarActivity {
         return (!content.equals("") && !price.equals("") && category != null && !price_currency.equals(""));
     }
 
-    // add mode
-    private class AddPostTask extends AsyncTask<String, Void, String> {
+    private class putHttpAsyncTask extends AsyncTask<String, Void, String> {
 
-        ProgressDialog dialog;
+        ProgressDialog pdialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(AddPostActivity.this, "","Загрузка...", true);
-            dialog.show();
+
+            pdialog = ProgressDialog.show(EditPostActivity.this, "","Загрузка...", true);
+            pdialog.show();
         }
 
         @Override
         protected String doInBackground(String... urls) {
-
             try
             {
-                result = "";
                 ApiHelper api = new ApiHelper();
 
                 JSONObject jsonObject = new JSONObject();
                 if(category.getIdParent().equals(""))
                 {
-                    jsonObject.put("idCategory", category.getId());
-                    jsonObject.put("idSubcategory", 0);
+                    jsonObject.put("id_category", category.getId());
+                    jsonObject.put("id_subcategory", 0);
                 }
                 else
                 {
-                    jsonObject.put("idCategory", category.getIdParent());
-                    jsonObject.put("idSubcategory", category.getId());
+                    jsonObject.put("id_category", category.getIdParent());
+                    jsonObject.put("id_subcategory", category.getId());
                 }
-                jsonObject.put("title", "test");
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
                 jsonObject.put("api_key", ApiHelper.API_KEY);
-                jsonObject.put("city", "bishkek");
-                jsonObject.put("country", "kg");
 
-                JSONObject obj = api.sendPost(jsonObject);
-                if(obj.has("post_id"))
-                {
-
-                    String url = ApiHelper.POST_URL + "/" + obj.getString("post_id") + "/images";
-                    int length = GlobalVar.image_paths.size();
-                    if(length > 0)
-                    {
-                        JSONObject jobj;
-                        for (int i = 0; i <length; i++) {
-                            jobj = api.sendImage(url, GlobalVar.image_paths.get(i), true);
-                            if(jobj.has("id"))
-                                continue;
-                        }
-                    }
-
-                    result = "Добавлено";
-                }
-                else result = "Ошибка";
-
+                JSONObject obj = api.editPost(url, jsonObject); // will be checked for status ok
             }
             catch (Exception ex)
             {
-                String exText = ex.getMessage();
-                Log.d("AddPostFragment", "Exception: " + exText);
+                Log.d(TAG, "Exception: " + ex.getMessage());
                 return "Ошибка";
             }
 
-            return result;
+            return "";
         }
 
         @Override
         protected void onPostExecute(String result)
         {
-            dialog.dismiss();
-            Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
-           // Intent in = new Intent(context, HomeActivity.class);
-            //in.putExtra("case", 1);
-            //startActivity(in);
-            //clear images
-            GlobalVar._bitmaps.clear();
-            GlobalVar.image_paths.clear();
+            pdialog.dismiss();
+            if(!result.equals(""))
+            {
+                Toast.makeText(EditPostActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                if(GlobalVar.image_paths.size() > 0)
+                {
+                    //Intent in = new Intent(context, EditImageActivity.class);
+                    //startActivity(in);
+                }
+                else
+                {
+                    Toast.makeText(EditPostActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+
+                    //clear images
+                    GlobalVar._bitmaps.clear();
+                    GlobalVar.image_paths.clear();
+                    GlobalVar._Post = null;
+
+                    Intent in = new Intent(EditPostActivity.this, MyPostsActivity.class);
+                    startActivity(in);
+                }
+            }
         }
     }
 }
