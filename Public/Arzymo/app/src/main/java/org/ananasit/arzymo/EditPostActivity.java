@@ -245,13 +245,13 @@ public class EditPostActivity extends ActionBarActivity {
                 JSONObject jsonObject = new JSONObject();
                 if(category.getIdParent().equals(""))
                 {
-                    jsonObject.put("id_category", category.getId());
-                    jsonObject.put("id_subcategory", 0);
+                    jsonObject.put("idCategory", category.getId());
+                    jsonObject.put("idSubcategory", 0);
                 }
                 else
                 {
-                    jsonObject.put("id_category", category.getIdParent());
-                    jsonObject.put("id_subcategory", category.getId());
+                    jsonObject.put("idCategory", category.getIdParent());
+                    jsonObject.put("idSubcategory", category.getId());
                 }
                 jsonObject.put("title", "test");
                 jsonObject.put("content", content);

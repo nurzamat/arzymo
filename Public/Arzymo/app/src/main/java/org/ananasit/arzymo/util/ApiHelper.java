@@ -225,8 +225,8 @@ public class ApiHelper {
         HttpPut putRequest = new HttpPut(url);
         StringEntity se = new StringEntity(json.toString(), HTTP.UTF_8);
         putRequest.setEntity(se);
-        putRequest.setHeader("Accept", "application/json");
-        putRequest.setHeader("Content-type", "application/json");
+        //putRequest.setHeader("Accept", "application/json");
+        //putRequest.setHeader("Content-type", "application/json");
         if(token_auth)
             putRequest.setHeader("Authorization", user.getClient_key());
 
