@@ -1,8 +1,8 @@
 package org.ananasit.arzymo;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +17,7 @@ import org.ananasit.arzymo.util.GlobalVar;
 import java.util.ArrayList;
 
 
-public class SubcatsActivity extends ActionBarActivity {
+public class SubcatsActivity extends AppCompatActivity {
 
     private ListAdapter adapter;
     private String mode = "";

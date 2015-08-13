@@ -1,16 +1,13 @@
 package org.ananasit.arzymo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import org.ananasit.arzymo.adapter.ListAdapter;
-import org.ananasit.arzymo.util.Constants;
+import org.ananasit.arzymo.adapter.CategoriesRecyclerAdapter;
 import org.ananasit.arzymo.util.GlobalVar;
 
 /**
@@ -20,8 +17,9 @@ public class CategoriesFragment extends Fragment
 {
 
     private View rootView;
-    private ListView listView;
-    private ListAdapter adapter;
+    private RecyclerView recyclerView;
+    private CategoriesRecyclerAdapter adapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public CategoriesFragment()
     {
@@ -38,33 +36,18 @@ public class CategoriesFragment extends Fragment
             rootView = inflater.inflate(R.layout.fragment_categories, container, false);
         }
 
-        listView = (ListView) rootView.findViewById(R.id.list);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
 
-        adapter =  new ListAdapter(getActivity(), GlobalVar._categories);
-        listView.setAdapter(adapter);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
 
-        // Click event for single list row
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //Toast.makeText(getActivity(), ""+position, Toast.LENGTH_SHORT).show();
-                GlobalVar.Category = GlobalVar._categories.get(position);
-                Intent in;
-                if (GlobalVar.Category.getSubcats() != null && GlobalVar.Category.getSubcats().size() > 0)
-                {
-                    in = new Intent(getActivity(), SubcatsActivity.class);
-                    in.putExtra("mode", Constants.POSTS_MODE);
-                }
-                else
-                {
-                    in = new Intent(getActivity(), PostsActivity.class);
-                }
-                getActivity().startActivity(in);
-
-            }
-        });
+        // specify an adapter (see also next example)
+        adapter =  new CategoriesRecyclerAdapter(getActivity(), GlobalVar._categories);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }

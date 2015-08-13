@@ -1,9 +1,9 @@
 package org.ananasit.arzymo;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 import com.android.volley.Response;
@@ -13,7 +13,7 @@ import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.DeleteRequest;
 
 
-public class DeletePostActivity extends Activity {
+public class DeletePostActivity extends AppCompatActivity {
 
     // Log tag
     private static final String TAG =  "[delete post response]";

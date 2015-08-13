@@ -1,7 +1,7 @@
 package org.ananasit.arzymo;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,10 +16,8 @@ import org.ananasit.arzymo.adapter.MyPostListAdapter;
 import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
-import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.EndlessScrollListener;
-import org.ananasit.arzymo.util.GlobalVar;
 import org.ananasit.arzymo.util.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostsActivity extends ActionBarActivity {
+public class MyPostsActivity extends AppCompatActivity {
 
     private static final String TAG =  "[my_posts response]";
     private List<Post> postList = new ArrayList<Post>();

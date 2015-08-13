@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.GlobalVar;
 
 
-public class CategoriesActivity extends ActionBarActivity {
+public class CategoriesActivity extends AppCompatActivity {
 
     private ListView listView;
     private ListAdapter adapter;

@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,7 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class MultiPhotoSelectActivity extends ActionBarActivity {
+public class MultiPhotoSelectActivity extends AppCompatActivity {
     private ArrayList<String> imageUrls;
     private DisplayImageOptions options;
     private ImageAdapter imageAdapter;

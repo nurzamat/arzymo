@@ -1,15 +1,11 @@
 package org.ananasit.arzymo;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import org.ananasit.arzymo.adapter.ViewPagerAdapter;
 import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.SlidingTabLayout;
@@ -20,7 +16,6 @@ import org.ananasit.arzymo.util.SlidingTabLayout;
  */
 public class HomeFragment extends Fragment {
 
-    Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
@@ -38,9 +33,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 

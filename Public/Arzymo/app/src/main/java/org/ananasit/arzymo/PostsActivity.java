@@ -1,7 +1,7 @@
 package org.ananasit.arzymo;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +23,10 @@ import org.ananasit.arzymo.util.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostsActivity extends ActionBarActivity {
+public class PostsActivity extends AppCompatActivity {
 
     private static final String TAG =  "[category_posts response]";
     private List<Post> postList = new ArrayList<Post>();

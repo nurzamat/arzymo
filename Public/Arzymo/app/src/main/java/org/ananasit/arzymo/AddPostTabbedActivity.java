@@ -2,7 +2,7 @@ package org.ananasit.arzymo;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +12,7 @@ import org.ananasit.arzymo.adapter.ViewPagerAdapter;
 import org.ananasit.arzymo.util.Constants;
 import org.ananasit.arzymo.util.SlidingTabLayout;
 
-public class AddPostTabbedActivity extends ActionBarActivity {
+public class AddPostTabbedActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ViewPager pager;
@@ -29,7 +29,6 @@ public class AddPostTabbedActivity extends ActionBarActivity {
         // Creating The Toolbar and setting it as the Toolbar for the _MainActivity
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));

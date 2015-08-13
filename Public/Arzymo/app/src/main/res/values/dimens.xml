@@ -14,4 +14,8 @@
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+
+    <dimen name="tabsHeight">48dp</dimen>
+    <!--<dimen name="fab_margin">0dp</dimen>-->
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

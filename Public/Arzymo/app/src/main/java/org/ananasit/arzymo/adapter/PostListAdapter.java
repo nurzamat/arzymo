@@ -29,7 +29,6 @@ import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.GlobalVar;
 import java.util.List;
 
-
 public class PostListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;

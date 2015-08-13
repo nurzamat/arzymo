@@ -2,173 +2,123 @@ package org.ananasit.arzymo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import org.ananasit.arzymo.model.User;
-import org.ananasit.arzymo.util.Constants;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
-    //First We Declare Titles And Icons For Our Navigation Drawer List View
-    //This Icons And Titles Are holded in an Array as you can see
-    String TITLES[] = {"Главная", "Мои объявления", "Настройки", "Выход"};
-    int ICONS[] = {R.drawable.call_history, R.drawable.car, R.drawable.settings, R.drawable.ic_exit};
-
-    //Similarly we Create a String Resource for the name and email in the header view
-    //And we also create a int resource for profile picture in the header view
+    //Defining Variables
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
     public boolean isexit = false;
-    String NAME = "";
-    String EMAIL = "";
-    int PROFILE = R.drawable.aka;
-
-    public Toolbar toolbar;                              // Declaring the Toolbar Object
-
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
-    RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
-    ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
-    User u = null;
-    SharedPreferences sp;
-    AppController appcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        appcon = AppController.getInstance();
-        u = appcon.getUser();
-        if (u == null) {
-            //createUser();
-        }
 
-        if (u != null) {
-            //
-            NAME = u.getName();
-            //EMAIL = u.getEmail();
-            EMAIL = u.getPhone();
-        }
-    /* Assinging the toolbar object ot the view
-    and setting the the Action bar to our toolbar
-     */
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        // Initializing Toolbar and setting it as the actionbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.logo_toolbar);
+
+        //toolbar.setLogo(R.drawable.logo_toolbar);
         //toolbar.setTitle("title");
         toolbar.setSubtitle("Arzymo");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //initToolbar();
+        initViewPagerAndTabs();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
+        //Initializing NavigationView
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-        mAdapter = new PelicanAdapter(TITLES, ICONS, NAME, EMAIL, PROFILE, this);       // Creating the Adapter of PelicanAdapter class(which we are going to see in a bit)
-        // And passing the titles,icons,header view name, header view email,
-        // and header view profile picture
-
-        mRecyclerView.setAdapter(mAdapter);                              // Setting the adapter to RecyclerView
-
-        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
-
+            // This method will trigger on item Click of navigation menu
             @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-        });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if(menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
 
-                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                    Drawer.closeDrawers();
-                    //Toast.makeText(MainActivity.this,"The Item Clicked is: "+recyclerView.getChildPosition(child),Toast.LENGTH_SHORT).show();
-                    displayView(recyclerView.getChildPosition(child));
-                    return true;
+                //Closing drawer on item click
+                drawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+
+                    case R.id.inbox:
+                        Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    // For rest of the options we just show a toast on click
+                    case R.id.starred:
+                        Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.sent_mail:
+                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.drafts:
+                        Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.allmail:
+                        Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.trash:
+                        Toast.makeText(getApplicationContext(),"Trash Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.spam:
+                        Toast.makeText(getApplicationContext(),"Spam Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        return true;
+
                 }
-
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
             }
         });
 
-        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
-        mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
-        Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);        // Drawer object Assigned to the view
-        mDrawerToggle = new ActionBarDrawerToggle(this, Drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
-                // open I am not going to put anything here)
-            }
+        // Initializing Drawer Layout and ActionBarToggle
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
 
             @Override
             public void onDrawerClosed(View drawerView) {
+                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
-                // Code here will execute once drawer is closed
             }
 
-        }; // Drawer Toggle Object Made
-        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
-        mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
 
-        if (savedInstanceState == null) {
-            displayView(Constants.def_home);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //onResumeMethod();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    private void onResumeMethod() {
-        try {
-            u = appcon.getUser();
-            if (u == null) {
-                //createUser();
+                super.onDrawerOpened(drawerView);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
     }
 
     @Override
@@ -182,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent _MainActivity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -190,86 +140,58 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_add_post) {
-            //Intent in = new Intent(MainActivity.this, AddPostActivity.class);
             Intent in = new Intent(MainActivity.this, AddPostTabbedActivity.class);
+            startActivity(in);
+        }
+        if (id == R.id.action_test_scroll) {
+            Intent in = new Intent(MainActivity.this, PostDetailActivity.class);
             startActivity(in);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+    private void initViewPagerAndTabs() {
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        //pagerAdapter.addFragment(RecyclerViewFragment.createInstance(20), getString(R.string.tab_1));
+        //pagerAdapter.addFragment(RecyclerViewFragment.createInstance(4), getString(R.string.tab_2));
+        Fragment rek = new ReklamasFragment();
+        Fragment cats = new CategoriesFragment();
+        pagerAdapter.addFragment(rek, getString(R.string.tab_1));
+        pagerAdapter.addFragment(cats, getString(R.string.tab_2));
+        viewPager.setAdapter(pagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
+    static class PagerAdapter extends FragmentPagerAdapter {
 
-    public void displayView(int position) {
-        Fragment fragment = null;
+        private final List<Fragment> fragmentList = new ArrayList<>();
+        private final List<String> fragmentTitleList = new ArrayList<>();
 
-        switch (position) {
-            case 0: {
-                //fragment = new ProfileFragment();
-                Intent in = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(in);
-                break;
-            }
-            case 1: {
-                //Intent in = new Intent(MainActivity.this, HistoryActivity.class);
-                //startActivity(in);
-                /*
-                mDrawerToggle.setDrawerIndicatorEnabled(false);
-                fragment = new HistoryFragment();
-                  */
-                break;
-            }
-            case 2: {
-                Intent in = new Intent(MainActivity.this, MyPostsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case 3: {
-                Intent in = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case 4: {
-                SharedPreferences sp = getSharedPreferences(Constants.PELIKAN, 0);
-                SharedPreferences.Editor Ed = sp.edit();
-                Ed.putBoolean(Constants.PELIKAN_LOGEDIN, false);
-                Ed.commit();
-
-                //Intent in = new Intent(MainActivity.this, LoginActivity.class);
-                //startActivity(in);
-                finish();
-                return;
-
-            }
-            case Constants.def_home: {
-                mDrawerToggle.setDrawerIndicatorEnabled(true);
-                fragment = new HomeFragment();
-            }
-            default:
-                break;
+        public PagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            if (position != Constants.def_home) {
-                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_frame, fragment).commit();
-            } else {
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-            }
+        public void addFragment(Fragment fragment, String title) {
+            fragmentList.add(fragment);
+            fragmentTitleList.add(title);
         }
 
-        // update selected item and title, then close the drawer
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
 
-        //mRecyclerView.setItemChecked(position, true);
-        // mDrawerList.setSelection(position);
-        // mDrawerLayout.closeDrawer(mDrawerList);
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return fragmentTitleList.get(position);
+        }
     }
 
     @Override
@@ -292,17 +214,9 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
-
                 }
             });
             dialog.show();
         }
-
-        // turn on the Navigation Drawer image;
-        // this is called in the LowerLevelFragments
-
-        // mDrawerToggle.setDrawerIndicatorEnabled(true);
     }
-
 }
-

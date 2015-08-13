@@ -1,9 +1,9 @@
 package org.ananasit.arzymo;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 import com.android.volley.Response;
@@ -11,9 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.DeleteRequest;
-import org.ananasit.arzymo.util.GlobalVar;
 
-public class DeleteImageActivity extends Activity {
+public class DeleteImageActivity extends AppCompatActivity {
 
     // Log tag
     private static final String TAG =  "[delete image response]";

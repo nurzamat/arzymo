@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +25,7 @@ import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.json.JSONObject;
 
-public class AddPostActivity extends ActionBarActivity {
+public class AddPostActivity extends AppCompatActivity {
 
     private static final String TAG =  "[add post response]";
     ViewPager mPager;

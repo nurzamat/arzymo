@@ -3,13 +3,12 @@ package org.ananasit.arzymo;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
@@ -19,8 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
-public class StartActivity extends ActionBarActivity {
+public class StartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +128,7 @@ public class StartActivity extends ActionBarActivity {
                 appcon.setUser(user);
                 //
                 Intent in = new Intent(StartActivity.this, MainActivity.class);
+                //Intent in = new Intent(StartActivity.this, PostsActivityNew.class);
                 startActivity(in);
                 finish();
             }
