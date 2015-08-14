@@ -9,6 +9,14 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/color_primary_green</item>
         <item name="colorPrimaryDark">@color/color_primary_green_dark</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+    </style>
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="searchIcon">@drawable/ic_action_search</item>
+        <item name="closeIcon">@drawable/ic_action_remove</item>
+        <item name="queryHint">@string/search_go</item>
+        <item name="android:imeActionId">6</item>
     </style>
     <style name="myCirclePageIndicator" parent="Widget">
         <item name="fillColor">@color/default_circle_indicator_stroke_color</item>

@@ -45,9 +45,6 @@ public class PostsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        if(GlobalVar.Category != null)
-        toolbar.setSubtitle(GlobalVar.Category.getName());
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));
@@ -57,6 +54,9 @@ public class PostsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        if(GlobalVar.Category != null)
+        toolbar.setSubtitle(GlobalVar.Category.getName());
 
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
