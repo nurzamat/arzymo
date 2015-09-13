@@ -15,7 +15,6 @@ import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
@@ -116,6 +115,8 @@ public class StartActivity extends AppCompatActivity {
             }
             else
             {
+
+
                 //todo
                 AppController appcon = AppController.getInstance();
                 User user = new User();
@@ -127,7 +128,8 @@ public class StartActivity extends AppCompatActivity {
                 user.setEmail("nurzamat@gmail.com");
                 appcon.setUser(user);
                 //
-                Intent in = new Intent(StartActivity.this, MainActivity.class);
+                //Intent in = new Intent(StartActivity.this, MainActivity.class);
+                Intent in = new Intent(StartActivity.this, SignupActivity.class);
                 //Intent in = new Intent(StartActivity.this, PostsActivityNew.class);
                 startActivity(in);
                 finish();

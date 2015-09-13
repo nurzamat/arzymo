@@ -87,4 +87,5 @@
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_tab_animation">TabAnimationActivity</string>
     <string name="title_activity_post_detail">PostDetailActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
 </resources>
