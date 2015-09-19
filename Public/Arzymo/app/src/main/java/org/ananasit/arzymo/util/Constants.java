@@ -5,9 +5,8 @@ package org.ananasit.arzymo.util;
  */
 public final class Constants {
 
-    public static final String PELIKAN = "pelikan";
-    public static final String PELIKAN_LOGEDIN = "pelikan_logedin";
-
+    public static final String ARZYMO = "arzymo";
+    public static final String USER = "user";
     public static final int def_home = 10;
 
     // Number of columns of Grid View

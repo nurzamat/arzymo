@@ -43,7 +43,7 @@ public class ApiHelper {
 
     public static final String TAG = "[API]";
     public static final String API_KEY = "7dbe69719ab6a99e677f4a1948b6c5b82162c40c";
-    public static final String ARZYMO_URL = "http://192.168.1.100";
+    public static final String ARZYMO_URL = "http://192.168.1.101";
     public static final String CODE_URL = ARZYMO_URL + "/api/user/registration";
     public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
     public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";

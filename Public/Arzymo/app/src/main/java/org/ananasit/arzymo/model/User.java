@@ -1,13 +1,18 @@
 package org.ananasit.arzymo.model;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
     private String id = "";
     private String client_key = "";
+    private String userName = "";
     private String name = "";
     private String phone = "";
     private String email = "";
     private String avatarUrl = "";
+    private boolean isLogedIn = false;
+    private boolean isActivated = false;
 
     public User() {
     }
@@ -27,6 +32,13 @@ public class User
 
     public void setClient_key(String _client_key) {
         this.client_key = _client_key;
+    }
+
+    public String getUserName() { return userName;}
+
+    public void setUserName(String _userName)
+    {
+        this.userName = _userName;
     }
 
     public String getName() {
@@ -62,5 +74,22 @@ public class User
         this.avatarUrl = _avatarUrl;
     }
 
+    public boolean isLogedIn() {
+        return isLogedIn;
+    }
+
+    public void setLogedIn(boolean _loged)
+    {
+        this.isLogedIn = _loged;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean _act)
+    {
+        this.isActivated = _act;
+    }
 
 }

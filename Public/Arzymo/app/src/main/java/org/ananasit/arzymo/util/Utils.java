@@ -1,8 +1,11 @@
 package org.ananasit.arzymo.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import com.google.gson.Gson;
 import org.ananasit.arzymo.R;
+import org.ananasit.arzymo.model.User;
 
 public class Utils {
 
@@ -17,5 +20,36 @@ public class Utils {
 
     public static int getTabsHeight(Context context) {
         return (int) context.getResources().getDimension(R.dimen.tabsHeight);
+    }
+
+    public static void saveUserToPreferences(Context context, User user)
+    {
+        SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
+        SharedPreferences.Editor editor = sp.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString(Constants.USER, json);
+        editor.commit();
+    }
+
+    public static User getUserFromPreferences(Context context)
+    {
+        try
+        {
+            SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
+            Gson gson = new Gson();
+            String json = sp.getString(Constants.USER, "");
+            User obj = gson.fromJson(json, User.class);
+            return obj;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            return null;
+        }
     }
 }
