@@ -222,7 +222,7 @@ public class AddPostFragment extends Fragment {
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
-                jsonObject.put("api_key", ApiHelper.API_KEY);
+                jsonObject.put("api_key", ApiHelper.getClientKey());
                 jsonObject.put("city", "bishkek");
                 jsonObject.put("country", "kg");
 
@@ -303,7 +303,7 @@ public class AddPostFragment extends Fragment {
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
-                jsonObject.put("api_key", ApiHelper.API_KEY);
+                jsonObject.put("api_key", ApiHelper.getClientKey());
 
                 JSONObject obj = api.editPost(url, jsonObject); // will be checked for status ok
             }

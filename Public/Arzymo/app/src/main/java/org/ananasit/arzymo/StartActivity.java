@@ -13,6 +13,7 @@ import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
+import org.ananasit.arzymo.util.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -54,8 +55,7 @@ public class StartActivity extends AppCompatActivity {
                 GlobalVar._categories.clear();
                 ApiHelper api = new ApiHelper();
                 JSONObject response = api.getCategories();
-                boolean error_status = response.getBoolean("error");
-                if(error_status)
+                if(response.getBoolean("error"))
                 {
                    result = response.getString("message");
                 }
@@ -115,22 +115,17 @@ public class StartActivity extends AppCompatActivity {
             }
             else
             {
-
-
-                //todo
                 AppController appcon = AppController.getInstance();
-                User user = new User();
-                user.setId("20");
-                user.setClient_key("c524ef7fb40e1f9b79f041dd8d47fcdb");
-                user.setAvatarUrl("");
-                user.setName("Nurzamat");
-                user.setPhone("996772143126");
-                user.setEmail("nurzamat@gmail.com");
-                appcon.setUser(user);
-                //
-                //Intent in = new Intent(StartActivity.this, MainActivity.class);
-                Intent in = new Intent(StartActivity.this, SignupActivity.class);
-                //Intent in = new Intent(StartActivity.this, PostsActivityNew.class);
+
+                User user = Utils.getUserFromPreferences(StartActivity.this);
+                Intent in;
+                if(user != null)
+                {
+                    appcon.setUser(user);
+                    in = new Intent(StartActivity.this, MainActivity.class);
+                }
+                else in = new Intent(StartActivity.this, SignupActivity.class);
+
                 startActivity(in);
                 finish();
             }

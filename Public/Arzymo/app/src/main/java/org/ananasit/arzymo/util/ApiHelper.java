@@ -2,62 +2,31 @@ package org.ananasit.arzymo.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Path;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Base64;
 import android.util.Log;
-
 import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.KeyStore;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ApiHelper {
 
     public static final String TAG = "[API]";
-    public static final String API_KEY = "7dbe69719ab6a99e777f4a1948b6c5b82169c40c";
     public static final String ARZYMO_URL = "http://ananasit.org";
-    public static final String CODE_URL = ARZYMO_URL + "/api/user/registration";
+    public static final String REGISTER_URL = ARZYMO_URL + "/mobylive/v1/register";
     public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
     public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
     public static final String CATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/category";
@@ -65,32 +34,16 @@ public class ApiHelper {
     public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
     public static final String IMAGES_URL = ARZYMO_URL + "/mobylive/v1/images";
 
-    public JSONObject getCode(String phone) throws ApiException, IOException,
+    public JSONObject signup(String username, String email, String password) throws ApiException, IOException,
             JSONException {
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("phone", phone);
-        jsonObject.put("sms_code", "");
-        jsonObject.put("api_key", API_KEY);
+        jsonObject.put("username", username);
+        jsonObject.put("email", email);
+        jsonObject.put("password", password);
 
-        Log.i(TAG, "Sending request to: " + CODE_URL);
-        //String response = POST(CODE_URL, jsonObject); //for http request
-        String response = requestPost(CODE_URL, jsonObject, false); //for https request
-        Log.i(TAG, "Response: " + response);
-        return new JSONObject(response);
-    }
-
-    public  JSONObject getToken(String phone, String code)
-            throws ApiException, IOException, JSONException {
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("phone", phone);
-        jsonObject.put("sms_code", code);
-        jsonObject.put("api_key", API_KEY);
-
-        Log.i(TAG, "Sending request to: " + CODE_URL);
-        String response = requestPost(CODE_URL, jsonObject, false);
-
+        Log.i(TAG, "Sending request to: " + REGISTER_URL);
+        String response = requestPost(REGISTER_URL, jsonObject, false);
         Log.i(TAG, "Response: " + response);
         return new JSONObject(response);
     }
@@ -555,6 +508,24 @@ public class ApiHelper {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public static String getClientKey()
+    {
+        String key = "";
+        try
+        {
+            User user = AppController.getInstance().getUser();
+            if(user != null)
+                key = user.getClient_key();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            key = "";
+        }
+
+      return key;
     }
 
 }

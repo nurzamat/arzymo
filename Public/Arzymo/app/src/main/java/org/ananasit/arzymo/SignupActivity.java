@@ -2,6 +2,7 @@ package org.ananasit.arzymo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,17 +11,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.ananasit.arzymo.model.Category;
+import org.ananasit.arzymo.model.User;
+import org.ananasit.arzymo.util.ApiHelper;
+import org.ananasit.arzymo.util.GlobalVar;
+import org.ananasit.arzymo.util.Utils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @InjectView(R.id.input_name) EditText _nameText;
+    @InjectView(R.id.input_username) EditText _usernameText;
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
+
+    String username;
+    String email;
+    String password;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,18 +72,21 @@ public class SignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
+        /*
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppBaseTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
+        */
+        username = _usernameText.getText().toString();
+        email = _emailText.getText().toString();
+        password = _passwordText.getText().toString();
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        SignupAsyncTask task = new SignupAsyncTask();
+        task.execute(ApiHelper.REGISTER_URL);
 
-        // TODO: Implement your own signup logic here.
-
+       /*
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -78,6 +97,7 @@ public class SignupActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
+        */
     }
 
 
@@ -96,15 +116,15 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
+        String username = _usernameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+        if (username.isEmpty() || username.length() < 3) {
+            _usernameText.setError("at least 3 characters");
             valid = false;
         } else {
-            _nameText.setError(null);
+            _usernameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -122,5 +142,67 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private class SignupAsyncTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog pDialog;
+        private String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pDialog = ProgressDialog.show(SignupActivity.this, "", "Регистрация...", true);
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            try
+            {
+                ApiHelper api = new ApiHelper();
+                JSONObject response = api.signup(username, email, password);
+                if(response.getBoolean("error"))
+                {
+                    result = response.getString("message");
+                }
+                else
+                {
+                    User user = new User();
+                    user.setId(response.getString("id"));
+                    user.setActivated(false);
+                    user.setUserName(response.getString("username"));
+                    user.setEmail(response.getString("email"));
+                    user.setClient_key(response.getString("api_key"));
+
+                    AppController appcon = AppController.getInstance();
+                    appcon.setUser(user);
+                    Utils.saveUserToPreferences(SignupActivity.this, user);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.getMessage();
+                Log.d("Start activity", "Exception: " + result);
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            pDialog.dismiss();
+            if(!result.equals(""))
+            {
+                Toast.makeText(SignupActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Intent in = new Intent(SignupActivity.this, MainActivity.class);
+                startActivity(in);
+                finish();
+            }
+        }
     }
 }
