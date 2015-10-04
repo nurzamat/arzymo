@@ -88,10 +88,6 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name=".AddPostTabbedActivity"
-            android:label="@string/title_activity_add_post_tabbed" >
-        </activity>
-        <activity
             android:name=".EditPostActivity"
             android:label="@string/title_activity_edit_post" >
         </activity>

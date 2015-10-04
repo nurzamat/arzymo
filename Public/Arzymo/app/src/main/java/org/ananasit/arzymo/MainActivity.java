@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_post) {
-            Intent in = new Intent(MainActivity.this, AddPostTabbedActivity.class);
+            Intent in = new Intent(MainActivity.this, AddPostActivity.class);
             startActivity(in);
         }
         if (id == R.id.action_search) {
