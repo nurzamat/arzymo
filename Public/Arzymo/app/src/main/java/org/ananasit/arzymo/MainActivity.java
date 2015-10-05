@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //pagerAdapter.addFragment(RecyclerViewFragment.createInstance(20), getString(R.string.tab_1));
         //pagerAdapter.addFragment(RecyclerViewFragment.createInstance(4), getString(R.string.tab_2));
-        Fragment rek = new ReklamasFragment();
-        Fragment cats = new CategoriesFragment();
+        Fragment rek = new HomeReklamasFragment();
+        Fragment cats = new HomeCategoriesFragment();
         pagerAdapter.addFragment(rek, getString(R.string.tab_1));
         pagerAdapter.addFragment(cats, getString(R.string.tab_2));
         viewPager.setAdapter(pagerAdapter);

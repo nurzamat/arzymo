@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.ananasit.arzymo.AddPostFragment;
 import org.ananasit.arzymo.AddReklamaFragment;
-import org.ananasit.arzymo.ReklamasFragment;
-import org.ananasit.arzymo.CategoriesFragment;
+import org.ananasit.arzymo.HomeReklamasFragment;
+import org.ananasit.arzymo.HomeCategoriesFragment;
 import org.ananasit.arzymo.util.Constants;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter
@@ -35,12 +35,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter
         {
             if(position == 0) // if the position is 0 we are returning the First tab
             {
-                ReklamasFragment tab1 = new ReklamasFragment();
+                HomeReklamasFragment tab1 = new HomeReklamasFragment();
                 return tab1;
             }
             else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
             {
-                CategoriesFragment tab2 = new CategoriesFragment();
+                HomeCategoriesFragment tab2 = new HomeCategoriesFragment();
                 return tab2;
             }
         }

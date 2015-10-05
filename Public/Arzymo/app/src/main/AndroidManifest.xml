@@ -51,8 +51,7 @@
         </activity>
         <activity
             android:name=".AddPostActivity"
-            android:label="@string/add"
-            android:launchMode="singleInstance" >
+            android:label="@string/add">
         </activity>
         <activity
             android:name=".CategoriesActivity"

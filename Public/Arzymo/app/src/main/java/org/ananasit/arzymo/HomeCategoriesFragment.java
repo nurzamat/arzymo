@@ -13,7 +13,7 @@ import org.ananasit.arzymo.util.GlobalVar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoriesFragment extends Fragment
+public class HomeCategoriesFragment extends Fragment
 {
 
     private View rootView;
@@ -21,7 +21,7 @@ public class CategoriesFragment extends Fragment
     private CategoriesRecyclerAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public CategoriesFragment()
+    public HomeCategoriesFragment()
     {
         // Required empty public constructor
     }

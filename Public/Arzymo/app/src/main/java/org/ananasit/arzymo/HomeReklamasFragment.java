@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReklamasFragment extends Fragment {
+public class HomeReklamasFragment extends Fragment {
 
     private View rootView;
 
-    public ReklamasFragment()
+    public HomeReklamasFragment()
     {
         // Required empty public constructor
     }
