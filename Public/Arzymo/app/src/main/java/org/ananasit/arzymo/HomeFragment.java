@@ -20,7 +20,6 @@ public class HomeFragment extends Fragment {
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Реклама","Категории"};
-    int Numboftabs =2;
     View rootView;
 
     public HomeFragment() {
@@ -37,7 +36,7 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getActivity().getSupportFragmentManager(),Titles,Numboftabs, Constants.HOME_MODE);
+        adapter =  new ViewPagerAdapter(getActivity().getSupportFragmentManager(),Titles, Constants.HOME_MODE);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) rootView.findViewById(R.id.pager);

@@ -3,9 +3,6 @@ package org.ananasit.arzymo.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
-import org.ananasit.arzymo.AddPostFragment;
-import org.ananasit.arzymo.AddReklamaFragment;
 import org.ananasit.arzymo.HomeReklamasFragment;
 import org.ananasit.arzymo.HomeCategoriesFragment;
 import org.ananasit.arzymo.util.Constants;
@@ -19,7 +16,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter
     String mode = "";
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm, CharSequence[] mTitles, int mNumbOfTabsumb, String _mode)
+    public ViewPagerAdapter(FragmentManager fm, CharSequence[] mTitles, String _mode)
     {
         super(fm);
         this.Titles = mTitles;
@@ -41,19 +38,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter
             else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
             {
                 HomeCategoriesFragment tab2 = new HomeCategoriesFragment();
-                return tab2;
-            }
-        }
-        if(mode.equals(Constants.ADD_POST_MODE))
-        {
-            if(position == 0) // if the position is 0 we are returning the First tab
-            {
-                AddReklamaFragment tab1 = new AddReklamaFragment();
-                return tab1;
-            }
-            else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
-            {
-                AddPostFragment tab2 = new AddPostFragment();
                 return tab2;
             }
         }

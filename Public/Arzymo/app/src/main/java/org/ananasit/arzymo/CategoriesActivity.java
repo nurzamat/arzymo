@@ -58,7 +58,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 Intent in;
                 if (GlobalVar.Category.getSubcats() != null && GlobalVar.Category.getSubcats().size() > 0) {
                     in = new Intent(CategoriesActivity.this, SubcatsActivity.class);
-                    in.putExtra("mode", Constants.ADD_POST_MODE);
+                    //in.putExtra("mode", Constants.ADD_POST_MODE);
                     startActivity(in);
                 } else
                 {
