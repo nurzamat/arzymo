@@ -64,7 +64,6 @@ public class ApiHelper {
 
         Log.i(TAG, "Sending request to: " + POST_URL);
         String response = requestPost(POST_URL, jsonObject, true);
-        //HttpResponse response = multipart_request(POST_URL);
 
         Log.i(TAG, "Response: " + response);
         return new JSONObject(response);
@@ -126,7 +125,6 @@ public class ApiHelper {
         String result = "";
         HttpURLConnection conn = null;
         try {
-        User user = AppController.getInstance().getUser();
         String message = json.toString();
 
         //constants
@@ -142,9 +140,14 @@ public class ApiHelper {
 
         //make some HTTP header nicety
         conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty ("Content-type", "application/json; charset=UTF-8");
+        conn.setRequestProperty("Content-type", "application/json; charset=UTF-8");
+            conn.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+
         if(token_auth)
+        {
+            User user = AppController.getInstance().getUser();
             conn.setRequestProperty("Authorization", user.getClient_key());
+        }
 
             //open
             conn.connect();//needed?

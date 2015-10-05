@@ -11,16 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
-import org.ananasit.arzymo.util.GlobalVar;
 import org.ananasit.arzymo.util.Utils;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -177,7 +171,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     AppController appcon = AppController.getInstance();
                     appcon.setUser(user);
-                    Utils.saveUserToPreferences(SignupActivity.this, user);
+                    Utils.saveUserToPreferences(getApplicationContext(), user);
                 }
             }
             catch (Exception ex)
