@@ -105,7 +105,7 @@ public class ApiHelper {
         Log.i(TAG, "Image path : " + image_path);
 
         Log.i(TAG, "Sending request to: " + url);
-        String response = multipart_request(url, image_path, mode);
+        String response = multipart_request(url, image_path);
 
         Log.i(TAG, "Response: " + response);
         return new JSONObject(response);
@@ -266,10 +266,10 @@ public class ApiHelper {
         return result;
     }
 
-    public String multipart_request(String _url, String path, boolean mode) {
+    public String multipart_request(String _url, String path) {
 
-        String attachmentName = "bitmap";
-        String attachmentFileName = "bitmap.bmp";
+        String attachmentName = "image";
+        //String attachmentFileName = "bitmap.bmp";
         String crlf = "\r\n";
         String twoHyphens = "--";
         String boundary =  "*****";
@@ -299,7 +299,7 @@ public class ApiHelper {
             //Start content wrapper:
         DataOutputStream dataOS = new DataOutputStream(httpUrlConnection.getOutputStream());
             dataOS.writeBytes(twoHyphens + boundary + crlf);
-            dataOS.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + attachmentFileName + "\"" + crlf);
+            dataOS.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + file.getName() + "\"" + crlf);
             dataOS.writeBytes(crlf);
 
             // for bitmap
@@ -346,15 +346,17 @@ public class ApiHelper {
     }
 
     //2-nd version
-    public static void multipart_request2(String targetURL, File file, String username, String password) throws Exception {
+    public String multipart_request2(String targetURL, String path) {
 
         String BOUNDRY = "==================================";
         HttpURLConnection conn = null;
+        String result = "";
 
         try {
 
+            File file = new File(path);
             // These strings are sent in the request body. They provide information about the file being uploaded
-            String contentDisposition = "Content-Disposition: form-data; name=\"userfile\"; filename=\"" + file.getName() + "\"";
+            String contentDisposition = "Content-Disposition: form-data; name=\"image\"; filename=\"" + file.getName() + "\"";
             String contentType = "Content-Type: application/octet-stream";
 
             // This is the standard format for a multipart request
@@ -367,7 +369,7 @@ public class ApiHelper {
             requestBody.append(contentType);
             requestBody.append('\n');
             requestBody.append('\n');
-            //requestBody.append(new String(Util.getBytesFromFile(file)));
+            requestBody.append(new String(org.apache.commons.io.FileUtils.readFileToByteArray(file)));
             requestBody.append("--");
             requestBody.append(BOUNDRY);
             requestBody.append("--");
@@ -377,11 +379,7 @@ public class ApiHelper {
             conn = (HttpURLConnection) url.openConnection();
 
             // Put the authentication details in the request
-            if (username != null) {
-                String usernamePassword = username + ":" + password;
-                //String encodedUsernamePassword = Base64.encodeBytes(usernamePassword.getBytes());
-                //conn.setRequestProperty ("Authorization", "Basic " + encodedUsernamePassword);
-            }
+            conn.setRequestProperty("Authorization", getClientKey());
 
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -402,26 +400,22 @@ public class ApiHelper {
             }
 
             // Read the response
-            InputStream is = conn.getInputStream();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] bytes = new byte[1024];
-            int bytesRead;
-            while((bytesRead = is.read(bytes)) != -1) {
-                baos.write(bytes, 0, bytesRead);
-            }
-            byte[] bytesReceived = baos.toByteArray();
-            baos.close();
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            result = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+            in.close();
 
-            is.close();
-            String response = new String(bytesReceived);
-
-            // TODO: Do something here to handle the 'response' string
-
-        } finally {
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally {
             if (conn != null) {
                 conn.disconnect();
             }
         }
+
+        return result;
 
     }
 
