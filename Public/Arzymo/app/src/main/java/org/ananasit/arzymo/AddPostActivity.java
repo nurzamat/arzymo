@@ -252,7 +252,7 @@ public class AddPostActivity extends AppCompatActivity {
             catch (Exception ex)
             {
                 String exText = ex.getMessage();
-                Log.d("AddPostFragment", "Exception: " + exText);
+                Log.d("AddPostActivity", "Exception: " + exText);
                 return "Ошибка";
             }
 

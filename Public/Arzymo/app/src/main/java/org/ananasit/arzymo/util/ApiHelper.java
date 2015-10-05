@@ -186,12 +186,12 @@ public class ApiHelper {
             URL url = new URL(_url);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            //conn.setUseCaches(false);
+            conn.setUseCaches(false);
 
             //make some HTTP header nicety
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestProperty("Content-type", "application/json; charset=UTF-8");
-            //conn.setRequestProperty("User-Agent", USER_AGENT);
+            conn.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
             //open
             conn.connect();//needed?
 
