@@ -106,7 +106,8 @@ public class PostListAdapter extends BaseAdapter {
         hitcount.setText(p.getHitcount());
         // username
         if(p.getUser() != null)
-        displayed_name.setText(p.getUser().getPhone());
+           displayed_name.setText(p.getUser().getUserName());
+
         if(p.getCategory() != null)
         category_name.setText(p.getCategory().getName());
 

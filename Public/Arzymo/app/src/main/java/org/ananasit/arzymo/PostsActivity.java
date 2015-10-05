@@ -102,6 +102,8 @@ public class PostsActivity extends AppCompatActivity {
                                     user = new User();
                                     user.setId(obj.getString("user_id"));
                                     user.setName(obj.getString("user_name"));
+                                    user.setUserName(obj.getString("user_username"));
+                                    user.setEmail(obj.getString("user_email"));
                                     user.setPhone(obj.getString("user_phone"));
                                     user.setAvatarUrl("");//todo
                                     post.setUser(user);
