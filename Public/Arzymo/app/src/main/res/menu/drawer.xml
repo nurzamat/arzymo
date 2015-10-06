@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group android:checkableBehavior="single">
-
         <item
-            android:id="@+id/inbox"
+            android:id="@+id/nav_profile"
             android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/inbox_string" />
-
+            android:icon="@drawable/ic_action_profile"
+            android:title="@string/navigation_profile" />
         <item
-            android:id="@+id/starred"
+            android:id="@+id/nav_ads"
             android:checked="false"
-            android:icon="@drawable/ic_star_black"
-            android:title="@string/starred_string" />
-
+            android:icon="@drawable/ic_action_ads"
+            android:title="@string/navigation_ads" />
         <item
-            android:id="@+id/sent_mail"
+            android:id="@+id/nav_favourites"
             android:checked="false"
-            android:icon="@drawable/ic_send_black"
-            android:title="@string/sent_mail_string" />
-
+            android:icon="@drawable/ic_action_like"
+            android:title="@string/navigation_favourites" />
         <item
-            android:id="@+id/drafts"
+            android:id="@+id/nav_messages"
             android:checked="false"
-            android:icon="@drawable/ic_drafts_black"
-            android:title="@string/draft_string" />
-
+            android:icon="@drawable/ic_action_message"
+            android:title="@string/navigation_messages" />
         <item
-            android:id="@+id/allmail"
+            android:id="@+id/nav_settings"
             android:checked="false"
-            android:icon="@drawable/ic_email_black"
-            android:title="@string/all_mail_string" />
+            android:icon="@drawable/ic_action_settings"
+            android:title="@string/navigation_settings" />
         <item
-            android:id="@+id/trash"
+            android:id="@+id/nav_about"
             android:checked="false"
-            android:icon="@drawable/ic_delete_black"
-            android:title="@string/trash_string" />
-        <item
-            android:id="@+id/spam"
-            android:checked="false"
-            android:icon="@drawable/ic_error_black"
-            android:title="@string/spam_string" />
-
+            android:icon="@drawable/ic_action_about"
+            android:title="@string/navigation_about" />
     </group>
 </menu>

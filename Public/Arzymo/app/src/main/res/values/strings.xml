@@ -47,6 +47,9 @@
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="title_activity_delete_post">DeletePostActivity</string>
     <string name="title_activity_delete_image">DeleteImageActivity</string>
+    <string name="title_activity_post_detail">PostDetailActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_edit_post">EditPostActivity</string>
     <string name="title_activity_my_posts">Мои объявления</string>
 
     <string name="title_activity_login">Sign in</string>
@@ -62,30 +65,22 @@
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_add_post_tabbed">Добавить</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="title_activity_edit_post">EditPostActivity</string>
-
     <string name="fab_description">FAB button description</string>
     <string name="part_one">Part One</string>
     <string name="part_two">Part Two</string>
     <string name="part_three">Part Three</string>
+
     <string name="tab_1">Реклама</string>
     <string name="tab_2">Категории</string>
 
     <string name="navigation_item_1">Home</string>
     <string name="navigation_item_2">Events</string>
-    <string name="starred_string">Starred</string>
-    <string name="inbox_string">Inbox</string>
-    <string name="sent_mail_string">Sent mail</string>
-    <string name="draft_string">Drafts</string>
     <string name="subheader">Subheader</string>
-    <string name="trash_string">Trash</string>
-    <string name="all_mail_string">All mails</string>
-    <string name="spam_string">Spams</string>
-    <string name="title_activity_main_activity2">MainActivity2Activity</string>
-    <string name="title_activity_tab_animation">TabAnimationActivity</string>
-    <string name="title_activity_post_detail">PostDetailActivity</string>
-    <string name="title_activity_signup">SignupActivity</string>
+    <string name="navigation_home">Главная</string>
+    <string name="navigation_profile">Профиль</string>
+    <string name="navigation_ads">Мои объявления</string>
+    <string name="navigation_favourites">Нравится</string>
+    <string name="navigation_messages">Мои сообщения</string>
+    <string name="navigation_settings">Настройки</string>
+    <string name="navigation_about">О программе</string>
 </resources>

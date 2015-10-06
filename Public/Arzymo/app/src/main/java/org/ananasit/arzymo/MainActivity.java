@@ -70,27 +70,24 @@ public class MainActivity extends AppCompatActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
 
-                    case R.id.inbox:
+                    case R.id.nav_profile:
                         Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     // For rest of the options we just show a toast on click
-                    case R.id.starred:
+                    case R.id.nav_ads:
                         Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.sent_mail:
+                    case R.id.nav_favourites:
                         Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.drafts:
+                    case R.id.nav_messages:
                         Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.allmail:
+                    case R.id.nav_settings:
                         Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.trash:
+                    case R.id.nav_about:
                         Toast.makeText(getApplicationContext(),"Trash Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.spam:
-                        Toast.makeText(getApplicationContext(),"Spam Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
@@ -151,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(in);
         }
         if (id == R.id.action_search) {
-            //Intent in = new Intent(MainActivity.this, PostDetailActivity.class);
-            //startActivity(in);
             Toast.makeText(MainActivity.this, "Search clicked", Toast.LENGTH_SHORT).show();
             return true;
         }
