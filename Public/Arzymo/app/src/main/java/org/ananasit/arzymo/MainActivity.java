@@ -71,23 +71,23 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:
-                        Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Ads Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_favourites:
-                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Likes Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_messages:
-                        Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_about:
-                        Toast.makeText(getApplicationContext(),"Trash Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"About Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();

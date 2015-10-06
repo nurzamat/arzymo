@@ -80,7 +80,7 @@
     <string name="navigation_profile">Профиль</string>
     <string name="navigation_ads">Мои объявления</string>
     <string name="navigation_favourites">Нравится</string>
-    <string name="navigation_messages">Мои сообщения</string>
+    <string name="navigation_messages">Сообщения</string>
     <string name="navigation_settings">Настройки</string>
     <string name="navigation_about">О программе</string>
 </resources>
