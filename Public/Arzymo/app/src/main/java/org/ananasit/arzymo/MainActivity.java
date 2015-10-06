@@ -22,6 +22,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import org.ananasit.arzymo.chat.Login;
+import org.ananasit.arzymo.chat.SignUp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,16 +79,21 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:
-                        Toast.makeText(getApplicationContext(),"Ads Selected",Toast.LENGTH_SHORT).show();
+                        Intent in = new Intent(MainActivity.this, MyPostsActivity.class);
+                        startActivity(in);
                         return true;
                     case R.id.nav_favourites:
                         Toast.makeText(getApplicationContext(),"Likes Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_messages:
-                        Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
+                        Intent logi = new Intent(MainActivity.this, Login.class);
+                        startActivity(logi);
+                        //Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
+                        Intent chati = new Intent(MainActivity.this, SignUp.class);
+                        startActivity(chati);
                         return true;
                     case R.id.nav_about:
                         Toast.makeText(getApplicationContext(),"About Selected",Toast.LENGTH_SHORT).show();

@@ -117,6 +117,28 @@
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup" >
         </activity>
+        <!-- chat start -->
+        <activity android:name=".chat.FriendList"
+                  android:label="FriendList" >
+        </activity>
+        <service android:name=".chat.services.IMService"></service>
+        <activity android:name=".chat.Login"
+                  android:label="Login">
+        </activity>
+        <activity android:name=".chat.Messaging"
+                  android:label="Messaging">
+        </activity>
+        <activity android:name=".chat.SignUp"
+                  android:label="SignUp">
+        </activity>
+        <activity android:name=".chat.AddFriend"
+                  android:label="AddFriend">
+        </activity>
+        <activity android:name=".chat.UnApprovedFriendList"
+                  android:label="UnApprovedFriendList" >
+        </activity>
+        <!-- end chat -->
+
     </application>
 
 </manifest>

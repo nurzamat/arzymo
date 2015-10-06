@@ -45,9 +45,8 @@ public class DeleteRequest extends StringRequest {
         Map<String, String> params = new HashMap<String, String>();
         //params.put("User-Agent", "Nintendo Gameboy");
         //params.put("Accept-Language", "fr");
-        User user = AppController.getInstance().getUser();
 
-        params.put("Authorization", user.getClient_key());
+        params.put("Authorization", ApiHelper.getClientKey());
         return params;
     }
 
