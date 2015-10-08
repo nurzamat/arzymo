@@ -95,7 +95,7 @@
             android:label="@string/title_activity_edit_post" >
         </activity>
         <activity
-            android:name=".PostDetailActivity"
+            android:name=".ProfileDetailActivity"
             android:label="@string/title_activity_post_detail" >
         </activity>
         <activity

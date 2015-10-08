@@ -3,7 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-   
+
+
+	<Button android:id="@+id/exit_app"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="exit"
+		/>
+	<Button android:id="@+id/add_friend"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="add friend"
+		/>
+
     <ListView android:id="@+id/android:list"
           android:layout_width="fill_parent"
         	android:layout_height="fill_parent"/>

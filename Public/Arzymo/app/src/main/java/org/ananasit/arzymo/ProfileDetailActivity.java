@@ -14,7 +14,7 @@ import android.widget.Toast;
 import org.ananasit.arzymo.adapter.CategoriesRecyclerAdapter;
 import org.ananasit.arzymo.util.GlobalVar;
 
-public class PostDetailActivity extends AppCompatActivity {
+public class ProfileDetailActivity extends AppCompatActivity {
 
     CollapsingToolbarLayout collapsingToolbar;
     RecyclerView recyclerView;
@@ -24,21 +24,21 @@ public class PostDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+        setContentView(R.layout.activity_profile_detail);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Suleiman Ali Shakir");
+        collapsingToolbar.setTitle("Arzymo");
 
         ImageView header = (ImageView) findViewById(R.id.header);
 
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PostDetailActivity.this, "clicked ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileDetailActivity.this, "clicked ", Toast.LENGTH_SHORT).show();
             }
         });
 /*

@@ -3,6 +3,7 @@ package org.ananasit.arzymo.chat;
 import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,12 +24,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.ananasit.arzymo.AddPostActivity;
 import org.ananasit.arzymo.R;
+import org.ananasit.arzymo.SearchResultsActivity;
 import org.ananasit.arzymo.chat.interfaces.IAppManager;
 import org.ananasit.arzymo.chat.services.IMService;
 import org.ananasit.arzymo.chat.tools.FriendController;
@@ -34,7 +40,7 @@ import org.ananasit.arzymo.chat.types.FriendInfo;
 import org.ananasit.arzymo.chat.types.STATUS;
 
 
-public class FriendList extends ListActivity 
+public class FriendList extends ListActivity
 {
 	private static final int ADD_NEW_FRIEND_ID = Menu.FIRST;
 	private static final int EXIT_APP_ID = Menu.FIRST + 1;
@@ -176,9 +182,17 @@ public class FriendList extends ListActivity
         setContentView(R.layout.chat_list_screen);
         
 		friendAdapter = new FriendListAdapter(this);
-		
-		
 
+		Button addButton = (Button) findViewById(R.id.add_friend);
+		addButton.setOnClickListener(new View.OnClickListener(){
+
+			public void onClick(View arg0)
+			{
+				Intent i = new Intent(FriendList.this, AddFriend.class);
+				startActivity(i);
+			}
+
+		});
 
 	}
 	public void updateData(FriendInfo[] friends, FriendInfo[] unApprovedFriends)
@@ -260,7 +274,7 @@ public class FriendList extends ListActivity
 	{
 			
 		super.onResume();
-		bindService(new Intent(FriendList.this, IMService.class), mConnection , Context.BIND_AUTO_CREATE);
+		bindService(new Intent(FriendList.this, IMService.class), mConnection, Context.BIND_AUTO_CREATE);
 
 		IntentFilter i = new IntentFilter();
 		//i.addAction(IMService.TAKE_MESSAGE);	
@@ -282,35 +296,57 @@ public class FriendList extends ListActivity
 	}
 
 	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) 
-	{		
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
 
-		switch(item.getItemId()) 
-		{	  
+		switch(item.getItemId())
+		{
 			case ADD_NEW_FRIEND_ID:
 			{
 				Intent i = new Intent(FriendList.this, AddFriend.class);
 				startActivity(i);
 				return true;
-			}		
+			}
 			case EXIT_APP_ID:
 			{
 				imService.exit();
 				finish();
 				return true;
-			}			
+			}
 		}
 
-		return super.onMenuItemSelected(featureId, item);		
-	}	
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		switch(item.getItemId())
+		{
+			case ADD_NEW_FRIEND_ID:
+			{
+				Intent i = new Intent(FriendList.this, AddFriend.class);
+				startActivity(i);
+				return true;
+			}
+			case EXIT_APP_ID:
+			{
+				imService.exit();
+				finish();
+				return true;
+			}
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		super.onActivityResult(requestCode, resultCode, data);
-		
-	
-		
-		
 	}
 }

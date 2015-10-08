@@ -99,17 +99,19 @@ public class SignUp extends AppCompatActivity {
 						if (passwordText.getText().toString().equals(passwordAgainText.getText().toString())){
 						
 							if (usernameText.length() >= 5 && passwordText.length() >= 5) {
-							
+
+								try
+								{
 									Thread thread = new Thread(){
 										String result = new String();
 										@Override
 										public void run() {
-											result = imService.signUpUser(usernameText.getText().toString(), 
-													passwordText.getText().toString(), 
+											result = imService.signUpUser(usernameText.getText().toString(),
+													passwordText.getText().toString(),
 													eMailText.getText().toString());
-		
+
 											handler.post(new Runnable(){
-		
+
 												public void run() {
 													if (result.equals(SERVER_RES_RES_SIGN_UP_SUCCESFULL)) {
 														Toast.makeText(getApplicationContext(),R.string.signup_successfull, Toast.LENGTH_LONG).show();
@@ -119,18 +121,22 @@ public class SignUp extends AppCompatActivity {
 														Toast.makeText(getApplicationContext(),R.string.signup_username_crashed, Toast.LENGTH_LONG).show();
 														//showDialog(SIGN_UP_USERNAME_CRASHED);
 													}
-													else  //if (result.equals(SERVER_RES_SIGN_UP_FAILED)) 
+													else  //if (result.equals(SERVER_RES_SIGN_UP_FAILED))
 													{
 														Toast.makeText(getApplicationContext(),R.string.signup_failed, Toast.LENGTH_LONG).show();
 														//showDialog(SIGN_UP_FAILED);
-													}			
+													}
 												}
-		
+
 											});
 										}
-		
+
 									};
 									thread.start();
+								}catch (Exception ex)
+								{
+									ex.printStackTrace();
+								}
 							}
 							else{
 								Toast.makeText(getApplicationContext(),R.string.username_and_password_length_short, Toast.LENGTH_LONG).show();

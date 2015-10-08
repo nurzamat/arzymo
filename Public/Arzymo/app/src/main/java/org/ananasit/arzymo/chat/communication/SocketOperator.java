@@ -13,14 +13,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import android.util.Log;
-
 import org.ananasit.arzymo.chat.interfaces.IAppManager;
 import org.ananasit.arzymo.chat.interfaces.ISocketOperator;
 
 
 public class SocketOperator implements ISocketOperator
 {
-	private static final String AUTHENTICATION_SERVER_ADDRESS = "http://176.126.165.133/mobylive/chat/"; //TODO change to your WebAPI Address
+	private static final String AUTHENTICATION_SERVER_ADDRESS = "http://ananasit.org/mobylive/chat/"; //TODO change to your WebAPI Address
 	
 	private int listeningPort = 0;
 	
