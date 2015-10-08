@@ -75,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
+                        Intent inte = new Intent(MainActivity.this, PostDetailActivity.class);
+                        startActivity(inte);
+                        //Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:

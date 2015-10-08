@@ -28,6 +28,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -51,7 +52,7 @@
         </activity>
         <activity
             android:name=".AddPostActivity"
-            android:label="@string/add">
+            android:label="@string/add" >
         </activity>
         <activity
             android:name=".CategoriesActivity"
@@ -118,27 +119,40 @@
             android:label="@string/title_activity_signup" >
         </activity>
         <!-- chat start -->
-        <activity android:name=".chat.FriendList"
-                  android:label="FriendList" >
+        <activity
+            android:name=".chat.FriendList"
+            android:label="FriendList" >
         </activity>
-        <service android:name=".chat.services.IMService"></service>
-        <activity android:name=".chat.Login"
-                  android:label="Login">
+
+        <service android:name=".chat.services.IMService" />
+
+        <activity
+            android:name=".chat.Login"
+            android:label="Login" >
         </activity>
-        <activity android:name=".chat.Messaging"
-                  android:label="Messaging">
+        <activity
+            android:name=".chat.Messaging"
+            android:label="Messaging" >
         </activity>
-        <activity android:name=".chat.SignUp"
-                  android:label="SignUp">
+        <activity
+            android:name=".chat.SignUp"
+            android:label="SignUp" >
         </activity>
-        <activity android:name=".chat.AddFriend"
-                  android:label="AddFriend">
+        <activity
+            android:name=".chat.AddFriend"
+            android:label="AddFriend" >
         </activity>
-        <activity android:name=".chat.UnApprovedFriendList"
-                  android:label="UnApprovedFriendList" >
+        <activity
+            android:name=".chat.UnApprovedFriendList"
+            android:label="UnApprovedFriendList" >
         </activity>
         <!-- end chat -->
 
+        <activity
+            android:name=".PostDetailActivity"
+            android:label="@string/title_activity_post_detail"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

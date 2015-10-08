@@ -23,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import org.ananasit.arzymo.AppController;
 import org.ananasit.arzymo.FullScreenViewActivity;
+import org.ananasit.arzymo.PostDetailActivity;
 import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
@@ -163,7 +164,8 @@ public class PostListAdapter extends BaseAdapter {
                 if(_p.getImages() != null && _p.getImages().size() > 0)
                 {
                     GlobalVar._Post = _p;
-                    Intent i = new Intent(activity, FullScreenViewActivity.class);
+                    //Intent i = new Intent(activity, FullScreenViewActivity.class);
+                    Intent i = new Intent(activity, PostDetailActivity.class);
                     activity.startActivity(i);
                 }
                 else Toast.makeText(activity, R.string.no_photo, Toast.LENGTH_SHORT).show();
