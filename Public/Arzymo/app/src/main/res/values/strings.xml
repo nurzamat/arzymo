@@ -121,4 +121,9 @@
     <string name="not_connected_to_network">There is no available connected network</string>
     <string name="message_cannot_be_sent">Message was not been able to sent</string>
     <!-- end chat -->
+    <string name="dummy_fragment">This is a dummy fragment!</string>
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer closed</string>
+    <string name="action_exit">Exit</string>
+    <string name="mock_item">Mock Item</string>
 </resources>

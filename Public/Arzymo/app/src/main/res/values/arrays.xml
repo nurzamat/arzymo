@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fragment_names">
+        <item>Top indicator &amp; depth</item>
+        <item>Top indicator &amp; zoomout</item>
+        <item>Top indicator &amp; rotation</item>
+        <item>Bottom indicator &amp; flip </item>
+        <item>Bottom indicator &amp; scale </item>
+        <item>Bottom indicator &amp; accordion </item>
+        <item>Coldplay Ghost Stories</item>
+    </string-array>
+    <string-array name="coldplay_songs">
+        <item>Always in My Head</item>
+        <item>Magic</item>
+        <item>Ink</item>
+        <item>True Love</item>
+        <item>Midnight</item>
+        <item>Another\'s Arms</item>
+        <item>Oceans</item>
+        <item>A Sky Full of Stars</item>
+        <item>O (Hidden track)</item>
+        <item>Midnight (Jon Hopkins Rmx)</item>
+        <item>All Your Friends</item>
+        <item>Ghost Story</item>
+        <item>O (Part 2 / Reprise)</item>
+    </string-array>
+</resources>

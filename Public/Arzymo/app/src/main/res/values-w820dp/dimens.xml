@@ -16,4 +16,12 @@
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <dimen name="default_header_height">200dp</dimen>
+    <dimen name="indicator_height">8dp</dimen>
+    <dimen name="indicator_width">10dp</dimen>
+
+    <dimen name="header_height">300dp</dimen>
+    <dimen name="mock_item_padding">10dp</dimen>
+    <dimen name="mock_item_textsize">22dp</dimen>
+    <dimen name="header_height_test">1000px</dimen>
 </resources>

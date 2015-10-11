@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="org.ananasit.arzymo.FullScreenViewActivity">
-    <include
+    <!--<include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar">
-    </include>
+    </include>-->
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"

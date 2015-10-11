@@ -18,4 +18,12 @@
     <dimen name="tabsHeight">48dp</dimen>
     <!--<dimen name="fab_margin">0dp</dimen>-->
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="default_header_height">200dp</dimen>
+    <dimen name="indicator_height">8dp</dimen>
+    <dimen name="indicator_width">10dp</dimen>
+
+    <dimen name="header_height">300dp</dimen>
+    <dimen name="mock_item_padding">10dp</dimen>
+    <dimen name="mock_item_textsize">22dp</dimen>
+    <dimen name="header_height_test">1000px</dimen>
 </resources>

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import org.ananasit.arzymo.chat.Login;
 import org.ananasit.arzymo.chat.SignUp;
+import org.ananasit.arzymo.pagedheader.PagedHeaderActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        Intent inte = new Intent(MainActivity.this, PostDetailActivity.class);
+                        //Intent inte = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                        Intent inte = new Intent(MainActivity.this, PostDetailActivity2.class);
                         startActivity(inte);
                         //Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;

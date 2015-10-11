@@ -2,21 +2,16 @@ package org.ananasit.arzymo;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import org.ananasit.arzymo.adapter.CategoriesRecyclerAdapter;
 import org.ananasit.arzymo.adapter.FullScreenImageAdapter;
-import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.arzymo.lib.CirclePageIndicator;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.util.GlobalVar;
@@ -29,6 +24,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     ViewPager mPager;
     FullScreenImageAdapter mAdapter;
+    LinearLayout layout;
     CirclePageIndicator mIndicator;
     private Post p = GlobalVar._Post;
 
@@ -36,9 +32,17 @@ public class PostDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        layout = (LinearLayout) findViewById(R.id.layout);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PostDetailActivity.this, "layout clicked ", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -73,14 +77,14 @@ public class PostDetailActivity extends AppCompatActivity {
         mAdapter = new FullScreenImageAdapter(PostDetailActivity.this, p);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-
+/*
         mPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(PostDetailActivity.this, "clicked ", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
         mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFillColor(color);
         mIndicator.setStrokeColor(color);
