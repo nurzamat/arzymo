@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
-
 import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.pagedheader.library.adapters.ViewPagerAdapter;
 import org.ananasit.arzymo.pagedheader.library.components.PagedHeadIndicator;
@@ -118,7 +117,7 @@ public class PagedHeadListView extends ListView {
         }
 
         mPager.setAdapter(headerViewPagerAdapter);
-        mPager.setOnPageChangeListener(indicator);
+        mPager.addOnPageChangeListener(indicator);
 
         if (disableVerticalTouchOnHeader)
             mPager.setOnTouchListener(touchListenerForHeaderIntercept);
@@ -162,7 +161,7 @@ public class PagedHeadListView extends ListView {
      * @param onPageChangeListener
      */
     public void setOnHeaderPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
-        mPager.setOnPageChangeListener(onPageChangeListener);
+        mPager.addOnPageChangeListener(onPageChangeListener);
     }
 
     public void addFragmentToHeader(Fragment fragmentToAdd) {

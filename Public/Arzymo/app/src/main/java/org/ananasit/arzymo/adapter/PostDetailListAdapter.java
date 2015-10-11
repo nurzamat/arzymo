@@ -1,22 +1,15 @@
 package org.ananasit.arzymo.adapter;
 
-/**
- * Created by User on 16.12.2014.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.telephony.PhoneNumberUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
@@ -27,9 +20,13 @@ import org.ananasit.arzymo.R;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.GlobalVar;
+
 import java.util.List;
 
-public class PostListAdapter extends BaseAdapter {
+/**
+ * Created by nurzamat on 10/11/15.
+ */
+public class PostDetailListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Post> postItems;
@@ -38,11 +35,10 @@ public class PostListAdapter extends BaseAdapter {
 
     //views
     private int thumbnail_id;
-    private int menu_id;
     private int call_id;
     private int chat_id;
 
-    public PostListAdapter(Activity activity, List<Post> postItems) {
+    public PostDetailListAdapter(Activity activity, List<Post> postItems) {
         this.activity = activity;
         this.postItems = postItems;
     }
@@ -69,58 +65,45 @@ public class PostListAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.post_list_row, null);
+            convertView = inflater.inflate(R.layout.post_detail_list_row, null);
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        NetworkImageView thumbNail = (NetworkImageView) convertView
-                .findViewById(R.id.thumbnail);
         NetworkImageView avatar = (NetworkImageView) convertView
                 .findViewById(R.id.avatar);
-        ProgressBar spin = (ProgressBar) convertView.findViewById(R.id.progressBar1);
-        spin.setVisibility(View.VISIBLE);
 
         TextView content = (TextView) convertView.findViewById(R.id.content);
         TextView hitcount = (TextView) convertView.findViewById(R.id.hitcount);
         TextView displayed_name = (TextView) convertView.findViewById(R.id.displayed_name);
         TextView category_name = (TextView) convertView.findViewById(R.id.category);
         TextView price = (TextView) convertView.findViewById(R.id.price);
-        ImageButton menu = (ImageButton) convertView.findViewById(R.id.btnMenu2);
         ImageButton call = (ImageButton) convertView.findViewById(R.id.show_phone);
         ImageButton chat = (ImageButton) convertView.findViewById(R.id.show_chat);
 
         // getting post data for the row
         Post p = postItems.get(position);
-        String image_url = p.getThumbnailUrl();
         // thumbnail image
-        if(image_url.equals(""))
-            thumbNail.setDefaultImageResId(R.drawable.default_img);
-        thumbNail.setImageUrl(image_url, imageLoader);
-        if(thumbNail.getDrawable() != null)
-            spin.setVisibility(View.GONE);
-
         if(p.getUser() != null)
-        avatar.setImageUrl(p.getUser().getAvatarUrl(), imageLoader);
+            avatar.setImageUrl(p.getUser().getAvatarUrl(), imageLoader);
         // title
         content.setText(p.getContent());
         hitcount.setText(p.getHitcount());
         // username
         if(p.getUser() != null)
-           displayed_name.setText(p.getUser().getUserName());
+            displayed_name.setText(p.getUser().getUserName());
 
         if(p.getCategory() != null)
-        category_name.setText(p.getCategory().getName());
+            category_name.setText(p.getCategory().getName());
 
         // price
         price.setText(String.valueOf(p.getPrice()));
 
         // image view click listener
-        thumbnail_id = thumbNail.getId();
-        menu_id = menu.getId();
+        thumbnail_id = avatar.getId();
         call_id = call.getId();
         chat_id = chat.getId();
 
-        if(p.getUser() != null && p.getUser().getPhone().equals(client.getPhone()))
+        if(p.getUser() != null && p.getUser().getUserName().equals(client.getUserName()))
         {
             call.setVisibility(View.INVISIBLE);
             chat.setVisibility(View.INVISIBLE);
@@ -131,8 +114,7 @@ public class PostListAdapter extends BaseAdapter {
             chat.setVisibility(View.VISIBLE);
         }
 
-        thumbNail.setOnClickListener(new OnImageClickListener(thumbnail_id, position, p));
-        menu.setOnClickListener(new OnImageClickListener(menu_id, position, p));
+        avatar.setOnClickListener(new OnImageClickListener(thumbnail_id, position, p));
         call.setOnClickListener(new OnImageClickListener(call_id, position, p));
         chat.setOnClickListener(new OnImageClickListener(chat_id, position, p));
 
@@ -176,11 +158,11 @@ public class PostListAdapter extends BaseAdapter {
                     if (client != null)
                     {
                         String phone = _p.getUser().getPhone();
-                        boolean isPhone = PhoneNumberUtils.isGlobalPhoneNumber("+"+phone);
+                        boolean isPhone = PhoneNumberUtils.isGlobalPhoneNumber("+" + phone);
                         if(isPhone)
                         {
                             Intent intent = new Intent(Intent.ACTION_DIAL);
-                            intent.setData(Uri.parse("tel:"+"+"+phone));
+                            intent.setData(Uri.parse("tel:" + "+" + phone));
                             activity.startActivity(intent);
                         }
                         else Toast.makeText(activity, "call pressed /"+phone+"/", Toast.LENGTH_SHORT).show();
@@ -204,40 +186,9 @@ public class PostListAdapter extends BaseAdapter {
             }
             if(_view_id == chat_id)
             {
-               //todo
-            }
-            if(_view_id == menu_id)
-            {
-                //Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(activity, v);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.post_popup_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        String title = item.getTitle().toString();
-                        if(title.equals("Сообщение"))
-                        {
-                            Toast.makeText(activity, "message pressed", Toast.LENGTH_SHORT).show();
-                        }
-                        if(title.equals("Позвонить"))
-                        {
-                            String phone = _p.getUser().getPhone();
-                            boolean isPhone = PhoneNumberUtils.isGlobalPhoneNumber("+"+phone);
-                            if(isPhone)
-                            {
-                                Intent intent = new Intent(Intent.ACTION_DIAL);
-                                intent.setData(Uri.parse("tel:"+"+"+phone));
-                                activity.startActivity(intent);
-                            }
-                            else Toast.makeText(activity, "call pressed /"+phone+"/", Toast.LENGTH_SHORT).show();
-                        }
-                        return true;
-                    }
-                });
-                popup.show();//showing popup menu
+                //todo
             }
         }
     }
 }
+
