@@ -1,18 +1,13 @@
 package org.ananasit.arzymo;
 
-import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import org.ananasit.arzymo.adapter.FullScreenImageAdapter;
 import org.ananasit.arzymo.model.Post;
-import org.ananasit.arzymo.model.User;
-import org.ananasit.arzymo.util.ApiHelper;
 import org.ananasit.arzymo.util.GlobalVar;
-import org.json.JSONObject;
 
 
 public class FullScreenViewActivity extends AppCompatActivity {
@@ -20,7 +15,6 @@ public class FullScreenViewActivity extends AppCompatActivity {
     private FullScreenImageAdapter adapter;
     private ViewPager viewPager;
     private Post p = GlobalVar._Post;
-    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +26,7 @@ public class FullScreenViewActivity extends AppCompatActivity {
         adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, p);
 
         viewPager.setAdapter(adapter);
-        User client = AppController.getInstance().getUser();
 
-        if(client != null && !p.getUser().getId().equals(client.getId()))
-        {
-            url = ApiHelper.POST_URL + "/" + p.getId() + "/hitcount";
-            HitcountTask task = new HitcountTask();
-            task.execute(url);
-        }
     }
 
     @Override
@@ -62,40 +49,5 @@ public class FullScreenViewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class HitcountTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            try
-            {
-                ApiHelper api = new ApiHelper();
-                JSONObject obj = api.sendHitcount(url);
-                if(obj.getBoolean("error"))
-                {
-                    return "error";
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-                return "error";
-            }
-
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String result)
-        {
-            super.onPostExecute(result);
-        }
     }
 }

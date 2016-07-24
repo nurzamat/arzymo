@@ -1,11 +1,13 @@
 package org.ananasit.arzymo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,10 +18,12 @@ import org.ananasit.arzymo.adapter.PostListAdapter;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
 import org.ananasit.arzymo.model.User;
+import org.ananasit.arzymo.util.ActionType;
 import org.ananasit.arzymo.util.ApiHelper;
-import org.ananasit.arzymo.util.EndlessScrollListener;
+import org.ananasit.arzymo.util.CategoryType;
 import org.ananasit.arzymo.util.GlobalVar;
 import org.ananasit.arzymo.util.JsonObjectRequest;
+import org.ananasit.arzymo.util.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,14 +37,18 @@ public class PostsActivity extends AppCompatActivity {
     private ListView listView;
     private PostListAdapter adapter;
     private TextView emptyText;
-    AppController appcon;
+    AppController appcon = null;
     public int next = 1;
+    public String params;
     ProgressBar spin;
+    int _actionType = 0;
+    String query = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
+        IntentWork(getIntent());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -58,6 +66,26 @@ public class PostsActivity extends AppCompatActivity {
         if(GlobalVar.Category != null)
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
+        //by default
+        if(_actionType == 0)
+        {
+            CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
+            if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
+            {
+                _actionType = Utils.getActionTypeValue(ActionType.SELL);
+            }
+
+            if(categoryType != null && categoryType.equals(CategoryType.RENT))
+            {
+                _actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
+            }
+
+            if(categoryType != null && categoryType.equals(CategoryType.WORK))
+            {
+                _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
+            }
+        }
+
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
@@ -65,13 +93,25 @@ public class PostsActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 
-        appcon = AppController.getInstance();
-        spin.setVisibility(View.VISIBLE);
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1));
-        listView.setOnScrollListener(new EndlessScrollListener(this, 1));
+        params = Utils.getParams(query, _actionType);
+        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
+        listView.setOnScrollListener(new EndlessScrollListener(1));
+    }
+
+    private void IntentWork(Intent intent)
+    {
+        if(intent.getStringExtra("query") != null && !intent.getStringExtra("query").equals(""))
+        query = intent.getStringExtra("query");
+
+        _actionType = intent.getIntExtra("actionType", 0);
+
     }
 
     public void VolleyRequest(String url) {
+
+        if(appcon == null)
+        appcon = AppController.getInstance();
+
         spin.setVisibility(View.VISIBLE);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -98,6 +138,8 @@ public class PostsActivity extends AppCompatActivity {
                                     post.setHitcount(obj.getString("hitcount"));
                                     post.setPrice(obj.getString("price"));
                                     post.setPriceCurrency(obj.getString("price_currency"));
+                                    post.setBirth_year(obj.getString("birth_year"));
+                                    post.setDisplayed_name(obj.getString("displayed_name"));
 
                                     user = new User();
                                     user.setId(obj.getString("user_id"));
@@ -158,10 +200,57 @@ public class PostsActivity extends AppCompatActivity {
         appcon.addToRequestQueue(jsonObjReq);
     }
 
+    private class EndlessScrollListener implements AbsListView.OnScrollListener {
+
+        private int visibleThreshold = 5;
+        private int currentPage = 0;
+        private int previousTotal = 0;
+        private boolean loading = true;
+
+        public EndlessScrollListener(int visibleThreshold) {
+            this.visibleThreshold = visibleThreshold;
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false;
+                    previousTotal = totalItemCount;
+                    currentPage++;
+                }
+            }
+            if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                if (next > 0)
+                    VolleyRequest(ApiHelper.getCategoryPostsUrl(next, params));
+                loading = true;
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_posts, menu);
+
+        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
+        if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
+        {
+            getMenuInflater().inflate(R.menu.menu_buy_sell, menu);
+        }
+        else if(categoryType != null && categoryType.equals(CategoryType.RENT))
+        {
+            getMenuInflater().inflate(R.menu.menu_rent, menu);
+        }
+        else if(categoryType != null && categoryType.equals(CategoryType.WORK))
+        {
+            getMenuInflater().inflate(R.menu.menu_work, menu);
+        }
+        else getMenuInflater().inflate(R.menu.menu_posts, menu);
         return true;
     }
 
@@ -176,6 +265,28 @@ public class PostsActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_sell || id == R.id.action_buy || id == R.id.action_rent_give || id == R.id.action_rent_get || id == R.id.action_vacancy || id == R.id.action_resume)
+        {
+            Intent in = new Intent(this, PostsActivity.class);
+
+            if(id == R.id.action_sell)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.SELL));
+            if(id == R.id.action_buy)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.BUY));
+            if(id == R.id.action_rent_give)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RENT_GIVE));
+            if(id == R.id.action_rent_get)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RENT_GET));
+            if(id == R.id.action_vacancy)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.VACANCY));
+            if(id == R.id.action_resume)
+                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RESUME));
+
+            startActivity(in);
+            finish();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

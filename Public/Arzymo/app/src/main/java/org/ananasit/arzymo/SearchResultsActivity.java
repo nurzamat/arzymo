@@ -7,9 +7,6 @@ import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import org.ananasit.arzymo.util.GlobalVar;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 
 public class SearchResultsActivity extends AppCompatActivity {
@@ -36,22 +33,15 @@ public class SearchResultsActivity extends AppCompatActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if(!query.equals(""))
             {
-                try
-                {
-                    GlobalVar.query = URLEncoder.encode(query, "UTF-8");
-                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                            MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
-                    suggestions.saveRecentQuery(query, null);
-                }
-                catch (UnsupportedEncodingException ex)
-                {
-                    ex.printStackTrace();
-                }
-                //Intent in = new Intent(SearchResultsActivity.this, HomeActivity.class);
-                //in.putExtra("case", 7);
-                //startActivity(in);
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                        MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+                suggestions.saveRecentQuery(query, null);
+
+                Intent in = new Intent(SearchResultsActivity.this, PostsActivity.class);
+                in.putExtra("query", query);
+                startActivity(in);
             }
-            // Toast.makeText(this, query, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, query, Toast.LENGTH_LONG).show();
         }
 
         finish();

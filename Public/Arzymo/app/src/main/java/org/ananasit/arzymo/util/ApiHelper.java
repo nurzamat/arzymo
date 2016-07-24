@@ -1,14 +1,8 @@
 package org.ananasit.arzymo.util;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 import org.ananasit.arzymo.AppController;
-import org.ananasit.arzymo.model.Category;
 import org.ananasit.arzymo.model.User;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedInputStream;
@@ -20,12 +14,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
 
 public class ApiHelper {
 
     public static final String TAG = "[API]";
-    public static final String ARZYMO_URL = "http://ananasit.org";
+    //public static final String ARZYMO_URL = "http://ananasit.org";
+    public static final String ARZYMO_URL = "http://192.168.1.100";
     public static final String REGISTER_URL = ARZYMO_URL + "/mobylive/v1/register";
     public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
     public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
@@ -79,6 +73,16 @@ public class ApiHelper {
         return new JSONObject(response);
     }
 
+    public JSONObject sendLike(String url)
+            throws ApiException, IOException, JSONException {
+
+        Log.i(TAG, "Sending request to: " + url);
+        String response = requestGet(url);
+        Log.i(TAG, "Response: " + response);
+
+        return new JSONObject(response);
+    }
+
     public JSONObject editPost(String url, JSONObject jsonObject)
             throws ApiException, IOException, JSONException {
 
@@ -109,6 +113,52 @@ public class ApiHelper {
 
         Log.i(TAG, "Response: " + response);
         return new JSONObject(response);
+    }
+
+    public static String getMyPostsUrl(String user_id, int page)
+    {
+        String url = "";
+        if(!user_id.equals(""))
+        {
+            url = POST_URL + "/user/" + user_id + "/" + page;
+        }
+
+        Log.i(TAG, "getMyPostsUrl: " + url);
+
+        return url;
+    }
+
+    public static String getMyLikedPosts(String user_id, int page)
+    {
+        String url = "";
+        if(!user_id.equals(""))
+        {
+            url = POST_URL + "/user/" + user_id + "/likes/" + page;
+        }
+
+        Log.i(TAG, "getMyLikedPosts: " + url);
+
+        return url;
+    }
+
+    public static String getCategoryPostsUrl(int page, String params)
+    {
+        String url = POST_URL  + "/" + page + "/" + params;
+
+        if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
+        {
+            if(GlobalVar.Category.getIdParent().equals(""))
+            {
+                url = CATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page + "/" + params;
+            }
+            else
+            {
+                url = SUBCATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page + "/" + params;
+            }
+        }
+
+        Log.i(TAG, "getCategoryPostsUrl: " + url);
+        return url;
     }
 
     public static class ApiException extends Exception {
@@ -443,70 +493,6 @@ public class ApiHelper {
         return "";
     }
 
-    public static String getCategoryPostsUrl(int page)
-    {
-        if(GlobalVar.Category != null && GlobalVar.Category.getSubcats() == null)
-        {
-            if(GlobalVar.Category.getIdParent().equals(""))
-            {
-                return CATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page;
-            }
-            else
-            {
-                return SUBCATEGORY_POSTS_URL + "/" + GlobalVar.Category.getId() + "/" + page;
-            }
-        }
-        return "";
-    }
-
-    public static String getMyPostsUrl(String user_id, int page)
-    {
-        if(!user_id.equals(""))
-        {
-            return POST_URL + "/user/" + user_id + "/" + page;
-        }
-        return "";
-    }
-
-    public static Category getCategoryByIds(String id_category, String id_subcategory)
-    {
-        Category category = null;
-        try
-        {
-            for(Iterator<Category> i = GlobalVar._categories.iterator(); i.hasNext(); ) {
-                Category item = i.next();
-
-                if(!item.getIdParent().equals(""))
-                {
-                    if(item.getIdParent().equals(id_category) && item.getId().equals(id_subcategory))
-                    {
-                        category = item;
-                    }
-                }
-                else
-                {
-                    if(item.getId().equals(id_category))
-                    {
-                        category = item;
-                    }
-                }
-            }
-        }
-        catch (NullPointerException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return category;
-    }
-
-    public static boolean isConnected(Context context)
-    {
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     public static String getClientKey()
     {
         String key = "";
@@ -524,5 +510,4 @@ public class ApiHelper {
 
       return key;
     }
-
 }

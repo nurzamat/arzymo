@@ -57,7 +57,7 @@ public class SubcatsActivity extends AppCompatActivity {
 
                 if(_subcats != null)
                 GlobalVar.Category = _subcats.get(position);
-                if(mode.equals(Constants.POSTS_MODE))
+                if(mode!=null && mode.equals(Constants.POSTS_MODE))
                 {
                     Intent in = new Intent(SubcatsActivity.this, PostsActivity.class);
                     startActivity(in);

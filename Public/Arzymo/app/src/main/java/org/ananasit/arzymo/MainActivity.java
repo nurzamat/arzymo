@@ -18,15 +18,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import org.ananasit.arzymo.chat.Login;
 import org.ananasit.arzymo.chat.SignUp;
-import org.ananasit.arzymo.pagedheader.PagedHeaderActivity;
-
+import org.ananasit.arzymo.util.GlobalVar;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         //toolbar.setTitle("title");
         toolbar.setSubtitle("Arzymo");
 
-        //initToolbar();
         initViewPagerAndTabs();
 
         //Initializing NavigationView
@@ -71,32 +69,33 @@ public class MainActivity extends AppCompatActivity {
 
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
-
+                Intent in;
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        Intent inte = new Intent(MainActivity.this, ProfileDetailActivity.class);
-                        startActivity(inte);
+                        in = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                        startActivity(in);
                         //Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:
-                        Intent in = new Intent(MainActivity.this, MyPostsActivity.class);
+                        in = new Intent(MainActivity.this, MyPostsActivity.class);
                         startActivity(in);
                         return true;
                     case R.id.nav_favourites:
-                        Toast.makeText(getApplicationContext(),"Likes Selected",Toast.LENGTH_SHORT).show();
+                        in = new Intent(MainActivity.this, MyLikesActivity.class);
+                        startActivity(in);
                         return true;
                     case R.id.nav_messages:
-                        Intent logi = new Intent(MainActivity.this, Login.class);
-                        startActivity(logi);
+                        in = new Intent(MainActivity.this, Login.class);
+                        startActivity(in);
                         //Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_settings:
                         //Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
-                        Intent chati = new Intent(MainActivity.this, SignUp.class);
-                        startActivity(chati);
+                        in = new Intent(MainActivity.this, SignUp.class);
+                        startActivity(in);
                         return true;
                     case R.id.nav_about:
                         Toast.makeText(getApplicationContext(),"About Selected",Toast.LENGTH_SHORT).show();
@@ -132,6 +131,13 @@ public class MainActivity extends AppCompatActivity {
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("MainActivity", " resumed");
+        GlobalVar.Category = null;
     }
 
     @Override

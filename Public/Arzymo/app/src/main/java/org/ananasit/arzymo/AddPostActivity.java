@@ -21,8 +21,11 @@ import android.widget.Toast;
 import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.arzymo.lib.CirclePageIndicator;
 import org.ananasit.arzymo.model.Category;
+import org.ananasit.arzymo.util.ActionType;
 import org.ananasit.arzymo.util.ApiHelper;
+import org.ananasit.arzymo.util.CategoryType;
 import org.ananasit.arzymo.util.GlobalVar;
+import org.ananasit.arzymo.util.Utils;
 import org.json.JSONObject;
 
 public class AddPostActivity extends AppCompatActivity {
@@ -34,17 +37,23 @@ public class AddPostActivity extends AppCompatActivity {
     Toolbar toolbar;
     String content = "";
     String price = "";
-    String price_currency;
+    String price_currency = "";
     String result;
-    EditText etContent;
-    EditText etPrice;
-    Button categoryBtn;
-    Button postBtn;
+    EditText etContent, etPrice, etDisplayed_name;
+    Button categoryBtn, postBtn;
     Category category = null;
+    Spinner price_spinner, action_spinner, sex_spinner, birth_year_spinner;
+    int actionType = 0;
+    int actionPos = 0;
+    int birthPos = 0;
+    int sex = 2; //0 - female, 1 - male
+    String birth_year = "";
+    String displayed_name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_post);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -64,39 +73,20 @@ public class AddPostActivity extends AppCompatActivity {
 
         etContent = (EditText) findViewById(R.id.content);
         etPrice = (EditText) findViewById(R.id.price);
-        //spinner job
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                R.array.price_currencies, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
         postBtn = (Button) findViewById(R.id.btnPost);
         categoryBtn = (Button) findViewById(R.id.btnCategory);
         etContent.setText(content);
         etPrice.setText(price);
-        spinner.setSelection(adapter.getPosition(price_currency));
-
-        spinner.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view,
-                                               int pos, long id) {
-                        // On selecting a spinner item
-                        price_currency = parent.getItemAtPosition(pos).toString();
-
-                        // Showing selected spinner item
-                        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                }
-        );
+        //spinner job
+        action_spinner = (Spinner) findViewById(R.id.action_spinner);
+        price_spinner = (Spinner) findViewById(R.id.price_spinner);
+   
+        //start Dating
+        etDisplayed_name = (EditText) findViewById(R.id.displayed_name);
+        etDisplayed_name.setText(displayed_name);
+        sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
+        birth_year_spinner = (Spinner) findViewById(R.id.birth_year_spinner);
+        //end Dating
 
         //ViewPagerWork();
 
@@ -138,10 +128,228 @@ public class AddPostActivity extends AppCompatActivity {
         {
             categoryBtn.setText(GlobalVar.Category.getName());
             this.category = GlobalVar.Category;
+            CategoryType catType = Utils.getCategoryType(this.category);
+
+            if(catType.equals(CategoryType.SELL_BUY)) //buy sell //куплю-продам
+            {
+
+                //action
+                action_spinner.setVisibility(View.VISIBLE);
+                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.buy_sell, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                action_spinner.setAdapter(action_adapter);
+                action_spinner.setSelection(actionPos);
+                action_spinner.setOnItemSelectedListener(
+                        new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int pos, long id) {
+
+                                actionPos = pos;
+                                // Showing selected spinner item
+                                //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.SELL);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.BUY);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        }
+                );
+                priceSpinner();
+
+            }
+            else if(catType.equals(CategoryType.RENT)) //Rent
+            {
+                etPrice.setVisibility(View.INVISIBLE);
+                price_spinner.setVisibility(View.INVISIBLE);
+                //action
+                action_spinner.setVisibility(View.VISIBLE);
+                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.rent_get_give, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                action_spinner.setAdapter(action_adapter);
+                action_spinner.setSelection(actionPos);
+                action_spinner.setOnItemSelectedListener(
+                        new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int pos, long id) {
+
+                                actionPos = pos;
+                                // Showing selected spinner item
+                                // Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GET);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        }
+                );
+
+                priceSpinner();
+            }
+            else if(catType.equals(CategoryType.WORK)) //Work
+            {
+                etPrice.setVisibility(View.INVISIBLE);
+                price_spinner.setVisibility(View.INVISIBLE);
+                //action
+                action_spinner.setVisibility(View.VISIBLE);
+                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.work_resume_vacancy, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                action_spinner.setAdapter(action_adapter);
+                action_spinner.setSelection(actionPos);
+                action_spinner.setOnItemSelectedListener(
+                        new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int pos, long id) {
+
+                                actionPos = pos;
+                                // Showing selected spinner item
+                                // Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.VACANCY);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.RESUME);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        }
+                );
+            }
+            else
+            {
+                action_spinner.setVisibility(View.INVISIBLE);
+                etPrice.setVisibility(View.INVISIBLE);
+                price_spinner.setVisibility(View.INVISIBLE);
+            }
+
+            //Dating
+            if(catType.equals(CategoryType.DATING))
+            {
+                etDisplayed_name.setVisibility(View.VISIBLE);
+                sex_spinner.setVisibility(View.VISIBLE);
+                birth_year_spinner.setVisibility(View.VISIBLE);
+
+                ArrayAdapter<CharSequence> sex_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.sex, android.R.layout.simple_spinner_item);
+
+                ArrayAdapter<CharSequence> birth_year_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.birth_year, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                sex_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                birth_year_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                sex_spinner.setAdapter(sex_adapter);
+                sex_spinner.setSelection(actionPos);
+                sex_spinner.setOnItemSelectedListener(
+                        new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int pos, long id) {
+
+                                actionPos = pos;
+                                // Showing selected spinner item
+                                //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                                if (pos == 1)
+                                    sex = 1;
+                                if (pos == 2)
+                                    sex = 0;
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        }
+                );
+
+                birth_year_spinner.setAdapter(birth_year_adapter);
+                birth_year_spinner.setSelection(birthPos);
+                birth_year_spinner.setOnItemSelectedListener(
+                        new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int pos, long id) {
+
+                                birthPos = pos;
+
+                                if (pos != 0)
+                                    birth_year = parent.getItemAtPosition(pos).toString();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        }
+                );
+            }
+            else
+            {
+                etDisplayed_name.setVisibility(View.INVISIBLE);
+                sex_spinner.setVisibility(View.INVISIBLE);
+                birth_year_spinner.setVisibility(View.INVISIBLE);
+            }
+
         }
         else this.category = null;
         ViewPagerWork();
     }
+
+    private void priceSpinner() {
+        //price
+        etPrice.setVisibility(View.VISIBLE);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        price_spinner.setVisibility(View.VISIBLE);
+        ArrayAdapter<CharSequence> price_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                R.array.price_currencies, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        price_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        price_spinner.setAdapter(price_adapter);
+        price_spinner.setSelection(price_adapter.getPosition(price_currency));
+        price_spinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view,
+                                               int pos, long id) {
+                        // On selecting a spinner item
+                        price_currency = parent.getItemAtPosition(pos).toString();
+
+                        // Showing selected spinner item
+                        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                        // TODO Auto-generated method stub
+                    }
+                }
+        );
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -184,10 +392,28 @@ public class AddPostActivity extends AppCompatActivity {
 
     private boolean validate(){
 
+        boolean val = true;
         content = etContent.getText().toString().trim();
+        displayed_name = etDisplayed_name.getText().toString().trim();
         price = etPrice.getText().toString().trim();
 
-        return (!content.equals("") && !price.equals("") && category != null && !price_currency.equals(""));
+        if(content.equals("") || category == null)
+            val = false;
+
+        if(etPrice.getVisibility() == View.VISIBLE && price.equals(""))
+            val = false;
+
+        if(price_spinner.getVisibility() == View.VISIBLE && price_currency.equals(""))
+            val = false;
+
+        //dating
+        if(sex_spinner.getVisibility() == View.VISIBLE && sex == 2)
+            val = false;
+
+        if(birth_year_spinner.getVisibility() == View.VISIBLE && birth_year.equals(""))
+            val = false;
+
+        return val;
     }
 
     // add mode
@@ -220,6 +446,7 @@ public class AddPostActivity extends AppCompatActivity {
                     jsonObject.put("idCategory", category.getIdParent());
                     jsonObject.put("idSubcategory", category.getId());
                 }
+
                 jsonObject.put("title", "test");
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
@@ -227,6 +454,10 @@ public class AddPostActivity extends AppCompatActivity {
                 jsonObject.put("api_key", ApiHelper.getClientKey());
                 jsonObject.put("city", "bishkek");
                 jsonObject.put("country", "kg");
+                jsonObject.put("actionType", actionType);
+                jsonObject.put("sex", sex);
+                jsonObject.put("birth_year", birth_year);
+                jsonObject.put("displayed_name", displayed_name);
 
                 JSONObject obj = api.sendPost(jsonObject);
                 if(obj.has("post_id"))

@@ -6,6 +6,13 @@
     <string name="closeDrawer">closeDrawer</string>
     <string name="cancel">Отмена</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_like">Нравится</string>
+    <string name="sell">Продаю</string>
+    <string name="buy">Куплю</string>
+    <string name="rent_give">Сдаю</string>
+    <string name="rent_get">Сниму</string>
+    <string name="vacancy">Вакансии</string>
+    <string name="resume">Ищу работу</string>
     <string name="action_add_post">Добавить</string>
     <string name="send_message">Сообщение</string>
     <string name="call">Позвонить</string>
@@ -16,8 +23,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main"></string>
     <string name="title_activity_subcats"></string>
-    <string name="title_activity_posts">Объявления/реклама</string>
-    <string name="title_activity_add_post">AddPostActivity</string>
+    <string name="title_activity_posts"></string>
+    <string name="title_activity_add_post">Добавить</string>
     <string name="no_results">Ничего не найдено :(</string>
     <string name="no_my_posts">У вас нет объявлений</string>
     <string name="no_posts">Нет объявлений</string>
@@ -42,6 +49,67 @@
         <item>UAH</item>
         <item>TJS</item>
         <item>AZN</item>
+    </string-array>
+    <string-array name="sex">
+        <item>Ваш пол</item>
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+    <string-array name="birth_year">
+        <item>Год рождения</item>
+        <item>2000</item>
+        <item>1999</item>
+        <item>1998</item>
+        <item>1997</item>
+        <item>1996</item>
+        <item>1995</item>
+        <item>1994</item>
+        <item>1993</item>
+        <item>1992</item>
+        <item>1991</item>
+        <item>1990</item>
+        <item>1989</item>
+        <item>1988</item>
+        <item>1987</item>
+        <item>1986</item>
+        <item>1985</item>
+        <item>1984</item>
+        <item>1983</item>
+        <item>1982</item>
+        <item>1981</item>
+        <item>1980</item>
+        <item>1979</item>
+        <item>1978</item>
+        <item>1977</item>
+        <item>1976</item>
+        <item>1975</item>
+        <item>1974</item>
+        <item>1973</item>
+        <item>1972</item>
+        <item>1971</item>
+        <item>1970</item>
+        <item>1969</item>
+        <item>1968</item>
+        <item>1967</item>
+        <item>1966</item>
+        <item>1965</item>
+        <item>1964</item>
+        <item>1963</item>
+        <item>1962</item>
+        <item>1961</item>
+        <item>1960</item>
+    </string-array>
+    <string-array name="buy_sell">
+        <item>Продаю</item>
+        <item>Куплю</item>
+    </string-array>
+    <string-array name="rent_get_give">
+        <item>Сдаю</item>
+        <item>Сниму</item>
+    </string-array>
+    <string-array name="work_resume_vacancy">
+        <item>Вакансия</item>
+        <item>Ищу работу (резюме)</item>
     </string-array>
     <string name="title_activity_full_screen_view">FullScreenViewActivity</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
@@ -127,4 +195,5 @@
     <string name="action_exit">Exit</string>
     <string name="mock_item">Mock Item</string>
     <string name="title_activity_blank">BlankActivity</string>
+    <string name="title_activity_my_likes">Нравится</string>
 </resources>

@@ -41,7 +41,7 @@ public class EditPostActivity extends AppCompatActivity {
     String price_currency;
     EditText etContent;
     EditText etPrice;
-    Spinner spinner;
+    Spinner price_spinner;
     ArrayAdapter<CharSequence> adapter;
     Button categoryBtn;
     Button saveBtn;
@@ -71,18 +71,18 @@ public class EditPostActivity extends AppCompatActivity {
         etContent = (EditText) findViewById(R.id.content);
         etPrice = (EditText) findViewById(R.id.price);
         //spinner job
-        spinner = (Spinner) findViewById(R.id.spinner);
+        price_spinner = (Spinner) findViewById(R.id.price_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(EditPostActivity.this,
                 R.array.price_currencies, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        price_spinner.setAdapter(adapter);
         saveBtn = (Button) findViewById(R.id.btnPost);
         categoryBtn = (Button) findViewById(R.id.btnCategory);
 
-        spinner.setOnItemSelectedListener(
+        price_spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view,
@@ -179,7 +179,7 @@ public class EditPostActivity extends AppCompatActivity {
 
             etContent.setText(content);
             etPrice.setText(price);
-            spinner.setSelection(adapter.getPosition(price_currency));
+            price_spinner.setSelection(adapter.getPosition(price_currency));
         }
         catch (Exception ex)
         {

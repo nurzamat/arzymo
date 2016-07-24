@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        if(!ApiHelper.isConnected(this)){
+        if(!Utils.isConnected(this)){
             Toast.makeText(StartActivity.this, "No Internet connection!", Toast.LENGTH_LONG).show();
             //return;
         }

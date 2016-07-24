@@ -12,6 +12,8 @@ public class Post{
     private String price = "";
     private String price_currency = "";
     private String hitcount = "";
+    private String birth_year = "";
+    private String displayed_name = "";
     private User user = null;
     private Category category = null;
     private ArrayList<Image> images = null;
@@ -73,6 +75,22 @@ public class Post{
 
     public void setHitcount(String _hitcount) {
         this.hitcount = _hitcount;
+    }
+
+    public String getBirth_year() {
+        return birth_year;
+    }
+
+    public void setBirth_year(String _birth_year) {
+        this.birth_year = _birth_year;
+    }
+
+    public String getDisplayed_name() {
+        return displayed_name;
+    }
+
+    public void setDisplayed_name(String _name) {
+        this.displayed_name = _name;
     }
 
     public User getUser() {

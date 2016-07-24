@@ -157,6 +157,11 @@
         </activity>
         <activity android:name=".PostDetailActivity2" >
         </activity>
+        <activity
+            android:name=".MyLikesActivity"
+            android:label="@string/title_activity_my_likes"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

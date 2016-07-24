@@ -1,37 +1,40 @@
 package org.ananasit.arzymo;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import org.ananasit.arzymo.adapter.MyPostListAdapter;
-import org.ananasit.arzymo.model.Category;
+
+import org.ananasit.arzymo.adapter.PostListAdapter;
 import org.ananasit.arzymo.model.Image;
 import org.ananasit.arzymo.model.Post;
+import org.ananasit.arzymo.model.User;
 import org.ananasit.arzymo.util.ApiHelper;
+import org.ananasit.arzymo.util.GlobalVar;
 import org.ananasit.arzymo.util.JsonObjectRequest;
-import org.ananasit.arzymo.util.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostsActivity extends AppCompatActivity {
+public class MyLikesActivity extends AppCompatActivity {
 
     private static final String TAG =  "[my_posts response]";
     private List<Post> postList = new ArrayList<Post>();
     private ListView listView;
-    private MyPostListAdapter adapter;
+    private PostListAdapter adapter;
     private TextView emptyText;
     AppController appcon;
     public int next = 1;
@@ -41,13 +44,12 @@ public class MyPostsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_posts);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setContentView(R.layout.activity_my_likes);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //toolbar.setSubtitle("some");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));
+        //toolbar.setNavigationIcon(R.drawable.ic_exit);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,23 +57,35 @@ public class MyPostsActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
-        adapter = new MyPostListAdapter(MyPostsActivity.this, postList);
+        adapter = new PostListAdapter(MyLikesActivity.this, postList);
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 
         appcon = AppController.getInstance();
-        spin.setVisibility(View.VISIBLE);
         if(appcon.getUser() != null)
             user_id = appcon.getUser().getId();
-        VolleyRequest(ApiHelper.getMyPostsUrl(user_id, 1));
-        listView.setOnScrollListener(new EndlessScrollListener(1));
 
+        VolleyRequest(ApiHelper.getMyLikedPosts(user_id, 1));
+        listView.setOnScrollListener(new EndlessScrollListener(1));
     }
 
     public void VolleyRequest(String url) {
+
+        if(appcon == null)
+            appcon = AppController.getInstance();
+
         spin.setVisibility(View.VISIBLE);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -87,7 +101,7 @@ public class MyPostsActivity extends AppCompatActivity {
                             next = next + 1;
                             JSONArray jimages;
                             JSONObject obj;
-                            Category category;
+                            User user;
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
 
@@ -98,9 +112,17 @@ public class MyPostsActivity extends AppCompatActivity {
                                     post.setHitcount(obj.getString("hitcount"));
                                     post.setPrice(obj.getString("price"));
                                     post.setPriceCurrency(obj.getString("price_currency"));
-                                    category = Utils.getCategoryByIds(obj.getString("id_category"), obj.getString("id_subcategory"));
-                                    post.setCategory(category);
-                                    post.setUser(appcon.getUser());
+
+                                    user = new User();
+                                    user.setId(obj.getString("user_id"));
+                                    user.setName(obj.getString("user_name"));
+                                    user.setUserName(obj.getString("user_username"));
+                                    user.setEmail(obj.getString("user_email"));
+                                    user.setPhone(obj.getString("user_phone"));
+                                    user.setAvatarUrl("");//todo
+                                    post.setUser(user);
+
+                                    post.setCategory(GlobalVar.Category);
                                     jimages = obj.getJSONArray("images");
                                     if(jimages.length() > 0)
                                     {
@@ -173,7 +195,7 @@ public class MyPostsActivity extends AppCompatActivity {
             }
             if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 if (next > 0)
-                    VolleyRequest(ApiHelper.getMyPostsUrl(user_id, next));
+                    VolleyRequest(ApiHelper.getMyLikedPosts(user_id, next));
                 loading = true;
             }
         }
@@ -183,25 +205,4 @@ public class MyPostsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_posts, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

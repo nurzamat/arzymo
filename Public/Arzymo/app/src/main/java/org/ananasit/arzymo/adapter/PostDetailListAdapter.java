@@ -86,7 +86,7 @@ public class PostDetailListAdapter extends BaseAdapter {
         if(p.getUser() != null)
             avatar.setImageUrl(p.getUser().getAvatarUrl(), imageLoader);
         // title
-        content.setText(p.getContent());
+        content.setText(p.getContent()+" \n");
         hitcount.setText(p.getHitcount());
         // username
         if(p.getUser() != null)

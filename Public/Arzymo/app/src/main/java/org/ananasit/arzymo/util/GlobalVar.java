@@ -16,7 +16,6 @@ public class GlobalVar {
     public static ArrayList<Category> _categories = new ArrayList<Category>();
     public static ArrayList<Bitmap> _bitmaps = new ArrayList<Bitmap>();
     public static ArrayList<String> image_paths = new ArrayList<String>();
-    public static String query = "";
     public static SparseBooleanArray mSparseBooleanArray = new SparseBooleanArray();
     public static Post _Post = null;
     public static Category Category = null;
