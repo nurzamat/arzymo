@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.ananasit.arzymo" >
+    package="org.ananasit.rekordo">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -18,90 +17,80 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <provider
             android:name=".MySuggestionProvider"
-            android:authorities="org.ananasit.arzymo.MySuggestionProvider" />
+            android:authorities="org.ananasit.rekordo.MySuggestionProvider" />
 
         <activity
             android:name=".StartActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".SubcatsActivity"
-            android:label="@string/title_activity_subcats" >
-        </activity>
+            android:label="@string/title_activity_subcats" />
         <activity
             android:name=".PostsActivity"
-            android:label="@string/title_activity_posts" >
+            android:label="@string/title_activity_posts">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".AddPostActivity"
-            android:label="@string/add" >
-        </activity>
+            android:label="@string/add" />
         <activity
             android:name=".CategoriesActivity"
             android:label="@string/title_activity_categories"
-            android:launchMode="singleInstance" >
-        </activity>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".MultiPhotoSelectActivity"
-            android:label="@string/title_activity_multi_photo_select" >
-        </activity>
+            android:label="@string/title_activity_multi_photo_select" />
         <activity
             android:name=".FullScreenViewActivity"
-            android:label="@string/title_activity_full_screen_view" >
-        </activity>
+            android:label="@string/title_activity_full_screen_view" />
         <activity
             android:name=".DeleteImageActivity"
-            android:label="@string/title_activity_delete_image" >
-        </activity>
+            android:label="@string/title_activity_delete_image" />
         <activity
             android:name=".DeletePostActivity"
-            android:label="@string/title_activity_delete_post" >
-        </activity>
+            android:label="@string/title_activity_delete_post" />
         <activity
             android:name=".MyPostsActivity"
-            android:label="@string/title_activity_my_posts" >
+            android:label="@string/title_activity_my_posts">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name=".EditPostActivity"
-            android:label="@string/title_activity_edit_post" >
-        </activity>
+            android:label="@string/title_activity_edit_post" />
         <activity
             android:name=".ProfileDetailActivity"
-            android:label="@string/title_activity_post_detail" >
-        </activity>
+            android:label="@string/title_activity_post_detail" />
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -115,53 +104,67 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:label="@string/title_activity_signup" >
-        </activity>
+            android:label="@string/title_activity_signup" />
         <!-- chat start -->
         <activity
             android:name=".chat.FriendList"
-            android:label="FriendList" >
-        </activity>
+            android:label="FriendList" />
 
         <service android:name=".chat.services.IMService" />
 
         <activity
             android:name=".chat.Login"
-            android:label="Login" >
-        </activity>
+            android:label="Login" />
         <activity
             android:name=".chat.Messaging"
-            android:label="Messaging" >
-        </activity>
+            android:label="Messaging" />
         <activity
             android:name=".chat.SignUp"
-            android:label="SignUp" >
-        </activity>
+            android:label="SignUp" />
         <activity
             android:name=".chat.AddFriend"
-            android:label="AddFriend" >
-        </activity>
+            android:label="AddFriend" />
         <activity
             android:name=".chat.UnApprovedFriendList"
-            android:label="UnApprovedFriendList" >
-        </activity>
+            android:label="UnApprovedFriendList" />
         <!-- end chat -->
         <activity
             android:name=".PostDetailActivity"
             android:label="@string/title_activity_post_detail"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".pagedheader.PagedHeaderActivity"
-            android:label="test" >
-        </activity>
-        <activity android:name=".PostDetailActivity2" >
-        </activity>
+            android:label="test" />
+        <activity android:name=".PostDetailActivity2" />
         <activity
             android:name=".MyLikesActivity"
             android:label="@string/title_activity_my_likes"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ChatRoomsActivity" />
+        <activity android:name=".ChatRoomMessagesActivity" />
+        <activity android:name=".ChatsActivity" />
+        <activity android:name=".MessagesActivity" />
+
+        <!-- START Added for GCM -->
+        <service android:name=".gcm.MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".gcm.MyFcmListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".gcm.GcmIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- END Added for GCM -->
     </application>
 
 </manifest>

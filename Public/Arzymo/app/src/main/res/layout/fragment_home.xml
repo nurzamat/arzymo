@@ -1,6 +1,6 @@
 <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="org.ananasit.arzymo.HomeFragment">
+    android:layout_height="match_parent" tools:context="rekordoo.HomeFragment">
 </FrameLayout>-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         />-->
 
-    <org.ananasit.arzymo.util.SlidingTabLayout
+    <org.ananasit.rekordo.util.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

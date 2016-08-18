@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.ananasit.arzymo.FullScreenViewActivity">
+    tools:context="org.ananasit.rekordo.FullScreenViewActivity">
     <!--<include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar">
@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <org.ananasit.arzymo.lib.CirclePageIndicator
+    <org.ananasit.rekordo.lib.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

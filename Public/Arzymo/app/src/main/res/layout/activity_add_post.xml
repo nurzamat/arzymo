@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.ananasit.arzymo.AddPostActivity">
+    tools:context="org.ananasit.rekordo.AddPostActivity">
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar">
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"/>
-            <org.ananasit.arzymo.lib.CirclePageIndicator
+            <org.ananasit.rekordo.lib.CirclePageIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.ananasit.arzymo.CategoriesActivity">
+    tools:context="org.ananasit.rekordo.CategoriesActivity">
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar">

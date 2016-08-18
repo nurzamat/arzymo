@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:context="org.ananasit.arzymo.SubcatsActivity">
+tools:context="org.ananasit.rekordo.SubcatsActivity">
 <include
     android:id="@+id/tool_bar"
     layout="@layout/tool_bar">

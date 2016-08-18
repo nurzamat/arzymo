@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "114438894656",
+    "firebase_url": "https://rekordo-b52b5.firebaseio.com",
+    "project_id": "rekordo-b52b5",
+    "storage_bucket": "rekordo-b52b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114438894656:android:503c0af3810890d8",
+        "android_client_info": {
+          "package_name": "org.ananasit.rekordo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114438894656-q7vc83n3k8kd19l4lonf40qr266js37q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.ananasit.rekordo",
+            "certificate_hash": "052634B37ABB275CD01FF63D12C432570733425D"
+          }
+        },
+        {
+          "client_id": "114438894656-14j6oi4dfnnu673c6d83orf3ve7o2f3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQe-2xmDQsaBOZJz86ktglmi5WzyOI9uM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114438894656-14j6oi4dfnnu673c6d83orf3ve7o2f3g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
