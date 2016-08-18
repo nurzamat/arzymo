@@ -1,4 +1,4 @@
-package org.ananasit.arzymo;
+package org.ananasit.rekordo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,14 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import org.ananasit.arzymo.adapter.PlaceSlidesFragmentAdapter;
-import org.ananasit.arzymo.lib.CirclePageIndicator;
-import org.ananasit.arzymo.model.Category;
-import org.ananasit.arzymo.util.ActionType;
-import org.ananasit.arzymo.util.ApiHelper;
-import org.ananasit.arzymo.util.CategoryType;
-import org.ananasit.arzymo.util.GlobalVar;
-import org.ananasit.arzymo.util.Utils;
+import org.ananasit.rekordo.adapter.PlaceSlidesFragmentAdapter;
+import org.ananasit.rekordo.lib.CirclePageIndicator;
+import org.ananasit.rekordo.model.Category;
+import org.ananasit.rekordo.util.ActionType;
+import org.ananasit.rekordo.util.ApiHelper;
+import org.ananasit.rekordo.util.CategoryType;
+import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.Utils;
 import org.json.JSONObject;
 
 public class AddPostActivity extends AppCompatActivity {
