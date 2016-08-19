@@ -33,55 +33,6 @@ public class Utils {
         return (int) context.getResources().getDimension(R.dimen.tabsHeight);
     }
 
-    public static void saveTokenToPreferences(Context context, String gcm_token)
-    {
-        SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
-        SharedPreferences.Editor editor = sp.edit();
-
-        Log.i("saveTokenToPreferences", "gcm_token: " + gcm_token);
-
-        editor.putString(Constants.GCM_TOKEN, gcm_token);
-        editor.commit();
-    }
-
-    public static String getTokenFromPreferences(Context context)
-    {
-        SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
-        return sp.getString(Constants.GCM_TOKEN, "");
-    }
-
-    public static void saveUserToPreferences(Context context, User user)
-    {
-        SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
-        SharedPreferences.Editor editor = sp.edit();
-
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        Log.i("saveUserToPreferences", "json: " + json);
-
-        editor.putString(Constants.USER, json);
-        editor.commit();
-    }
-
-    public static User getUserFromPreferences(Context context)
-    {
-        try
-        {
-            SharedPreferences sp = context.getSharedPreferences(Constants.ARZYMO, 0);
-            Gson gson = new Gson();
-            String json = sp.getString(Constants.USER, "");
-            Log.i("getUserFromPreferences", "json: " + json);
-            User obj = gson.fromJson(json, User.class);
-            return obj;
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Log.i("getPref exception", "message: " + ex.getMessage());
-            return null;
-        }
-    }
-
     public static int getActionTypeValue(ActionType _actionType)
     {
         int x = 0;

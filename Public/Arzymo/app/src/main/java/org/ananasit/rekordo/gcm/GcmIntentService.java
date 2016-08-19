@@ -70,7 +70,7 @@ public class GcmIntentService extends IntentService {
             Log.e(TAG, "GCM Registration Token: " + token);
 
             // sending the registration id to our server
-            if(!token.equals(Utils.getTokenFromPreferences(getApplicationContext())))
+            if(!token.equals(AppController.getInstance().getPrefManager().getToken()))
             sendRegistrationToServer(token);
 
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class GcmIntentService extends IntentService {
                         Intent registrationComplete = new Intent(Constants.SENT_TOKEN_TO_SERVER);
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(registrationComplete);
 
-                        Utils.saveTokenToPreferences(getApplicationContext(), token);
+                        AppController.getInstance().getPrefManager().saveToken(token);
                     } else {
                         Toast.makeText(getApplicationContext(), "Unable to send gcm registration id to our sever. " + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
                     }

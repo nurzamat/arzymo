@@ -12,9 +12,6 @@ import org.ananasit.rekordo.util.LruBitmapCache;
 import org.ananasit.rekordo.util.MyPreferenceManager;
 import org.ananasit.rekordo.util.SslHttpStack;
 
-/**
- * Created by User on 16.12.2014.
- */
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();

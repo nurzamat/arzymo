@@ -2,9 +2,6 @@ package org.ananasit.rekordo.model;
 
 import java.io.Serializable;
 
-/**
- * Created by Lincoln on 07/01/16.
- */
 public class ChatRoom implements Serializable {
     String id, name, lastMessage, timestamp;
     int unreadCount;

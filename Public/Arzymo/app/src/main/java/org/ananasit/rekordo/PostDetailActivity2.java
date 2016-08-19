@@ -126,18 +126,20 @@ public class PostDetailActivity2 extends AppCompatActivity {
             count++;
             String url;
 
+            MenuItem menuItem = mOptionsMenu.findItem(R.id.action_like);
+
             if(count < 10)
             {
                 if(like)
                 {
                     like = false;
-                    mOptionsMenu.findItem(R.id.action_like).setIcon(R.drawable.ic_action_about);
+                    menuItem.setIcon(R.drawable.ic_action_about);
                     url = ApiHelper.POST_URL + "/" + p.getId() + "/" + client.getId() + "/like/" + 0;
                 }
                 else
                 {
                     like = true;
-                    mOptionsMenu.findItem(R.id.action_like).setIcon(R.drawable.ic_action_like);
+                    menuItem.setIcon(R.drawable.ic_action_like);
                     url = ApiHelper.POST_URL + "/" + p.getId() + "/" + client.getId() + "/like/" + 1;
                 }
 

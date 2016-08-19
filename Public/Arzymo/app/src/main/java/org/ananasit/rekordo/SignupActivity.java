@@ -171,7 +171,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     AppController appcon = AppController.getInstance();
                     appcon.setUser(user);
-                    Utils.saveUserToPreferences(getApplicationContext(), user);
+                    appcon.getPrefManager().saveUser(user);
                 }
             }
             catch (Exception ex)

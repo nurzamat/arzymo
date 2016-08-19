@@ -117,7 +117,7 @@ public class StartActivity extends AppCompatActivity {
             {
                 AppController appcon = AppController.getInstance();
 
-                User user = Utils.getUserFromPreferences(getApplicationContext());
+                User user = appcon.getPrefManager().getUser();
                 Intent in;
                 if(user != null)
                 {

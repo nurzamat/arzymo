@@ -9,9 +9,6 @@ import com.google.gson.Gson;
 import org.ananasit.rekordo.model.User;
 
 
-/**
- * Created by Lincoln on 07/01/16.
- */
 public class MyPreferenceManager {
 
     private String TAG = MyPreferenceManager.class.getSimpleName();
@@ -28,45 +25,54 @@ public class MyPreferenceManager {
     // Shared pref mode
     int PRIVATE_MODE = 0;
 
-    // Sharedpref file name
-    private static final String PREF_NAME = "androidhive_gcm";
-
     // All Shared Preferences Keys
-    private static final String KEY_USER_ID = "user_id";
-    private static final String KEY_USER_NAME = "user_name";
-    private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_NOTIFICATIONS = "notifications";
 
     // Constructor
     public MyPreferenceManager(Context context) {
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(Constants.ARZYMO, PRIVATE_MODE);
         editor = pref.edit();
     }
 
 
-    public void storeUser(User user) {
-        editor.putString(KEY_USER_ID, user.getId());
-        editor.putString(KEY_USER_NAME, user.getName());
-        editor.putString(KEY_USER_EMAIL, user.getEmail());
-        editor.commit();
+    public void saveUser(User user)
+    {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        Log.i("saveUserToPreferences", "json: " + json);
 
-        Log.e(TAG, "User is stored in shared preferences. " + user.getName() + ", " + user.getEmail());
+        editor.putString(Constants.USER, json);
+        editor.commit();
     }
 
     public User getUser() {
-        User user = null;
-        if (pref.getString(KEY_USER_ID, null) != null) {
-            String id, name, email;
-            id = pref.getString(KEY_USER_ID, null);
-            name = pref.getString(KEY_USER_NAME, null);
-            email = pref.getString(KEY_USER_EMAIL, null);
-
-            user = new User(id, name, email);
+        try
+        {
+            Gson gson = new Gson();
+            String json = pref.getString(Constants.USER, "");
+            Log.i("getUserFromPreferences", "json: " + json);
+            User obj = gson.fromJson(json, User.class);
+            return obj;
         }
-        else user = Utils.getUserFromPreferences(_context);
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Log.i("getPref exception", "message: " + ex.getMessage());
+            return null;
+        }
+    }
 
-        return user;
+    public void saveToken(String gcm_token)
+    {
+        Log.i("saveTokenToPreferences", "gcm_token: " + gcm_token);
+        editor.putString(Constants.GCM_TOKEN, gcm_token);
+        editor.commit();
+    }
+
+    public String getToken()
+    {
+        return pref.getString(Constants.GCM_TOKEN, "");
     }
 
     public void addNotification(String notification) {

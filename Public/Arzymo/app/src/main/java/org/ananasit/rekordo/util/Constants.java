@@ -7,8 +7,6 @@ public final class Constants {
 
     public static final String ARZYMO = "rekordo";
     public static final String USER = "user";
-    public static final int def_home = 10;
-
     // Number of columns of Grid View
     public static final int NUM_OF_COLUMNS = 3;
 
