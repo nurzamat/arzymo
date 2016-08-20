@@ -10,8 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import org.ananasit.rekordo.adapter.CategoriesRecyclerAdapter;
-import org.ananasit.rekordo.adapter.FullScreenImageAdapter;
+import org.ananasit.rekordo.adapter.PostImageAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.util.GlobalVar;
@@ -23,7 +24,7 @@ public class PostDetailActivity extends AppCompatActivity {
     CategoriesRecyclerAdapter adapter;
 
     ViewPager mPager;
-    FullScreenImageAdapter mAdapter;
+    PostImageAdapter mAdapter;
     LinearLayout layout;
     CirclePageIndicator mIndicator;
     private Post p = GlobalVar._Post;
@@ -35,7 +36,7 @@ public class PostDetailActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+/*my
         layout = (LinearLayout) findViewById(R.id.layout);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +44,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 Toast.makeText(PostDetailActivity.this, "layout clicked ", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,17 +75,17 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void ViewPagerWork() {
         int color = getResources().getColor(R.color.blue_dark);
-        mAdapter = new FullScreenImageAdapter(PostDetailActivity.this, p);
+        mAdapter = new PostImageAdapter(PostDetailActivity.this, p);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-/*
+
         mPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(PostDetailActivity.this, "clicked ", Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
         mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFillColor(color);
         mIndicator.setStrokeColor(color);

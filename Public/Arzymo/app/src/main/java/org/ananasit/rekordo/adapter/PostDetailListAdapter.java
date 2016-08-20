@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import org.ananasit.rekordo.AppController;
+import org.ananasit.rekordo.PostDetailActivity;
 import org.ananasit.rekordo.PostDetailActivity2;
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Post;
@@ -146,7 +147,7 @@ public class PostDetailListAdapter extends BaseAdapter {
                 {
                     GlobalVar._Post = _p;
                     //Intent i = new Intent(activity, FullScreenViewActivity.class);
-                    Intent i = new Intent(activity, PostDetailActivity2.class);
+                    Intent i = new Intent(activity, PostDetailActivity.class);
                     activity.startActivity(i);
                 }
                 else Toast.makeText(activity, R.string.no_photo, Toast.LENGTH_SHORT).show();
