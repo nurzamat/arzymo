@@ -76,7 +76,7 @@ public class ChatRoomMessagesActivity extends AppCompatActivity {
         messageArrayList = new ArrayList<>();
 
         // self user id is to identify the message owner
-        String selfUserId = AppController.getInstance().getPrefManager().getUser().getId();
+        String selfUserId = AppController.getInstance().getUser().getId();
 
         mAdapter = new ChatRoomThreadAdapter(this, messageArrayList, selfUserId);
 
@@ -218,7 +218,7 @@ public class ChatRoomMessagesActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id", AppController.getInstance().getPrefManager().getUser().getId());
+                params.put("user_id", AppController.getInstance().getUser().getId());
                 params.put("message", message);
 
                 Log.e(TAG, "Params: " + params.toString());

@@ -84,7 +84,7 @@ public class GcmIntentService extends IntentService {
     private void sendRegistrationToServer(final String token) {
 
         // checking for valid login session
-        User user = AppController.getInstance().getPrefManager().getUser();
+        User user = AppController.getInstance().getUser();
         if (user == null) {
             // TODO
             // user not found, redirecting him to login screen

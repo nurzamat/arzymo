@@ -27,6 +27,7 @@ public class ApiHelper {
     public static final String SUBCATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/subcategory";
     public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
     public static final String IMAGES_URL = ARZYMO_URL + "/mobylive/v1/images";
+    public static final String USER_PROFILE = ARZYMO_URL + "/mobylive/v1/user/profile";
     //group chat
     public static final String BASE_URL = ARZYMO_URL + "/mobylive/v1";
     public static final String LOGIN = BASE_URL + "/user/login";

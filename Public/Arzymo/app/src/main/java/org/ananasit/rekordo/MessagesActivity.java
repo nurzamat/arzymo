@@ -73,7 +73,7 @@ public class MessagesActivity extends AppCompatActivity {
         messageArrayList = new ArrayList<>();
 
         // self user id is to identify the message owner
-        selfUserId = AppController.getInstance().getPrefManager().getUser().getId();
+        selfUserId = AppController.getInstance().getUser().getId();
 
         mAdapter = new MessagesAdapter(this, messageArrayList, selfUserId);
 
@@ -215,7 +215,7 @@ public class MessagesActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id", AppController.getInstance().getPrefManager().getUser().getId());
+                params.put("user_id", AppController.getInstance().getUser().getId());
                 params.put("message", message);
 
                 Log.e(TAG, "Params: " + params.toString());

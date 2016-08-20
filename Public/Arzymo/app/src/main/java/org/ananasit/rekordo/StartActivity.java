@@ -115,13 +115,11 @@ public class StartActivity extends AppCompatActivity {
             }
             else
             {
-                AppController appcon = AppController.getInstance();
-
-                User user = appcon.getPrefManager().getUser();
+                User user = AppController.getInstance().getUser();
                 Intent in;
                 if(user != null)
                 {
-                    appcon.setUser(user);
+                    AppController.getInstance().setUser(user);
                     in = new Intent(StartActivity.this, MainActivity.class);
                 }
                 else in = new Intent(StartActivity.this, SignupActivity.class);

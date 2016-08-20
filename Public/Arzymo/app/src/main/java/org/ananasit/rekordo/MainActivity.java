@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        in = new Intent(MainActivity.this, ProfileDetailActivity.class);
+                        in = new Intent(MainActivity.this, MyProfileActivity.class);
                         startActivity(in);
                         //Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;

@@ -87,14 +87,17 @@ public class AppController extends Application {
     //my
     public User getUser()
     {
-        if(_user != null)
+        if(_user == null)
+            _user = getPrefManager().getUser();
+
         return _user;
-        else return getPrefManager().getUser();
     }
 
     public void setUser(User user)
     {
-        this._user = user;
-    }
+        if(this._user != null && this._user != user)
+            getPrefManager().saveUser(user);
 
+            this._user = user;
+    }
 }

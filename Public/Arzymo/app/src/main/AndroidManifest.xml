@@ -85,9 +85,6 @@
             android:name=".EditPostActivity"
             android:label="@string/title_activity_edit_post" />
         <activity
-            android:name=".ProfileDetailActivity"
-            android:label="@string/title_activity_post_detail" />
-        <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:launchMode="singleTop">
@@ -165,6 +162,9 @@
         </service>
 
         <!-- END Added for GCM -->
+        <activity
+            android:name=".MyProfileActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

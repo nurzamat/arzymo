@@ -201,7 +201,10 @@
     <string name="hint_email">Email</string>
     <string name="err_msg_name">Enter full name</string>
     <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_phone">Enter valid phone number</string>
     <string name="title_activity_chat_room_discussion">ChatRoomDiscussionActivity</string>
     <string name="action_logout">Logout</string>
     <string name="title_activity_messages">MessagesActivity</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="title_activity_my_profile">MyProfileActivity</string>
 </resources>

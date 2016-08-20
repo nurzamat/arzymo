@@ -56,7 +56,7 @@ public class ChatsActivity extends AppCompatActivity {
          * Check for login session. If not logged in launch
          * login activity
          * */
-        if (AppController.getInstance().getPrefManager().getUser() == null) {
+        if (AppController.getInstance().getUser() == null) {
             launchLoginActivity();
         }
 

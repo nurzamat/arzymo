@@ -27,6 +27,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.ananasit.rekordo.AppController;
 import org.ananasit.rekordo.ChatRoomMessagesActivity;
 import org.ananasit.rekordo.ChatRoomsActivity;
+import org.ananasit.rekordo.ChatsActivity;
 import org.ananasit.rekordo.model.Message;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.Constants;
@@ -63,7 +64,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         if (flag == null)
             return;
 
-        if(AppController.getInstance().getPrefManager().getUser() == null){
+        if(AppController.getInstance().getUser() == null){
             // user is not logged in, skipping push notification
             Log.e(TAG, "user is not logged in, skipping push notification");
             return;
@@ -110,7 +111,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 // skip the message if the message belongs to same user as
                 // the user would be having the same message when he was sending
                 // but it might differs in your scenario
-                if (uObj.getString("user_id").equals(AppController.getInstance().getPrefManager().getUser().getId())) {
+                if (uObj.getString("user_id").equals(AppController.getInstance().getUser().getId())) {
                     Log.e(TAG, "Skipping the push message as it belongs to same user");
                     return;
                 }
@@ -193,7 +194,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 } else {
 
                     // app is in background. show the message in notification try
-                    Intent resultIntent = new Intent(getApplicationContext(), ChatRoomsActivity.class);
+                    Intent resultIntent = new Intent(getApplicationContext(), ChatsActivity.class);
 
                     // check for push notification image attachment
                     if (TextUtils.isEmpty(imageUrl)) {
