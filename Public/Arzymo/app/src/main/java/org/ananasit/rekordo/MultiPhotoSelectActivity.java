@@ -1,13 +1,17 @@
 package org.ananasit.rekordo;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -35,10 +39,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MultiPhotoSelectActivity extends AppCompatActivity {
+
+    private String TAG = MultiPhotoSelectActivity.class.getSimpleName();
     private ArrayList<String> imageUrls;
     private DisplayImageOptions options;
     private ImageAdapter imageAdapter;
-    private ImageLoader imageLoader;
+    private ImageLoader imageLoader = null;
     private int columnWidth;
     private int screenWidth;
     private GridView gridView;
@@ -47,7 +53,11 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//image loader
+
+        if(!isStoragePermissionGranted())
+          return;
+
+        //image loader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .threadPoolSize(3)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
@@ -59,7 +69,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
 
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
-//
+
         setContentView(R.layout.gallery_gridview);
         gridView = (GridView) findViewById(R.id.gridview);
         InitilizeGridLayout();
@@ -96,11 +106,11 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
           }
           });
           */
-
     }
 
     @Override
     protected void onStop() {
+        if(imageLoader != null)
         imageLoader.stop();
         super.onStop();
     }
@@ -176,6 +186,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
             mList = new ArrayList<String>();
             this.mList = imageList;
         }
+
         public ArrayList<String> getCheckedItems() {
 
             ArrayList<String> mTempArry = new ArrayList<String>();
@@ -316,6 +327,41 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
         catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+
+            Intent in = new Intent(this, MultiPhotoSelectActivity.class);
+            startActivity(in);
+        }
+        finish();
+    }
+
+    public  boolean isStoragePermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
         }
     }
 }
