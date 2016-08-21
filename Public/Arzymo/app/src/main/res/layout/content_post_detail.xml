@@ -11,11 +11,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_post_detail"
     tools:context="org.ananasit.rekordo.PostDetailActivity">
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contentPostDetail"
+        android:layout_below="@id/indicator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 </RelativeLayout>

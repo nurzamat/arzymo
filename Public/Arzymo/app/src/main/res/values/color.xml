@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="button_pressed">#FFFF65</color>
-    <color name="dark_green">#ff669900</color>
     <color name="green">#7DC308</color>
     <color name="white">#ffffffff</color>
-    <color name="gray">#C0C0C0</color>
-    <color name="ColorPrimary0">#e62117</color>
-    <color name="ColorPrimaryDark0">#c31c13</color>
     <color name="ColorPrimary">#7DC308</color>
-    <color name="ColorPrimaryDark">#ff669900</color>
-    <color name="tabsScrollColor">#8a140e</color>
     <color name="black">#000</color>
-    <color name="red">#ffcc0000</color>
-    <color name="white_red">#FFB000</color>
-    <color name="base">#343C4F</color>
-    <color name="base_color0">#FFCF36</color>
-    <color name="base_color1">#ff669900</color>
-    <color name="base_color">#7DC308</color>
 
-    <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#992416</color>
     <color name="list_divider">#272727</color>
-    <color name="counter_text_bg">#626262</color>
-    <color name="counter_text_color">#c5c4c4</color>
 
     <color name="genre">#666666</color>
     <color name="price">#888888</color>
-    <color name="list_row_start_color">#ffffff</color>
-    <color name="list_row_end_color">#ffffff</color>
-    <color name="list_row_hover_start_color">#ebeef0</color>
-    <color name="list_row_hover_end_color">#ebeef0</color>
-    <color name="list_divider2">#272727</color>
     <color name="blue">#00abea</color>
     <color name="blue_light">#a1d4e9</color>
     <color name="blue_dark">#62b7da</color>
@@ -43,27 +20,10 @@
     <color name="color_primary_blue">#2196f3</color>
     <color name="color_primary_blue_dark">#1976d2</color>
     <color name="color_accent_pink">#ff4081</color>
-    <color name="color_shadow">#44000000</color>
 
-    <color name="material_blue">#5677fc</color>
-    <color name="material_light_blue">#738ffe</color>
-    <color name="almost_white_bg">#FAFAFA</color>
-    <color name="dark_gray_bg">#2E2E2E</color>
-    <color name="listText">#2E2E2E</color>
     <color name="material_green">#0a8f08</color>
-    <color name="material_light_green">#2baf2b</color>
-    <color name="material_red">#e51c23</color>
-    <color name="material_light_red">#e84e40</color>
-    <color name="material_pink">#e91e63</color>
-    <color name="material_light_pink">#f06292</color>
-    <color name="material_purple">#9c27b0</color>
-    <color name="material_light_purple">#ba68c8</color>
     <color name="material_teal">#009688</color>
     <color name="material_light_teal">#4db6ac</color>
-    <color name="material_lighter_blue">#03a9f4</color>
-    <color name="material_lighter_light_blue">#4fc3f7</color>
     <color name="colorPrimary">#7B1FA2</color>
-    <color name="colorPrimaryDark">#6A1B9A</color>
-    <color name="colorAccent">#EA80FC</color>
     <color name="bg_bubble_self">#E1E1E1</color>
 </resources>

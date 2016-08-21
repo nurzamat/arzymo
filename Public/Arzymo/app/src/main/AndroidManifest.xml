@@ -127,7 +127,6 @@
         <!-- end chat -->
         <activity
             android:name=".PostDetailActivity"
-            android:label="@string/title_activity_post_detail"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".pagedheader.PagedHeaderActivity"
@@ -141,6 +140,9 @@
         <activity android:name=".ChatRoomMessagesActivity" />
         <activity android:name=".ChatsActivity" />
         <activity android:name=".MessagesActivity" />
+        <activity
+            android:name=".MyProfileActivity"
+            android:theme="@style/AppTheme"></activity>
 
         <!-- START Added for GCM -->
         <service android:name=".gcm.MyInstanceIDListenerService">
@@ -162,9 +164,6 @@
         </service>
 
         <!-- END Added for GCM -->
-        <activity
-            android:name=".MyProfileActivity"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import org.ananasit.rekordo.chat.SignUp;
 import org.ananasit.rekordo.util.GlobalVar;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_settings:
-                        //Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
-                        in = new Intent(MainActivity.this, SignUp.class);
-                        startActivity(in);
+                        Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
+                        //in = new Intent(MainActivity.this, SignUp.class);
+                        //startActivity(in);
                         return true;
                     case R.id.nav_about:
                         Toast.makeText(getApplicationContext(),"About Selected",Toast.LENGTH_SHORT).show();
