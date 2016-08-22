@@ -16,7 +16,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import org.ananasit.rekordo.AppController;
 import org.ananasit.rekordo.PostDetailActivity;
-import org.ananasit.rekordo.PostDetailActivity2;
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;

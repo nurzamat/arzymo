@@ -106,7 +106,6 @@
         <activity
             android:name=".PostDetailActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".PostDetailActivity2" />
         <activity
             android:name=".MyLikesActivity"
             android:label="@string/title_activity_my_likes"
