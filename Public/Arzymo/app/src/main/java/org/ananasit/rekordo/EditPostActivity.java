@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import org.ananasit.rekordo.adapter.PlaceSlidesFragmentAdapter;
+import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Category;
 import org.ananasit.rekordo.model.Post;
@@ -189,7 +189,7 @@ public class EditPostActivity extends AppCompatActivity {
 
     private void ViewPagerWork() {
         int color = getResources().getColor(R.color.blue_dark);
-        mAdapter = new PlaceSlidesFragmentAdapter(EditPostActivity.this);
+        mAdapter = new PostViewPagerAdapter(EditPostActivity.this);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);

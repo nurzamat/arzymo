@@ -1,131 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="org.ananasit.rekordo.AddPostActivity">
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/tool_bar">
-    </include>
 
-    <ScrollView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <RelativeLayout
-            xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <LinearLayout android:focusable="true"
-                android:focusableInTouchMode="true" android:layout_width="0px"
-                android:layout_height="0px" />
-
-            <ProgressBar
-                android:id="@+id/progBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_centerInParent="true"/>
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:layout_alignParentTop="true"/>
-            <org.ananasit.rekordo.lib.CirclePageIndicator
-                android:id="@+id/indicator"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:title=" "
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <LinearLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/pager"
-                android:layout_centerHorizontal="true"/>
-
-            <Button
-                android:id="@+id/btnCategory"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax">
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="250dp"
+                    android:paddingTop="10dp"
+                    android:layout_gravity="center"
+                    android:overScrollMode="ifContentScrolls" />
+                <org.ananasit.rekordo.lib.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dip"
-                android:textSize="15dp"
-                android:text="@string/choose_category_ru"
-                android:background="@drawable/btn_selector"
-                android:textColor = "@android:color/white"
-                android:layout_below="@+id/indicator"/>
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-            <EditText android:id="@+id/displayed_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:hint="Ваше имя"
-                android:singleLine="true"
-                android:textColorHint="@color/blue_light"
-                android:layout_below="@+id/btnCategory"
-                android:visibility="invisible"/>
+    <include layout="@layout/content_add_post" />
 
-            <Spinner android:id="@+id/action_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/displayed_name"
-                android:visibility="invisible"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end" />
 
-            <Spinner android:id="@+id/sex_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@id/action_spinner"
-                android:layout_below="@+id/displayed_name"
-                android:visibility="invisible"/>
-
-            <Spinner android:id="@+id/birth_year_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@id/sex_spinner"
-                android:layout_below="@+id/displayed_name"
-                android:visibility="invisible"/>
-
-            <EditText android:id="@+id/content"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:hint="Текст объявления"
-                android:singleLine="false"
-                android:textColorHint="@color/blue_light"
-                android:maxLength="81"
-                android:layout_below="@+id/action_spinner"/>
-
-            <EditText android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:hint="@string/price_hint"
-                android:singleLine="true"
-                android:textColorHint="@color/blue_light"
-                android:inputType="numberDecimal"
-                android:maxLength="18"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/content"
-                android:visibility="invisible"/>
-            <Spinner android:id="@+id/price_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@+id/price"
-                android:layout_below="@+id/content"
-                android:visibility="invisible"/>
-            <Button
-                android:id="@+id/btnPost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="1dp"
-                android:text="@string/add"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-    </ScrollView>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

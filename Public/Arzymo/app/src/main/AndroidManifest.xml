@@ -50,9 +50,6 @@
                 android:value=".SearchableActivity" />
         </activity>
         <activity
-            android:name=".AddPostActivity"
-            android:label="@string/add" />
-        <activity
             android:name=".CategoriesActivity"
             android:label="@string/title_activity_categories"
             android:launchMode="singleInstance" />
@@ -116,7 +113,7 @@
         <activity android:name=".MessagesActivity" />
         <activity
             android:name=".MyProfileActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <!-- START Added for GCM -->
         <service android:name=".gcm.MyInstanceIDListenerService">
@@ -138,6 +135,9 @@
         </service>
 
         <!-- END Added for GCM -->
+        <activity
+            android:name=".AddPostActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

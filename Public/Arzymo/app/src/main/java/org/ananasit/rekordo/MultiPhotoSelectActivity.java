@@ -30,7 +30,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import org.ananasit.rekordo.adapter.PlaceSlidesFragmentAdapter;
 import org.ananasit.rekordo.util.Constants;
 import org.ananasit.rekordo.util.GlobalVar;
 import java.io.File;
@@ -319,7 +318,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
         try
         {
             GlobalVar.mSparseBooleanArray.clear();
-            Context context = PlaceSlidesFragmentAdapter.context;
+            Context context = AddPostActivity.context;
             Intent in = new Intent(context, MultiPhotoSelectActivity.class);
             context.startActivity(in);
             finish();

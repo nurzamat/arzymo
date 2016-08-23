@@ -13,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import org.ananasit.rekordo.adapter.CategoriesRecyclerAdapter;
-import org.ananasit.rekordo.adapter.PostImageAdapter;
+import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
@@ -29,7 +28,7 @@ public class PostDetailActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     CategoriesRecyclerAdapter adapter;
     ViewPager mPager;
-    PostImageAdapter mAdapter;
+    PostViewPagerAdapter mAdapter;
     LinearLayout layout;
     CirclePageIndicator mIndicator;
     private Post p = GlobalVar._Post;
@@ -99,16 +98,9 @@ public class PostDetailActivity extends AppCompatActivity {
         {
             if(p.getImages() != null && p.getImages().size() > 0)
             {
-                mAdapter = new PostImageAdapter(PostDetailActivity.this, p);
+                mAdapter = new PostViewPagerAdapter(PostDetailActivity.this, p.getImages());
                 mPager = (ViewPager) findViewById(R.id.pager);
                 mPager.setAdapter(mAdapter);
-
-                mPager.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(PostDetailActivity.this, "clicked ", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
                 int color = ContextCompat.getColor(this, R.color.white);
                 mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);

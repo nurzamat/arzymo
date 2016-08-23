@@ -1,11 +1,15 @@
 package org.ananasit.rekordo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import org.ananasit.rekordo.adapter.PlaceSlidesFragmentAdapter;
+import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Category;
 import org.ananasit.rekordo.util.ActionType;
@@ -30,7 +34,7 @@ import org.json.JSONObject;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    private static final String TAG =  "[add post response]";
+    private static final String TAG =  AddPostActivity.class.getSimpleName();
     ViewPager mPager;
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
@@ -49,19 +53,24 @@ public class AddPostActivity extends AppCompatActivity {
     int sex = 2; //0 - female, 1 - male
     String birth_year = "";
     String displayed_name = "";
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_add_post);
-
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = AddPostActivity.this;
 
-        //toolbar.setSubtitle(GlobalVar.SubCategory.getName());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(context, MultiPhotoSelectActivity.class);
+                startActivity(in);
+            }
+        });
 
         //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,7 +89,7 @@ public class AddPostActivity extends AppCompatActivity {
         //spinner job
         action_spinner = (Spinner) findViewById(R.id.action_spinner);
         price_spinner = (Spinner) findViewById(R.id.price_spinner);
-   
+
         //start Dating
         etDisplayed_name = (EditText) findViewById(R.id.displayed_name);
         etDisplayed_name.setText(displayed_name);
@@ -104,18 +113,17 @@ public class AddPostActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
-
     }
 
     private void ViewPagerWork() {
-        int color = getResources().getColor(R.color.blue_dark);
-        mAdapter = new PlaceSlidesFragmentAdapter(AddPostActivity.this);
+        int color = ContextCompat.getColor(this, R.color.white);
+        mAdapter = new PostViewPagerAdapter(AddPostActivity.this);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFillColor(color);
         mIndicator.setStrokeColor(color);
-        mIndicator.setRadius(5);
+        mIndicator.setRadius(15);
         mIndicator.setViewPager(mPager);
         mIndicator.setSnap(true);
     }
@@ -495,7 +503,7 @@ public class AddPostActivity extends AppCompatActivity {
         {
             dialog.dismiss();
             Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
-           // Intent in = new Intent(context, HomeActivity.class);
+            // Intent in = new Intent(context, HomeActivity.class);
             //in.putExtra("case", 1);
             //startActivity(in);
             //clear images

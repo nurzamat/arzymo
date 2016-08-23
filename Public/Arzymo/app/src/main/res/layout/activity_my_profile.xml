@@ -8,7 +8,7 @@
     tools:context="org.ananasit.rekordo.MyProfileActivity">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="@dimen/app_bar_height_profile"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
         <android.support.design.widget.CollapsingToolbarLayout

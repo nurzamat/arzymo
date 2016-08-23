@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.ananasit.rekordo.AddPostActivity"
+    tools:showIn="@layout/activity_add_post">
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <LinearLayout android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px" />
+
+        <Button
+            android:id="@+id/btnCategory"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="70dip"
+            android:textSize="15dp"
+            android:text="@string/choose_category_ru"
+            android:background="@drawable/btn_selector"
+            android:textColor = "@android:color/white"
+            android:layout_below="@+id/indicator"/>
+
+        <EditText android:id="@+id/displayed_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:hint="Ваше имя"
+            android:singleLine="true"
+            android:textColorHint="@color/blue_light"
+            android:layout_below="@+id/btnCategory"
+            android:visibility="invisible"/>
+
+        <Spinner android:id="@+id/action_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/displayed_name"
+            android:visibility="invisible"/>
+
+        <Spinner android:id="@+id/sex_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/action_spinner"
+            android:layout_below="@+id/displayed_name"
+            android:visibility="invisible"/>
+
+        <Spinner android:id="@+id/birth_year_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/sex_spinner"
+            android:layout_below="@+id/displayed_name"
+            android:visibility="invisible"/>
+
+        <EditText android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:hint="Текст объявления"
+            android:singleLine="false"
+            android:textColorHint="@color/blue_light"
+            android:maxLength="81"
+            android:layout_below="@+id/action_spinner"/>
+
+        <EditText android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/price_hint"
+            android:singleLine="true"
+            android:textColorHint="@color/blue_light"
+            android:inputType="numberDecimal"
+            android:maxLength="18"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/content"
+            android:visibility="invisible"/>
+        <Spinner android:id="@+id/price_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/price"
+            android:layout_below="@+id/content"
+            android:visibility="invisible"/>
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="1dp"
+            android:text="@string/add"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
