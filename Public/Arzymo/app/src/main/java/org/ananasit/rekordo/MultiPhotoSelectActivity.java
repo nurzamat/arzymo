@@ -1,6 +1,5 @@
 package org.ananasit.rekordo;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,114 +8,63 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import org.ananasit.rekordo.adapter.GalleryImageAdapter;
 import org.ananasit.rekordo.util.Constants;
 import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.ItemOffsetDecoration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+/**
+ * Gallery
+ */
 public class MultiPhotoSelectActivity extends AppCompatActivity {
 
+    private GalleryImageAdapter imageAdapter;
     private String TAG = MultiPhotoSelectActivity.class.getSimpleName();
-    private ArrayList<String> imageUrls;
-    private DisplayImageOptions options;
-    private ImageAdapter imageAdapter;
-    private ImageLoader imageLoader = null;
-    private int columnWidth;
-    private int screenWidth;
-    private GridView gridView;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private int columnWidth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gallery);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        if(!isStoragePermissionGranted())
-          return;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //toolbar.setNavigationIcon(R.drawable.ic_exit);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
-        //image loader
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .threadPoolSize(3)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .memoryCacheSize(1500000) // 1.5 Mb
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .build();
-        // Initialize ImageLoader with configuration.
-
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
-
-        setContentView(R.layout.gallery_gridview);
-        gridView = (GridView) findViewById(R.id.gridview);
-        InitilizeGridLayout();
-        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-
-        Cursor imagecursor = getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy + " DESC");
-
-        this.imageUrls = new ArrayList<String>();
-        imageUrls.add("");
-        for (int i = 0; i < imagecursor.getCount(); i++) {
-            imagecursor.moveToPosition(i);
-            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            imageUrls.add(imagecursor.getString(dataColumnIndex));
-
-        }
-
-        options = new DisplayImageOptions.Builder()
-                .showStubImage(R.drawable.default_img)
-                .showImageForEmptyUri(R.drawable.default_img)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build();
-        imageAdapter = new ImageAdapter(this, imageUrls);
-        gridView.setAdapter(imageAdapter);
-        /*
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-          {
-           // startImageGalleryActivity(position);
-          }
-          });
-          */
+        populateImagesFromGallery();
     }
 
-    @Override
-    protected void onStop() {
-        if(imageLoader != null)
-        imageLoader.stop();
-        super.onStop();
-    }
-    public void btnChoosePhotosClick(View v){
+    public void btnChoosePhotosClick()
+    {
         ArrayList<String> selectedItems = imageAdapter.getCheckedItems();
         //Toast.makeText(MultiPhotoSelectActivity.this, "Total photos selected:: " + selectedItems.size(), Toast.LENGTH_SHORT).show();
-        Log.d(MultiPhotoSelectActivity.class.getSimpleName(), "Selected Items: " + selectedItems.toString());
+        Log.d(TAG, "Selected Items: " + selectedItems.toString());
 
         final int len = selectedItems.size();
         int cnt = 0;
@@ -143,138 +91,58 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
             finish();
         }
     }
-    /*private void startImageGalleryActivity(int position) {
-     Intent intent = new Intent(this, ImagePagerActivity.class);
-     intent.putExtra(Extra.IMAGES, imageUrls);
-     intent.putExtra(Extra.IMAGE_POSITION, position);
-     startActivity(intent);
-    }*/
-    private void InitilizeGridLayout() {
+
+    private void populateImagesFromGallery() {
+        if (!isStoragePermissionGranted()) {
+            return;
+        }
+
+        ArrayList<String> imageUrls = loadPhotosFromNativeGallery();
+        initializeRecyclerView(imageUrls);
+        initColumnWidth();
+    }
+
+    private ArrayList<String> loadPhotosFromNativeGallery() {
+        final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
+        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+        Cursor imagecursor = getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                null, orderBy + " DESC");
+
+        ArrayList<String> imageUrls = new ArrayList<String>();
+
+        for (int i = 0; i < imagecursor.getCount(); i++) {
+            imagecursor.moveToPosition(i);
+            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            imageUrls.add(imagecursor.getString(dataColumnIndex));
+
+            //System.out.println("=====> Array path => "+imageUrls.get(i));
+        }
+
+        return imageUrls;
+    }
+
+    private void initializeRecyclerView(ArrayList<String> imageUrls) {
+        imageAdapter = new GalleryImageAdapter(this, imageUrls);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new ItemOffsetDecoration(this, R.dimen.item_offset));
+        recyclerView.setAdapter(imageAdapter);
+    }
+
+    public void initColumnWidth()
+    {
         Resources r = getResources();
         float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 Constants.GRID_PADDING, r.getDisplayMetrics());
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenWidth = metrics.widthPixels;
-
+        int screenWidth = metrics.widthPixels;
         columnWidth = (int) ((screenWidth - ((3 + 1) * padding)) / 3);
-        gridView.setNumColumns(3);
-        gridView.setColumnWidth(columnWidth);
-        gridView.setStretchMode(GridView.NO_STRETCH);
-        gridView.setPadding((int) padding, (int) padding, (int) padding,
-                (int) padding);
-        gridView.setHorizontalSpacing((int) padding);
-        gridView.setVerticalSpacing((int) padding);
-    }
-
-    public class ImageAdapter extends BaseAdapter {
-        ArrayList<String> mList;
-
-        LayoutInflater mInflater;
-
-        Context mContext;
-
-        //SparseBooleanArray mSparseBooleanArray;
-
-        public ImageAdapter(Context context, ArrayList<String> imageList) {
-            // TODO Auto-generated constructor stub
-            mContext = context;
-            mInflater = LayoutInflater.from(mContext);
-            // mSparseBooleanArray = new SparseBooleanArray();
-            mList = new ArrayList<String>();
-            this.mList = imageList;
-        }
-
-        public ArrayList<String> getCheckedItems() {
-
-            ArrayList<String> mTempArry = new ArrayList<String>();
-            for(int i=0;i<mList.size();i++) {
-
-                if(GlobalVar.mSparseBooleanArray.get(i)) {
-
-                    mTempArry.add(mList.get(i));
-                }
-
-            }
-
-            return mTempArry;
-        }
-
-        @Override
-        public int getCount() {
-            return imageUrls.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null) {
-                convertView = mInflater.inflate(R.layout.row_multiphoto_item, null);
-            }
-            CheckBox mCheckBox = (CheckBox) convertView.findViewById(R.id.checkBox1);
-            final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView1);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setTag(position);
-            mCheckBox.setTag(position);
-
-            if(position == 0)
-                imageView.setImageResource(R.drawable.camera59);
-            else
-            {
-                imageLoader.displayImage("file://"+imageUrls.get(position), imageView, options, new SimpleImageLoadingListener()
-                {
-                /*
-                @Override
-                public void onLoadingComplete(Bitmap loadedImage) {
-                    Animation anim = AnimationUtils.loadAnimation(MultiPhotoSelectActivity.this, 0); // R.anim.fade_in
-                    imageView.setAnimation(anim);
-                    anim.start();
-                }
-                */
-                });
-            }
-
-            if(mCheckBox.getTag().equals(0))
-                mCheckBox.setVisibility(View.INVISIBLE);
-            else
-            {
-                mCheckBox.setVisibility(View.VISIBLE);
-                mCheckBox.setChecked(GlobalVar.mSparseBooleanArray.get(position));
-                mCheckBox.setOnCheckedChangeListener(mCheckedChangeListener);
-            }
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v)
-                {
-                    if(v.getTag().equals(0))
-                    {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                    }
-                }
-            });
-
-            return convertView;
-        }
-        CompoundButton.OnCheckedChangeListener mCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
-                GlobalVar.mSparseBooleanArray.put((Integer) buttonView.getTag(), isChecked);
-            }
-        };
     }
 
     public Bitmap decodeFile(String filePath, int WIDTH, int HIGHT) {
@@ -329,6 +197,9 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Callback received when a permissions request has been completed.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults)
@@ -345,7 +216,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
     public  boolean isStoragePermissionGranted()
     {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG,"Permission is granted");
                 return true;
@@ -353,7 +224,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
 
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
                 return false;
             }
@@ -362,5 +233,37 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
             Log.v(TAG,"Permission is granted");
             return true;
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_gallery, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_camera)
+        {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            return true;
+        }
+
+        if (id == R.id.action_select)
+        {
+            btnChoosePhotosClick();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

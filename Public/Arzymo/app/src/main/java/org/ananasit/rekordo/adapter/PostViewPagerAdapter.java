@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+
 import org.ananasit.rekordo.AppController;
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Image;
@@ -80,13 +82,22 @@ public class PostViewPagerAdapter extends PagerAdapter {
             viewLayout = inflater.inflate(R.layout.viewpager_item, container, false);
 
             ImageView imgflag = (ImageView) viewLayout.findViewById(R.id.flag);
-            imgflag.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imgflag.setScaleType(ImageView.ScaleType.FIT_CENTER);
             // Capture position and set to the ImageView
             try
             {
                 if(this.bitmaps != null && this.bitmaps.size() > 0)
                 {
-                    imgflag.setImageBitmap(bitmaps.get(position));
+                    //1-st variant
+                   //imgflag.setImageBitmap(bitmaps.get(position));
+
+                    //2-nd variant
+                    Glide.with(_activity)
+                            .load("file://"+GlobalVar.image_paths.get(position))
+                            .fitCenter()
+                            .placeholder(R.drawable.ic_action_camera)
+                            .error(R.drawable.ic_action_camera)
+                            .into(imgflag);
                 }
                 else
                 {
@@ -110,9 +121,8 @@ public class PostViewPagerAdapter extends PagerAdapter {
             spin.setVisibility(View.VISIBLE);
 
             // thumbnail image
-            //if(_images.get(position).getUrl().equals(""))
-            //   imgDisplay.setDefaultImageResId(R.drawable.default_img);
             imgDisplay.setImageUrl(images.get(position).getUrl(),imageLoader);
+
             if(imgDisplay.getDrawable() != null)
                 spin.setVisibility(View.GONE);
         }

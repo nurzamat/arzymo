@@ -1,8 +1,8 @@
 package org.ananasit.rekordo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.common.api.Api;
 
-import org.ananasit.rekordo.model.Message;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.json.JSONException;
@@ -62,8 +60,8 @@ public class MyProfileActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent in = new Intent(MyProfileActivity.this, MultiPhotoSelectActivity.class);
+                startActivity(in);
             }
         });
 

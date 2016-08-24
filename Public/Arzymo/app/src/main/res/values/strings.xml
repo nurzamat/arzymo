@@ -31,7 +31,7 @@
     <string name="price_hint">Цена    </string>
     <string name="choose_category_ru">Выберите категорию</string>
     <string name="title_activity_categories">CategoriesActivity</string>
-    <string name="title_activity_multi_photo_select">MultiPhotoSelectActivity</string>
+    <string name="title_activity_multi_photo_select"></string>
     <string name="select">Выбрать</string>
 
     <string-array name="price_currencies">
@@ -135,4 +135,8 @@
     <string name="err_msg_name">Enter full name</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_phone">Enter valid phone number</string>
+
+    <string name="permission_rationale">"Storage permission is needed for fetching images from Gallery."</string>
+    <!-- Content descriptions -->
+    <string name="descr_image">Image</string>
 </resources>
