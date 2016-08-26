@@ -19,19 +19,19 @@ public class ApiHelper {
 
     public static final String TAG = "[API]";
     //public static final String ARZYMO_URL = "http://ananasit.org";
-    public static final String ARZYMO_URL = "http://192.168.1.101";
-    public static final String REGISTER_URL = ARZYMO_URL + "/mobylive/v1/register";
-    public static final String CATEGORIES_URL = ARZYMO_URL + "/mobylive/v1/categories";
-    public static final String POST_URL = ARZYMO_URL + "/mobylive/v1/posts";
-    public static final String CATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/category";
-    public static final String SUBCATEGORY_POSTS_URL = ARZYMO_URL + "/mobylive/v1/posts/subcategory";
-    public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
-    public static final String IMAGES_URL = ARZYMO_URL + "/mobylive/v1/images";
-    public static final String USER_PROFILE = ARZYMO_URL + "/mobylive/v1/user/profile";
-    //group chat
+    public static final String ARZYMO_URL = "http://192.168.1.100";
     public static final String BASE_URL = ARZYMO_URL + "/mobylive/v1";
-    public static final String LOGIN = BASE_URL + "/user/login";
+    public static final String REGISTER_URL = BASE_URL + "/register";
+    public static final String CATEGORIES_URL = BASE_URL + "/categories/user/_ID_";
+    public static final String POST_URL = BASE_URL + "/posts";
+    public static final String CATEGORY_POSTS_URL = BASE_URL + "/posts/category";
+    public static final String SUBCATEGORY_POSTS_URL = BASE_URL + "/posts/subcategory";
+    public static final String MEDIA_URL = ARZYMO_URL + "/mobylive/media";
+    public static final String IMAGES_URL = BASE_URL + "/images";
+    public static final String USER_PROFILE = BASE_URL + "/user/profile";
+    public static final String LOGIN_URL = BASE_URL + "/login";
     public static final String USER = BASE_URL + "/user/_ID_";
+    //group chat
     public static final String CHAT_ROOMS = BASE_URL + "/chat_rooms";
     public static final String CHAT_THREAD = BASE_URL + "/chat_rooms/_ID_";
     public static final String CHAT_ROOM_MESSAGE = BASE_URL + "/chat_rooms/_ID_/message";
@@ -54,12 +54,27 @@ public class ApiHelper {
         return new JSONObject(response);
     }
 
-    public JSONObject getCategories()
+    public JSONObject login(String username, String password) throws ApiException, IOException,
+            JSONException {
+
+        JSONObject jsonObject = new JSONObject();
+        //username меняем на email так как на сервере problems
+        jsonObject.put("username", username);
+        jsonObject.put("email", username);
+        jsonObject.put("password", password);
+
+        Log.i(TAG, "Sending request to: " + LOGIN_URL);
+        String response = requestPost(LOGIN_URL, jsonObject, false);
+        Log.i(TAG, "Response: " + response);
+        return new JSONObject(response);
+    }
+
+    public JSONObject getCategories(String url)
             throws ApiException, IOException, JSONException
     {
 
-        Log.i(TAG, "Sending request to: " + CATEGORIES_URL);
-        String response = requestGet(CATEGORIES_URL);
+        Log.i(TAG, "Sending request to: " + url);
+        String response = requestGet(url);
 
         Log.i(TAG, "Response: " + response);
         return new JSONObject(response);
@@ -218,7 +233,7 @@ public class ApiHelper {
         if(token_auth)
         {
             User user = AppController.getInstance().getUser();
-            conn.setRequestProperty("Authorization", user.getClient_key());
+            conn.setRequestProperty("Authorization", user.getApi_key());
         }
 
             //open
@@ -310,7 +325,7 @@ public class ApiHelper {
             //conn.setRequestProperty("Accept", "application/json");
             //conn.setRequestProperty ("Content-type", "application/json; charset=UTF-8");
             if(token_auth)
-                conn.setRequestProperty("Authorization", user.getClient_key());
+                conn.setRequestProperty("Authorization", user.getApi_key());
 
             //open
             conn.connect();//needed?
@@ -366,7 +381,7 @@ public class ApiHelper {
             httpUrlConnection.setRequestProperty("Connection", "Keep-Alive");
             httpUrlConnection.setRequestProperty("Cache-Control", "no-cache");
             httpUrlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-            httpUrlConnection.setRequestProperty("Authorization", user.getClient_key());
+            httpUrlConnection.setRequestProperty("Authorization", user.getApi_key());
 
             //Start content wrapper:
         DataOutputStream dataOS = new DataOutputStream(httpUrlConnection.getOutputStream());
@@ -451,7 +466,7 @@ public class ApiHelper {
             conn = (HttpURLConnection) url.openConnection();
 
             // Put the authentication details in the request
-            conn.setRequestProperty("Authorization", getClientKey());
+            conn.setRequestProperty("Authorization", getApiKey());
 
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -515,14 +530,14 @@ public class ApiHelper {
         return "";
     }
 
-    public static String getClientKey()
+    public static String getApiKey()
     {
         String key = "";
         try
         {
             User user = AppController.getInstance().getUser();
             if(user != null)
-                key = user.getClient_key();
+                key = user.getApi_key();
         }
         catch (Exception ex)
         {
@@ -531,5 +546,33 @@ public class ApiHelper {
         }
 
       return key;
+    }
+
+    public static void initUserFromServer(JSONObject response)
+    {
+        try
+        {
+            User user = new User();
+            user.setId(response.getString("id"));
+            user.setActivated(false);
+            user.setName(response.getString("name"));
+            user.setUserName(response.getString("username"));
+            user.setEmail(response.getString("email"));
+            user.setPhone(response.getString("phone"));
+            user.setApi_key(response.getString("api_key"));
+            if(response.getString("image_name") != null && !response.getString("image_name").equals(""))
+                user.setAvatarUrl(ApiHelper.MEDIA_URL + "/profile/" + response.getString("image_name"));
+
+            //setting user
+            AppController appcon = AppController.getInstance();
+            appcon.setUser(user);
+            //setting gcm token
+            appcon.getPrefManager().saveToken(response.getString("gcm_registration_id"));
+        }
+        catch (JSONException ex)
+        {
+            ex.printStackTrace();
+            Log.e(TAG, "initUserFromServer: " + ex.getMessage());
+        }
     }
 }

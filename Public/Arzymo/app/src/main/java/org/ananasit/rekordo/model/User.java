@@ -5,13 +5,12 @@ import java.io.Serializable;
 public class User implements Serializable
 {
     private String id = "";
-    private String client_key = "";
+    private String api_key = "";
     private String userName = "";
     private String name = "";
     private String phone = "";
     private String email = "";
     private String avatarUrl = "";
-    private boolean isLogedIn = false;
     private boolean isActivated = false;
 
     public User() {
@@ -32,12 +31,12 @@ public class User implements Serializable
         this.id = id;
     }
 
-    public String getClient_key() {
-        return client_key;
+    public String getApi_key() {
+        return api_key;
     }
 
-    public void setClient_key(String _client_key) {
-        this.client_key = _client_key;
+    public void setApi_key(String _client_key) {
+        this.api_key = _client_key;
     }
 
     public String getUserName() { return userName;}
@@ -78,15 +77,6 @@ public class User implements Serializable
 
     public void setAvatarUrl(String _avatarUrl) {
         this.avatarUrl = _avatarUrl;
-    }
-
-    public boolean isLogedIn() {
-        return isLogedIn;
-    }
-
-    public void setLogedIn(boolean _loged)
-    {
-        this.isLogedIn = _loged;
     }
 
     public boolean isActivated() {

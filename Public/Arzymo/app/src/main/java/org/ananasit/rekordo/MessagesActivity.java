@@ -310,4 +310,11 @@ public class MessagesActivity extends AppCompatActivity {
         //Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq);
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
+    }
 }

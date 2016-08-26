@@ -1,6 +1,7 @@
 package org.ananasit.rekordo;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import org.ananasit.rekordo.model.User;
+import org.ananasit.rekordo.util.ApiHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -17,10 +31,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @InjectView(R.id.input_email) EditText _emailText;
+    @InjectView(R.id.input_username) EditText _usernameText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login) Button _loginButton;
     @InjectView(R.id.link_signup) TextView _signupLink;
+
+    String username;
+    String password;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,31 +71,13 @@ public class LoginActivity extends AppCompatActivity {
             onLoginFailed();
             return;
         }
-
-        _loginButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppBaseTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-
-        // TODO: Implement your own authentication logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+        //1-st variant
+        Log.d(TAG, "Post Params: " + username + "/" + password);
+        LoginAsyncTask task = new LoginAsyncTask();
+        task.execute(ApiHelper.LOGIN_URL);
+        //2-nd variant
+        //VolleyLogin();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,14 +111,14 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        username = _usernameText.getText().toString().trim();
+        password = _passwordText.getText().toString().trim();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (username.isEmpty() || username.length() < 3) {
+            _usernameText.setError("at least 3 characters");
             valid = false;
         } else {
-            _emailText.setError(null);
+            _usernameText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
@@ -131,4 +130,134 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+
+    private class LoginAsyncTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog pDialog;
+        private String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pDialog = ProgressDialog.show(LoginActivity.this, "", "Загрузка...", true);
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            try
+            {
+                ApiHelper api = new ApiHelper();
+                JSONObject response = api.login(username, password);
+                if(response.getBoolean("error"))
+                {
+                    result = response.getString("message");
+                }
+                else
+                {
+                    ApiHelper.initUserFromServer(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.getMessage();
+                Log.d("Start activity", "Exception: " + result);
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            pDialog.dismiss();
+            if(!result.equals(""))
+            {
+                Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Intent in = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(in);
+                finish();
+            }
+        }
+    }
+
+    //Login Task via Volley
+    private void VolleyLogin() {
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                ApiHelper.LOGIN_URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "response: " + response);
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if(obj.getBoolean("error"))
+                    {
+                        Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        User user = new User();
+                        user.setId(obj.getString("id"));
+                        user.setActivated(false);
+                        user.setName(obj.getString("name"));
+                        user.setUserName(obj.getString("username"));
+                        user.setEmail(obj.getString("email"));
+                        user.setApi_key(obj.getString("api_key"));
+
+                        AppController appcon = AppController.getInstance();
+                        appcon.setUser(user);
+                        appcon.getPrefManager().saveUser(user);
+
+                        Intent in = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(in);
+                        finish();
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "json parse error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getApplicationContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                params.put("password", password);
+                Log.e(TAG, "Params: " + params.toString());
+
+                return params;
+            }
+        };
+
+
+        // disabling retry policy so that it won't make
+        // multiple http calls
+        int socketTimeout = 0;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        strReq.setRetryPolicy(policy);
+
+        //Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+    }
+
 }

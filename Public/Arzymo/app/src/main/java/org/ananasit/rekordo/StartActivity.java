@@ -31,8 +31,14 @@ public class StartActivity extends AppCompatActivity {
         }
         else
         {
+            User user = AppController.getInstance().getUser();
+            String url;
+            if(user != null)
+               url = ApiHelper.CATEGORIES_URL.replace("_ID_", user.getId());
+            else url = ApiHelper.CATEGORIES_URL.replace("_ID_", "0");
+
             HttpAsyncTask task = new HttpAsyncTask();
-            task.execute(ApiHelper.CATEGORIES_URL);
+            task.execute(url);
         }
     }
 
@@ -54,7 +60,7 @@ public class StartActivity extends AppCompatActivity {
             {
                 GlobalVar._categories.clear();
                 ApiHelper api = new ApiHelper();
-                JSONObject response = api.getCategories();
+                JSONObject response = api.getCategories(urls[0]);
                 if(response.getBoolean("error"))
                 {
                    result = response.getString("message");
@@ -94,6 +100,13 @@ public class StartActivity extends AppCompatActivity {
                         }
                         GlobalVar._categories.add(category);
                     }
+
+                    //setting User
+                    obj = response.getJSONObject("user");
+                    if(obj.has("id"))
+                    {
+                      ApiHelper.initUserFromServer(obj);
+                    }
                 }
             }
             catch (Exception ex)
@@ -115,15 +128,7 @@ public class StartActivity extends AppCompatActivity {
             }
             else
             {
-                User user = AppController.getInstance().getUser();
-                Intent in;
-                if(user != null)
-                {
-                    AppController.getInstance().setUser(user);
-                    in = new Intent(StartActivity.this, MainActivity.class);
-                }
-                else in = new Intent(StartActivity.this, SignupActivity.class);
-
+                Intent in = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(in);
                 finish();
             }

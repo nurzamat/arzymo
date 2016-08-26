@@ -1,6 +1,5 @@
 package org.ananasit.rekordo.util;
 
-import android.graphics.Bitmap;
 import android.util.SparseBooleanArray;
 
 import org.ananasit.rekordo.model.Category;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 public class GlobalVar {
 
     public static ArrayList<Category> _categories = new ArrayList<Category>();
-    public static ArrayList<Bitmap> _bitmaps = new ArrayList<Bitmap>();
+    //public static ArrayList<Bitmap> _bitmaps = new ArrayList<Bitmap>();
     public static ArrayList<String> image_paths = new ArrayList<String>();
     public static SparseBooleanArray mSparseBooleanArray = new SparseBooleanArray();
     public static Post _Post = null;

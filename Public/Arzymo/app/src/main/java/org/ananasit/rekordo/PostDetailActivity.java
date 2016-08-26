@@ -256,4 +256,11 @@ public class PostDetailActivity extends AppCompatActivity {
             super.onPostExecute(result);
         }
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
+    }
 }

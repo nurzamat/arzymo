@@ -222,7 +222,7 @@ public class MyPostListAdapter extends BaseAdapter {
         {
             GlobalVar.Category = _m.getCategory();
             GlobalVar._Post = _m;
-            GlobalVar._bitmaps.clear();
+            //GlobalVar._bitmaps.clear();
             GlobalVar.image_paths.clear();
             GlobalVar.mSparseBooleanArray.clear();
 

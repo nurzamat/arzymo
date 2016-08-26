@@ -43,7 +43,7 @@ public class DeleteRequest extends StringRequest {
         //params.put("User-Agent", "Nintendo Gameboy");
         //params.put("Accept-Language", "fr");
 
-        params.put("Authorization", ApiHelper.getClientKey());
+        params.put("Authorization", ApiHelper.getApiKey());
         return params;
     }
 

@@ -120,7 +120,7 @@ public class PostListAdapter extends BaseAdapter {
         call_id = call.getId();
         chat_id = chat.getId();
 
-        if(p.getUser() != null && p.getUser().getPhone().equals(client.getPhone()))
+        if(p.getUser() != null && client != null && p.getUser().getPhone().equals(client.getPhone()))
         {
             call.setVisibility(View.INVISIBLE);
             chat.setVisibility(View.INVISIBLE);

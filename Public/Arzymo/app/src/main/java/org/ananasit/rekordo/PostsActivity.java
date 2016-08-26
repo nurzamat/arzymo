@@ -43,12 +43,16 @@ public class PostsActivity extends AppCompatActivity {
     ProgressBar spin;
     int _actionType = 0;
     String query = "";
+    static PostsActivity _postActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
         IntentWork(getIntent());
+        if(_postActivity != null)
+            _postActivity.finish();
+        _postActivity = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -289,5 +293,12 @@ public class PostsActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        //super.onBackPressed();
+        finish();
     }
 }

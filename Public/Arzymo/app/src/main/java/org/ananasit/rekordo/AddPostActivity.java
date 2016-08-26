@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -33,7 +34,6 @@ import org.json.JSONObject;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    private static final String TAG =  AddPostActivity.class.getSimpleName();
     ViewPager mPager;
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
@@ -42,14 +42,15 @@ public class AddPostActivity extends AppCompatActivity {
     String price = "";
     String price_currency = "";
     String result;
-    EditText etContent, etPrice, etDisplayed_name;
+    EditText etContent, etPrice, etDisplayed_name, etBirth_year, etPhone;
     Button categoryBtn, postBtn;
     Category category = null;
-    Spinner price_spinner, action_spinner, sex_spinner, birth_year_spinner;
+    Spinner price_spinner, action_spinner, sex_spinner, region_spinner, city_spinner;
     int actionType = 0;
     int actionPos = 0;
-    int birthPos = 0;
     int sex = 2; //0 - female, 1 - male
+    String phone = "";
+    String location = "";
     String birth_year = "";
     String displayed_name = "";
     public static Context context;
@@ -91,12 +92,14 @@ public class AddPostActivity extends AppCompatActivity {
 
         //start Dating
         etDisplayed_name = (EditText) findViewById(R.id.displayed_name);
-        etDisplayed_name.setText(displayed_name);
+        etBirth_year = (EditText) findViewById(R.id.birth_year);
         sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
-        birth_year_spinner = (Spinner) findViewById(R.id.birth_year_spinner);
+        etDisplayed_name.setText(displayed_name);
+        etBirth_year.setText(birth_year);
         //end Dating
+        etPhone = (EditText) findViewById(R.id.phone);
 
-        //ViewPagerWork();
+        initLocationSpinners();
 
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +115,104 @@ public class AddPostActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        GlobalVar.image_paths.clear();
+    }
+
+    private void initLocationSpinners()
+    {
+        region_spinner = (Spinner) findViewById(R.id.region_spinner);
+        city_spinner = (Spinner) findViewById(R.id.city_spinner);
+        ArrayAdapter<CharSequence> region_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                R.array.regions, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        region_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        region_spinner.setAdapter(region_adapter);
+        region_spinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view,
+                                               int pos, long id) {
+
+                        // Showing selected spinner item
+                        //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                        initLocationCity(pos);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                        // TODO Auto-generated method stub
+                    }
+                }
+        );
+    }
+
+    private void initLocationCity(int pos)
+    {
+        if(pos == 0)
+        {
+            city_spinner.setVisibility(View.INVISIBLE);
+            return;
+        }
+        else
+        {
+            city_spinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                    R.array.chuy, android.R.layout.simple_spinner_item);
+
+            if(pos == 2)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.issyk, android.R.layout.simple_spinner_item);
+            }
+            if(pos == 3)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.naryn, android.R.layout.simple_spinner_item);
+            }
+            if(pos == 4)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.talas, android.R.layout.simple_spinner_item);
+            }
+            if(pos == 5)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.jalalabad, android.R.layout.simple_spinner_item);
+            }
+            if(pos == 6)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.osh, android.R.layout.simple_spinner_item);
+            }
+            if(pos == 7)
+            {
+                city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.batken, android.R.layout.simple_spinner_item);
+            }
+            // Specify the layout to use when the list of choices appears
+            city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            city_spinner.setAdapter(city_adapter);
+            city_spinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view,
+                                                   int pos, long id) {
+
+                            // Showing selected spinner item
+                            //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    }
+            );
+        }
     }
 
     private void ViewPagerWork() {
@@ -136,6 +237,8 @@ public class AddPostActivity extends AppCompatActivity {
             categoryBtn.setText(GlobalVar.Category.getName());
             this.category = GlobalVar.Category;
             CategoryType catType = Utils.getCategoryType(this.category);
+
+            priceSpinner(catType);
 
             if(catType.equals(CategoryType.SELL_BUY)) //buy sell //куплю-продам
             {
@@ -170,13 +273,9 @@ public class AddPostActivity extends AppCompatActivity {
                             }
                         }
                 );
-                priceSpinner();
-
             }
             else if(catType.equals(CategoryType.RENT)) //Rent
             {
-                etPrice.setVisibility(View.INVISIBLE);
-                price_spinner.setVisibility(View.INVISIBLE);
                 //action
                 action_spinner.setVisibility(View.VISIBLE);
                 ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
@@ -207,13 +306,9 @@ public class AddPostActivity extends AppCompatActivity {
                             }
                         }
                 );
-
-                priceSpinner();
             }
             else if(catType.equals(CategoryType.WORK)) //Work
             {
-                etPrice.setVisibility(View.INVISIBLE);
-                price_spinner.setVisibility(View.INVISIBLE);
                 //action
                 action_spinner.setVisibility(View.VISIBLE);
                 ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
@@ -248,25 +343,19 @@ public class AddPostActivity extends AppCompatActivity {
             else
             {
                 action_spinner.setVisibility(View.INVISIBLE);
-                etPrice.setVisibility(View.INVISIBLE);
-                price_spinner.setVisibility(View.INVISIBLE);
             }
 
             //Dating
             if(catType.equals(CategoryType.DATING))
             {
                 etDisplayed_name.setVisibility(View.VISIBLE);
+                etBirth_year.setVisibility(View.VISIBLE);
                 sex_spinner.setVisibility(View.VISIBLE);
-                birth_year_spinner.setVisibility(View.VISIBLE);
 
                 ArrayAdapter<CharSequence> sex_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
                         R.array.sex, android.R.layout.simple_spinner_item);
-
-                ArrayAdapter<CharSequence> birth_year_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                        R.array.birth_year, android.R.layout.simple_spinner_item);
                 // Specify the layout to use when the list of choices appears
                 sex_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                birth_year_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 // Apply the adapter to the spinner
                 sex_spinner.setAdapter(sex_adapter);
                 sex_spinner.setSelection(actionPos);
@@ -291,33 +380,12 @@ public class AddPostActivity extends AppCompatActivity {
                             }
                         }
                 );
-
-                birth_year_spinner.setAdapter(birth_year_adapter);
-                birth_year_spinner.setSelection(birthPos);
-                birth_year_spinner.setOnItemSelectedListener(
-                        new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view,
-                                                       int pos, long id) {
-
-                                birthPos = pos;
-
-                                if (pos != 0)
-                                    birth_year = parent.getItemAtPosition(pos).toString();
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        }
-                );
             }
             else
             {
                 etDisplayed_name.setVisibility(View.INVISIBLE);
+                etBirth_year.setVisibility(View.INVISIBLE);
                 sex_spinner.setVisibility(View.INVISIBLE);
-                birth_year_spinner.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -325,36 +393,45 @@ public class AddPostActivity extends AppCompatActivity {
         ViewPagerWork();
     }
 
-    private void priceSpinner() {
-        //price
-        etPrice.setVisibility(View.VISIBLE);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        price_spinner.setVisibility(View.VISIBLE);
-        ArrayAdapter<CharSequence> price_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                R.array.price_currencies, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        price_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        price_spinner.setAdapter(price_adapter);
-        price_spinner.setSelection(price_adapter.getPosition(price_currency));
-        price_spinner.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view,
-                                               int pos, long id) {
-                        // On selecting a spinner item
-                        price_currency = parent.getItemAtPosition(pos).toString();
+    private void priceSpinner(CategoryType catType)
+    {
+        if(catType.equals(CategoryType.SELL_BUY) || catType.equals(CategoryType.RENT))
+        {
+            //price
+            etPrice.setVisibility(View.VISIBLE);
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            price_spinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> price_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                    R.array.price_currencies, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            price_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            price_spinner.setAdapter(price_adapter);
+            price_spinner.setSelection(price_adapter.getPosition(price_currency));
+            price_spinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view,
+                                                   int pos, long id) {
+                            // On selecting a spinner item
+                            price_currency = parent.getItemAtPosition(pos).toString();
 
-                        // Showing selected spinner item
-                        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-                    }
+                            // Showing selected spinner item
+                            //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                        }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) {
-                        // TODO Auto-generated method stub
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
                     }
-                }
-        );
+            );
+        }
+        else
+        {
+            etPrice.setVisibility(View.INVISIBLE);
+            price_spinner.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -402,6 +479,7 @@ public class AddPostActivity extends AppCompatActivity {
         boolean val = true;
         content = etContent.getText().toString().trim();
         displayed_name = etDisplayed_name.getText().toString().trim();
+        birth_year = etBirth_year.getText().toString().trim();
         price = etPrice.getText().toString().trim();
 
         if(content.equals("") || category == null)
@@ -417,7 +495,7 @@ public class AddPostActivity extends AppCompatActivity {
         if(sex_spinner.getVisibility() == View.VISIBLE && sex == 2)
             val = false;
 
-        if(birth_year_spinner.getVisibility() == View.VISIBLE && birth_year.equals(""))
+        if(etBirth_year.getVisibility() == View.VISIBLE && birth_year.equals(""))
             val = false;
 
         return val;
@@ -458,7 +536,7 @@ public class AddPostActivity extends AppCompatActivity {
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
-                jsonObject.put("api_key", ApiHelper.getClientKey());
+                jsonObject.put("api_key", ApiHelper.getApiKey());
                 jsonObject.put("city", "bishkek");
                 jsonObject.put("country", "kg");
                 jsonObject.put("actionType", actionType);
@@ -502,12 +580,18 @@ public class AddPostActivity extends AppCompatActivity {
         {
             dialog.dismiss();
             Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
-            // Intent in = new Intent(context, HomeActivity.class);
-            //in.putExtra("case", 1);
-            //startActivity(in);
             //clear images
-            GlobalVar._bitmaps.clear();
+            //GlobalVar._bitmaps.clear();
             GlobalVar.image_paths.clear();
+
+            finish();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
     }
 }

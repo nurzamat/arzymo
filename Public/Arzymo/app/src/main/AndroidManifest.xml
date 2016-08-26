@@ -43,6 +43,7 @@
             android:label="@string/title_activity_subcats" />
         <activity
             android:name=".PostsActivity"
+            android:launchMode="singleInstance"
             android:label="@string/title_activity_posts">
             <meta-data
                 android:name="android.app.default_searchable"
@@ -71,9 +72,6 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -136,6 +134,13 @@
         <!-- END Added for GCM -->
         <activity
             android:name=".AddPostActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SettingsActivityPref"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme"></activity>
     </application>
 

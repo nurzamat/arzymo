@@ -46,7 +46,7 @@ public class PutRequest extends StringRequest {
         User user = AppController.getInstance().getUser();
         //params.put("Accept", "application/json");
         params.put("Content-type", "application/json");
-        params.put("Authorization", user.getClient_key());
+        params.put("Authorization", user.getApi_key());
         return params;
     }
 

@@ -11,20 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
-import org.ananasit.rekordo.util.Utils;
 import org.json.JSONObject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SignupActivity extends AppCompatActivity {
-    private static final String TAG = "SignupActivity";
+
+    private static final String TAG = SignupActivity.class.getSimpleName();
 
     @InjectView(R.id.input_username) EditText _usernameText;
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
+    @InjectView(R.id.input_repeat_password) EditText _repeat_passwordText;
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
 
@@ -64,34 +63,8 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        _signupButton.setEnabled(false);
-
-        /*
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppBaseTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-        */
-        username = _usernameText.getText().toString();
-        email = _emailText.getText().toString();
-        password = _passwordText.getText().toString();
-
         SignupAsyncTask task = new SignupAsyncTask();
         task.execute(ApiHelper.REGISTER_URL);
-
-       /*
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
-        */
     }
 
 
@@ -110,9 +83,10 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String username = _usernameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        username = _usernameText.getText().toString().trim();
+        email = _emailText.getText().toString().trim();
+        password = _passwordText.getText().toString().trim();
+        String repeat_password = _repeat_passwordText.getText().toString().trim();
 
         if (username.isEmpty() || username.length() < 3) {
             _usernameText.setError("at least 3 characters");
@@ -134,6 +108,12 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
+
+        if(!password.isEmpty() && !password.equals(repeat_password))
+        {
+            _repeat_passwordText.setError("Repeat password correctly");
+            valid = false;
+        } else _repeat_passwordText.setError(null);
 
         return valid;
     }
@@ -162,16 +142,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    User user = new User();
-                    user.setId(response.getString("id"));
-                    user.setActivated(false);
-                    user.setUserName(response.getString("username"));
-                    user.setEmail(response.getString("email"));
-                    user.setClient_key(response.getString("api_key"));
-
-                    AppController appcon = AppController.getInstance();
-                    appcon.setUser(user);
-                    appcon.getPrefManager().saveUser(user);
+                    ApiHelper.initUserFromServer(response);
                 }
             }
             catch (Exception ex)
@@ -198,5 +169,12 @@ public class SignupActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -35,64 +35,13 @@
     <string name="select">Выбрать</string>
 
     <string-array name="price_currencies">
+        <item>сом</item>
         <item>USD</item>
-        <item>EUR</item>
-        <item>RUB</item>
-        <item>KGS</item>
-        <item>KZT</item>
-        <item>BYR</item>
-        <item>UAH</item>
-        <item>TJS</item>
-        <item>AZN</item>
     </string-array>
     <string-array name="sex">
         <item>Ваш пол</item>
         <item>Мужской</item>
         <item>Женский</item>
-    </string-array>
-    <string-array name="birth_year">
-        <item>Год рождения</item>
-        <item>2000</item>
-        <item>1999</item>
-        <item>1998</item>
-        <item>1997</item>
-        <item>1996</item>
-        <item>1995</item>
-        <item>1994</item>
-        <item>1993</item>
-        <item>1992</item>
-        <item>1991</item>
-        <item>1990</item>
-        <item>1989</item>
-        <item>1988</item>
-        <item>1987</item>
-        <item>1986</item>
-        <item>1985</item>
-        <item>1984</item>
-        <item>1983</item>
-        <item>1982</item>
-        <item>1981</item>
-        <item>1980</item>
-        <item>1979</item>
-        <item>1978</item>
-        <item>1977</item>
-        <item>1976</item>
-        <item>1975</item>
-        <item>1974</item>
-        <item>1973</item>
-        <item>1972</item>
-        <item>1971</item>
-        <item>1970</item>
-        <item>1969</item>
-        <item>1968</item>
-        <item>1967</item>
-        <item>1966</item>
-        <item>1965</item>
-        <item>1964</item>
-        <item>1963</item>
-        <item>1962</item>
-        <item>1961</item>
-        <item>1960</item>
     </string-array>
     <string-array name="buy_sell">
         <item>Продаю</item>
@@ -105,6 +54,52 @@
     <string-array name="work_resume_vacancy">
         <item>Вакансия</item>
         <item>Ищу работу (резюме)</item>
+    </string-array>
+    <string-array name="locations">
+        <item>Bishkek</item>
+        <item>Osh</item>
+        <item>Karakol</item>
+        <item>Chui</item>
+        <item>Kara-Balta, Chui obl.</item>
+    </string-array>
+    <string-array name="regions">
+        <item>Область</item>
+        <item>Чуйская область</item>
+        <item>Иссык-Кульская область</item>
+        <item>Нарынская область</item>
+        <item>Таласская область</item>
+        <item>Джалал-Абадская область</item>
+        <item>Ошская область</item>
+        <item>Баткенская область</item>
+    </string-array>
+    <string-array name="chuy">
+        <item>Бишкек</item>
+        <item>Токмок</item>
+        <item>Кант</item>
+        <item>Кара-Балта</item>
+    </string-array>
+    <string-array name="issyk">
+        <item>Каракол</item>
+        <item>Чолпон-Ата</item>
+        <item>Балыкчи</item>
+    </string-array>
+    <string-array name="naryn">
+        <item>Нарын</item>
+        <item>Ат-Башы</item>
+        <item>Кочкор</item>
+        <item>Чаек</item>
+    </string-array>
+    <string-array name="talas">
+        <item>Талас</item>
+    </string-array>
+    <string-array name="jalalabad">
+        <item>Джалал-Абад</item>
+    </string-array>
+    <string-array name="osh">
+        <item>Ош</item>
+    </string-array>
+    <string-array name="batken">
+        <item>Баткен</item>
     </string-array>
     <string name="title_activity_full_screen_view">FullScreenViewActivity</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
@@ -139,4 +134,74 @@
     <string name="permission_rationale">"Storage permission is needed for fetching images from Gallery."</string>
     <!-- Content descriptions -->
     <string name="descr_image">Image</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_login2">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
 </resources>

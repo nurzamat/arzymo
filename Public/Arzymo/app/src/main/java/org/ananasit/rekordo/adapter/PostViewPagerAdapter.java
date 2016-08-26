@@ -30,7 +30,7 @@ public class PostViewPagerAdapter extends PagerAdapter {
 
     private Activity _activity;
     private ArrayList<Image> images;
-    ArrayList<Bitmap> bitmaps;
+    //ArrayList<Bitmap> bitmaps;
     private LayoutInflater inflater;
     private boolean isAddPost = false;
     ImageLoader imageLoader = null;
@@ -46,7 +46,7 @@ public class PostViewPagerAdapter extends PagerAdapter {
 
     public PostViewPagerAdapter(Activity activity) {
         this._activity = activity;
-        this.bitmaps = GlobalVar._bitmaps;
+        //this.bitmaps = GlobalVar._bitmaps;
         this.isAddPost = true;
     }
 
@@ -55,8 +55,8 @@ public class PostViewPagerAdapter extends PagerAdapter {
     {
         if(isAddPost)
         {
-            if(this.bitmaps.size() > 0)
-            return this.bitmaps.size();
+            if(GlobalVar.image_paths.size() > 0)
+            return GlobalVar.image_paths.size();
         }
         else
         {   if(this.images.size() > 0)
@@ -86,7 +86,7 @@ public class PostViewPagerAdapter extends PagerAdapter {
             // Capture position and set to the ImageView
             try
             {
-                if(this.bitmaps != null && this.bitmaps.size() > 0)
+                if(GlobalVar.image_paths.size() > 0)
                 {
                     //1-st variant
                    //imgflag.setImageBitmap(bitmaps.get(position));

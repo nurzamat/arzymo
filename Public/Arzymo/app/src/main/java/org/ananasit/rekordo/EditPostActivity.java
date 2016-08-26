@@ -257,7 +257,7 @@ public class EditPostActivity extends AppCompatActivity {
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
-                jsonObject.put("api_key", ApiHelper.getClientKey());
+                jsonObject.put("api_key", ApiHelper.getApiKey());
 
                 JSONObject obj = api.editPost(url, jsonObject);
                 if(obj.getBoolean("error"))
@@ -288,7 +288,7 @@ public class EditPostActivity extends AppCompatActivity {
                 Toast.makeText(EditPostActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
 
                 //clear images
-                GlobalVar._bitmaps.clear();
+                //GlobalVar._bitmaps.clear();
                 GlobalVar.image_paths.clear();
                 GlobalVar._Post = null;
 

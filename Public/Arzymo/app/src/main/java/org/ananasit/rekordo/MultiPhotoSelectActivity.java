@@ -69,7 +69,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
         final int len = selectedItems.size();
         int cnt = 0;
         String selectImages = "";
-        GlobalVar._bitmaps.clear();
+        //GlobalVar._bitmaps.clear();
         GlobalVar.image_paths.clear();
         for (int i =0; i<len; i++)
         {
@@ -77,7 +77,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
             if(i < Constants.MAX_IMAGES){
 
                 String path = selectedItems.get(i);
-                GlobalVar._bitmaps.add(decodeFile(path, columnWidth, columnWidth));
+                //GlobalVar._bitmaps.add(decodeFile(path, columnWidth, columnWidth));
                 GlobalVar.image_paths.add(path);
             }
         }
@@ -99,7 +99,7 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
 
         ArrayList<String> imageUrls = loadPhotosFromNativeGallery();
         initializeRecyclerView(imageUrls);
-        initColumnWidth();
+        //initColumnWidth();
     }
 
     private ArrayList<String> loadPhotosFromNativeGallery() {
@@ -265,5 +265,12 @@ public class MultiPhotoSelectActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
     }
 }

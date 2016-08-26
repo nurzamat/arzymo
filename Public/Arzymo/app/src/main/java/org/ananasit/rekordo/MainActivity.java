@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.GlobalVar;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     public boolean isexit = false;
+    private User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
         //toolbar.setLogo(R.drawable.logo_toolbar);
         //toolbar.setTitle("title");
         toolbar.setSubtitle("Arzymo");
-
         initViewPagerAndTabs();
+
+        user = AppController.getInstance().getUser();
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -72,29 +75,42 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     case R.id.nav_profile:
-                        in = new Intent(MainActivity.this, MyProfileActivity.class);
+                        if(user != null)
+                            in = new Intent(MainActivity.this, MyProfileActivity.class);
+                        else
+                            in = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(in);
-                        //Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:
-                        in = new Intent(MainActivity.this, MyPostsActivity.class);
+                        if(user != null)
+                            in = new Intent(MainActivity.this, MyPostsActivity.class);
+                        else
+                            in = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(in);
                         return true;
                     case R.id.nav_favourites:
-                        in = new Intent(MainActivity.this, MyLikesActivity.class);
+                        if(user != null)
+                            in = new Intent(MainActivity.this, MyLikesActivity.class);
+                        else
+                            in = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(in);
                         return true;
                     case R.id.nav_messages:
                         //in = new Intent(MainActivity.this, ChatRoomsActivity.class);// before group chat
-                        in = new Intent(MainActivity.this, ChatsActivity.class);
+                        if(user != null)
+                            in = new Intent(MainActivity.this, ChatsActivity.class);
+                        else
+                            in = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(in);
-                        //Toast.makeText(getApplicationContext(),"Messages Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(),"Settings Selected",Toast.LENGTH_SHORT).show();
-                        //in = new Intent(MainActivity.this, SignUp.class);
-                        //startActivity(in);
+                        //in = new Intent(MainActivity.this, SettingsActivityPref.class);
+                        if(user != null)
+                            in = new Intent(MainActivity.this, SettingsActivity.class);
+                        else
+                            in = new Intent(MainActivity.this, SignupActivity.class);
+                        startActivity(in);
                         return true;
                     case R.id.nav_about:
                         Toast.makeText(getApplicationContext(),"About Selected",Toast.LENGTH_SHORT).show();
@@ -137,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.i("MainActivity", " resumed");
         GlobalVar.Category = null;
+        if(GlobalVar._categories.size() == 0)
+        {
+            Intent in = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(in);
+            finish();
+        }
     }
 
     @Override
@@ -165,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(in);
         }
         if (id == R.id.action_search) {
-            Toast.makeText(MainActivity.this, "Search clicked", Toast.LENGTH_SHORT).show();
             return true;
         }
 

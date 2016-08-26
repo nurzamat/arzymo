@@ -95,9 +95,7 @@ public class AppController extends Application {
 
     public void setUser(User user)
     {
-        if(this._user != null && this._user != user)
-            getPrefManager().saveUser(user);
-
-            this._user = user;
+        this._user = user;
+        getPrefManager().saveUser(user);
     }
 }
