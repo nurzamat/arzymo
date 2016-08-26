@@ -237,163 +237,128 @@ public class AddPostActivity extends AppCompatActivity {
             categoryBtn.setText(GlobalVar.Category.getName());
             this.category = GlobalVar.Category;
             CategoryType catType = Utils.getCategoryType(this.category);
-
             priceSpinner(catType);
-
-            if(catType.equals(CategoryType.SELL_BUY)) //buy sell //куплю-продам
-            {
-
-                //action
-                action_spinner.setVisibility(View.VISIBLE);
-                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                        R.array.buy_sell, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                action_spinner.setAdapter(action_adapter);
-                action_spinner.setSelection(actionPos);
-                action_spinner.setOnItemSelectedListener(
-                        new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view,
-                                                       int pos, long id) {
-
-                                actionPos = pos;
-                                // Showing selected spinner item
-                                //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
-                                if (pos == 0)
-                                    actionType = Utils.getActionTypeValue(ActionType.SELL);
-                                if (pos == 1)
-                                    actionType = Utils.getActionTypeValue(ActionType.BUY);
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        }
-                );
-            }
-            else if(catType.equals(CategoryType.RENT)) //Rent
-            {
-                //action
-                action_spinner.setVisibility(View.VISIBLE);
-                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                        R.array.rent_get_give, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                action_spinner.setAdapter(action_adapter);
-                action_spinner.setSelection(actionPos);
-                action_spinner.setOnItemSelectedListener(
-                        new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view,
-                                                       int pos, long id) {
-
-                                actionPos = pos;
-                                // Showing selected spinner item
-                                // Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
-                                if (pos == 0)
-                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
-                                if (pos == 1)
-                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GET);
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        }
-                );
-            }
-            else if(catType.equals(CategoryType.WORK)) //Work
-            {
-                //action
-                action_spinner.setVisibility(View.VISIBLE);
-                ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                        R.array.work_resume_vacancy, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                action_spinner.setAdapter(action_adapter);
-                action_spinner.setSelection(actionPos);
-                action_spinner.setOnItemSelectedListener(
-                        new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view,
-                                                       int pos, long id) {
-
-                                actionPos = pos;
-                                // Showing selected spinner item
-                                // Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
-                                if (pos == 0)
-                                    actionType = Utils.getActionTypeValue(ActionType.VACANCY);
-                                if (pos == 1)
-                                    actionType = Utils.getActionTypeValue(ActionType.RESUME);
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        }
-                );
-            }
-            else
-            {
-                action_spinner.setVisibility(View.INVISIBLE);
-            }
-
+            actionSpinner(catType);
             //Dating
-            if(catType.equals(CategoryType.DATING))
-            {
-                etDisplayed_name.setVisibility(View.VISIBLE);
-                etBirth_year.setVisibility(View.VISIBLE);
-                sex_spinner.setVisibility(View.VISIBLE);
-
-                ArrayAdapter<CharSequence> sex_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
-                        R.array.sex, android.R.layout.simple_spinner_item);
-                // Specify the layout to use when the list of choices appears
-                sex_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // Apply the adapter to the spinner
-                sex_spinner.setAdapter(sex_adapter);
-                sex_spinner.setSelection(actionPos);
-                sex_spinner.setOnItemSelectedListener(
-                        new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view,
-                                                       int pos, long id) {
-
-                                actionPos = pos;
-                                // Showing selected spinner item
-                                //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
-                                if (pos == 1)
-                                    sex = 1;
-                                if (pos == 2)
-                                    sex = 0;
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        }
-                );
-            }
-            else
-            {
-                etDisplayed_name.setVisibility(View.INVISIBLE);
-                etBirth_year.setVisibility(View.INVISIBLE);
-                sex_spinner.setVisibility(View.INVISIBLE);
-            }
-
+            dating(catType);
         }
         else this.category = null;
         ViewPagerWork();
     }
 
-    private void priceSpinner(CategoryType catType)
+    private void dating(CategoryType catType)
+    {
+        if(catType.equals(CategoryType.DATING))
+        {
+            etDisplayed_name.setVisibility(View.VISIBLE);
+            etBirth_year.setVisibility(View.VISIBLE);
+            sex_spinner.setVisibility(View.VISIBLE);
+
+            ArrayAdapter<CharSequence> sex_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                    R.array.sex, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            sex_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            sex_spinner.setAdapter(sex_adapter);
+            sex_spinner.setSelection(actionPos);
+            sex_spinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view,
+                                                   int pos, long id) {
+
+                            actionPos = pos;
+                            // Showing selected spinner item
+                            //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                            if (pos == 1)
+                                sex = 1;
+                            if (pos == 2)
+                                sex = 0;
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    }
+            );
+        }
+        else
+        {
+            etDisplayed_name.setVisibility(View.INVISIBLE);
+            etBirth_year.setVisibility(View.INVISIBLE);
+            sex_spinner.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void actionSpinner(final CategoryType catType)
+    {
+        if(catType.equals(CategoryType.SELL_BUY) || catType.equals(CategoryType.RENT) || catType.equals(CategoryType.WORK))
+        {
+            //action
+            action_spinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                    R.array.buy_sell, android.R.layout.simple_spinner_item);
+
+            if(catType.equals(CategoryType.RENT))
+            {
+                action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.rent_get_give, android.R.layout.simple_spinner_item);
+            }
+            if(catType.equals(CategoryType.WORK))
+            {
+                action_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
+                        R.array.work_resume_vacancy, android.R.layout.simple_spinner_item);
+            }
+
+            // Specify the layout to use when the list of choices appears
+            action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            action_spinner.setAdapter(action_adapter);
+            action_spinner.setSelection(actionPos);
+            action_spinner.setOnItemSelectedListener(
+                    new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view,
+                                                   int pos, long id) {
+
+                            actionPos = pos;
+                            // Showing selected spinner item
+                            //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                            if(catType.equals(CategoryType.SELL_BUY))
+                            {
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.SELL);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.BUY);
+                            }
+                            if(catType.equals(CategoryType.RENT))
+                            {
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.RENT_GET);
+                            }
+                            if(catType.equals(CategoryType.WORK))
+                            {
+                                if (pos == 0)
+                                    actionType = Utils.getActionTypeValue(ActionType.VACANCY);
+                                if (pos == 1)
+                                    actionType = Utils.getActionTypeValue(ActionType.RESUME);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    }
+            );
+        }
+        else action_spinner.setVisibility(View.INVISIBLE);
+    }
+
+    private void priceSpinner(final CategoryType catType)
     {
         if(catType.equals(CategoryType.SELL_BUY) || catType.equals(CategoryType.RENT))
         {
