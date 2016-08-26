@@ -226,7 +226,7 @@ public class AddPostActivity extends AppCompatActivity {
     }
 
     private void ViewPagerWork() {
-        int color = ContextCompat.getColor(this, R.color.white);
+        int color = ContextCompat.getColor(this, R.color.blue);
         mAdapter = new PostViewPagerAdapter(AddPostActivity.this);
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);

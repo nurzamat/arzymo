@@ -124,7 +124,8 @@ public class ChatsActivity extends AppCompatActivity {
          * proceeding further with GCM
          * */
 
-        if (checkPlayServices()) {
+        if (checkPlayServices())
+        {
             registerGCM();
             fetchChats();
         }
