@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
@@ -38,21 +40,20 @@ public class AddPostActivity extends AppCompatActivity {
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
     Toolbar toolbar;
+    String title = "";
     String content = "";
     String price = "";
     String price_currency = "";
     String result;
-    EditText etContent, etPrice, etDisplayed_name, etBirth_year, etPhone;
+    EditText etContent, etPrice, etTitle, etBirth_year, etPhone;
     Button categoryBtn, postBtn;
     Category category = null;
     Spinner price_spinner, action_spinner, sex_spinner, region_spinner, city_spinner;
+    LinearLayout city_layout, sex_layout, price_layout;
     int actionType = 0;
     int actionPos = 0;
     int sex = 2; //0 - female, 1 - male
-    String phone = "";
-    String location = "";
     String birth_year = "";
-    String displayed_name = "";
     public static Context context;
 
     @Override
@@ -79,11 +80,12 @@ public class AddPostActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
+        etTitle = (EditText) findViewById(R.id.title);
         etContent = (EditText) findViewById(R.id.content);
         etPrice = (EditText) findViewById(R.id.price);
         postBtn = (Button) findViewById(R.id.btnPost);
         categoryBtn = (Button) findViewById(R.id.btnCategory);
+        etTitle.setText(title);
         etContent.setText(content);
         etPrice.setText(price);
         //spinner job
@@ -91,14 +93,15 @@ public class AddPostActivity extends AppCompatActivity {
         price_spinner = (Spinner) findViewById(R.id.price_spinner);
 
         //start Dating
-        etDisplayed_name = (EditText) findViewById(R.id.displayed_name);
         etBirth_year = (EditText) findViewById(R.id.birth_year);
         sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
-        etDisplayed_name.setText(displayed_name);
         etBirth_year.setText(birth_year);
         //end Dating
         etPhone = (EditText) findViewById(R.id.phone);
-
+        //layouts
+        city_layout = (LinearLayout)findViewById(R.id.city_layout);
+        sex_layout = (LinearLayout)findViewById(R.id.sex_layout);
+        price_layout = (LinearLayout)findViewById(R.id.price_layout);
         initLocationSpinners();
 
         postBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,13 +153,19 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void initLocationCity(int pos)
     {
+        // Gets the layout params that will allow you to resize the layout
+        ViewGroup.LayoutParams params = city_layout.getLayoutParams();
+
         if(pos == 0)
         {
             city_spinner.setVisibility(View.INVISIBLE);
-            return;
+            params.height = 0;
         }
         else
         {
+            // Changes the height and width to the specified *pixels*
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
             city_spinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> city_adapter = ArrayAdapter.createFromResource(AddPostActivity.this,
                     R.array.chuy, android.R.layout.simple_spinner_item);
@@ -213,6 +222,7 @@ public class AddPostActivity extends AppCompatActivity {
                     }
             );
         }
+        city_layout.setLayoutParams(params);
     }
 
     private void ViewPagerWork() {
@@ -248,9 +258,11 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void dating(CategoryType catType)
     {
+        ViewGroup.LayoutParams params = sex_layout.getLayoutParams();
+
         if(catType.equals(CategoryType.DATING))
         {
-            etDisplayed_name.setVisibility(View.VISIBLE);
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             etBirth_year.setVisibility(View.VISIBLE);
             sex_spinner.setVisibility(View.VISIBLE);
 
@@ -285,10 +297,11 @@ public class AddPostActivity extends AppCompatActivity {
         }
         else
         {
-            etDisplayed_name.setVisibility(View.INVISIBLE);
+            params.height = 0;
             etBirth_year.setVisibility(View.INVISIBLE);
             sex_spinner.setVisibility(View.INVISIBLE);
         }
+        sex_layout.setLayoutParams(params);
     }
 
     private void actionSpinner(final CategoryType catType)
@@ -360,8 +373,11 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void priceSpinner(final CategoryType catType)
     {
+        ViewGroup.LayoutParams params = price_layout.getLayoutParams();
+
         if(catType.equals(CategoryType.SELL_BUY) || catType.equals(CategoryType.RENT))
         {
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             //price
             etPrice.setVisibility(View.VISIBLE);
             // Create an ArrayAdapter using the string array and a default spinner layout
@@ -396,7 +412,10 @@ public class AddPostActivity extends AppCompatActivity {
         {
             etPrice.setVisibility(View.INVISIBLE);
             price_spinner.setVisibility(View.INVISIBLE);
+            params.height = 0;
         }
+        price_layout.setLayoutParams(params);
+
     }
 
     @Override
@@ -442,8 +461,8 @@ public class AddPostActivity extends AppCompatActivity {
     private boolean validate(){
 
         boolean val = true;
+        title = etTitle.getText().toString().trim();
         content = etContent.getText().toString().trim();
-        displayed_name = etDisplayed_name.getText().toString().trim();
         birth_year = etBirth_year.getText().toString().trim();
         price = etPrice.getText().toString().trim();
 
@@ -497,7 +516,7 @@ public class AddPostActivity extends AppCompatActivity {
                     jsonObject.put("idSubcategory", category.getId());
                 }
 
-                jsonObject.put("title", "test");
+                jsonObject.put("title", title);
                 jsonObject.put("content", content);
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
@@ -507,7 +526,7 @@ public class AddPostActivity extends AppCompatActivity {
                 jsonObject.put("actionType", actionType);
                 jsonObject.put("sex", sex);
                 jsonObject.put("birth_year", birth_year);
-                jsonObject.put("displayed_name", displayed_name);
+                jsonObject.put("displayed_name", "");
 
                 JSONObject obj = api.sendPost(jsonObject);
                 if(obj.has("post_id"))

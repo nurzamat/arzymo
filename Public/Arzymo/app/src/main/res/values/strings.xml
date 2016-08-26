@@ -55,13 +55,6 @@
         <item>Вакансия</item>
         <item>Ищу работу (резюме)</item>
     </string-array>
-    <string-array name="locations">
-        <item>Bishkek</item>
-        <item>Osh</item>
-        <item>Karakol</item>
-        <item>Chui</item>
-        <item>Kara-Balta, Chui obl.</item>
-    </string-array>
     <string-array name="regions">
         <item>Область</item>
         <item>Чуйская область</item>
@@ -74,32 +67,68 @@
     </string-array>
     <string-array name="chuy">
         <item>Бишкек</item>
-        <item>Токмок</item>
-        <item>Кант</item>
         <item>Кара-Балта</item>
+        <item>Беловодск</item>
+        <item>Каинди</item>
+        <item>Сокулук</item>
+        <item>Шопоков</item>
+        <item>Кант</item>
+        <item>Токмок</item>
+        <item>Орловка</item>
     </string-array>
     <string-array name="issyk">
         <item>Каракол</item>
+        <item>Теплоключенка</item>
+        <item>Кызыл-Суу</item>
         <item>Чолпон-Ата</item>
+        <item>Боконбаево</item>
+        <item>Тюп</item>
         <item>Балыкчи</item>
     </string-array>
     <string-array name="naryn">
         <item>Нарын</item>
+        <item>Баетово</item>
         <item>Ат-Башы</item>
-        <item>Кочкор</item>
         <item>Чаек</item>
+        <item>Кочкор</item>
     </string-array>
     <string-array name="talas">
         <item>Талас</item>
+        <item>Бакай-Ата</item>
+        <item>Кызыл-Адыр</item>
+        <item>Покровка</item>
+        <item>Кок-Ой</item>
     </string-array>
     <string-array name="jalalabad">
         <item>Джалал-Абад</item>
+        <item>Ала-Бука</item>
+        <item>Базар-Коргон</item>
+        <item>Кербен</item>
+        <item>Массы</item>
+        <item>Сузак</item>
+        <item>Казарман</item>
+        <item>Токтогул</item>
+        <item>Каныш-Кия</item>
+        <item>Кара-Кол</item>
+        <item>Майлуу-Суу</item>
     </string-array>
     <string-array name="osh">
         <item>Ош</item>
+        <item>Гульча</item>
+        <item>Араван</item>
+        <item>Кара-Суу</item>
+        <item>Ноокат</item>
+        <item>Кара-Кульджа</item>
+        <item>Узген</item>
+        <item>Дароот-Коргон</item>
     </string-array>
     <string-array name="batken">
         <item>Баткен</item>
+        <item>Исфана</item>
+        <item>Пульгон</item>
+        <item>Кызыл-Кия</item>
+        <item>Сулюкта</item>
+        <item>Айдаркен</item>
     </string-array>
     <string name="title_activity_full_screen_view">FullScreenViewActivity</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
