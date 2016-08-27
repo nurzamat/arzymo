@@ -102,7 +102,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 mPager = (ViewPager) findViewById(R.id.pager);
                 mPager.setAdapter(mAdapter);
 
-                int color = ContextCompat.getColor(this, R.color.white);
+                int color = ContextCompat.getColor(this, R.color.blue);
                 mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
                 mIndicator.setFillColor(color);
                 mIndicator.setStrokeColor(color);
