@@ -23,10 +23,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Category;
+import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ActionType;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.CategoryType;
@@ -44,6 +46,9 @@ public class AddPostActivity extends AppCompatActivity {
     String content = "";
     String price = "";
     String price_currency = "";
+    String phone = "";
+    String region = "";
+    String location = "";
     String result;
     EditText etContent, etPrice, etTitle, etBirth_year, etPhone;
     Button categoryBtn, postBtn;
@@ -98,6 +103,9 @@ public class AddPostActivity extends AppCompatActivity {
         etBirth_year.setText(birth_year);
         //end Dating
         etPhone = (EditText) findViewById(R.id.phone);
+        User user = AppController.getInstance().getUser();
+        if(user != null)
+            etPhone.setText(user.getPhone());
         //layouts
         city_layout = (LinearLayout)findViewById(R.id.city_layout);
         sex_layout = (LinearLayout)findViewById(R.id.sex_layout);
@@ -138,8 +146,8 @@ public class AddPostActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view,
                                                int pos, long id) {
 
-                        // Showing selected spinner item
-                        //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                        if(pos != 0)
+                        region = parent.getItemAtPosition(pos).toString();
                         initLocationCity(pos);
                     }
 
@@ -210,9 +218,7 @@ public class AddPostActivity extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view,
                                                    int pos, long id) {
 
-                            // Showing selected spinner item
-                            //Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
-
+                                location = parent.getItemAtPosition(pos).toString();
                         }
 
                         @Override
@@ -465,22 +471,42 @@ public class AddPostActivity extends AppCompatActivity {
         content = etContent.getText().toString().trim();
         birth_year = etBirth_year.getText().toString().trim();
         price = etPrice.getText().toString().trim();
+        phone = etPhone.getText().toString().trim();
 
         if(content.equals("") || category == null)
+        {
+            etContent.setError("Введите описание");
             val = false;
-
+        }
         if(etPrice.getVisibility() == View.VISIBLE && price.equals(""))
+        {
+            etPrice.setError("Укажите цену");
             val = false;
+        }
 
         if(price_spinner.getVisibility() == View.VISIBLE && price_currency.equals(""))
+        {
             val = false;
-
+        }
         //dating
-        if(sex_spinner.getVisibility() == View.VISIBLE && sex == 2)
+        if(sex_spinner.getVisibility() == View.VISIBLE && (sex == 2 || sex_spinner.getSelectedItemPosition() == 0))
+        {
+            ((TextView)sex_spinner.getSelectedView()).setError("Укажите ваш пол");
             val = false;
+        }
 
         if(etBirth_year.getVisibility() == View.VISIBLE && birth_year.equals(""))
+        {
+            etBirth_year.setError("Укажите год рождения");
             val = false;
+        }
+
+        //location
+        if(region_spinner.getSelectedItemPosition() == 0)
+        {
+            ((TextView)region_spinner.getSelectedView()).setError("Укажите местность");
+            val = false;
+        }
 
         return val;
     }
@@ -521,12 +547,13 @@ public class AddPostActivity extends AppCompatActivity {
                 jsonObject.put("price", price);
                 jsonObject.put("price_currency", price_currency);
                 jsonObject.put("api_key", ApiHelper.getApiKey());
-                jsonObject.put("city", "bishkek");
-                jsonObject.put("country", "kg");
                 jsonObject.put("actionType", actionType);
                 jsonObject.put("sex", sex);
                 jsonObject.put("birth_year", birth_year);
                 jsonObject.put("displayed_name", "");
+                jsonObject.put("phone", phone);
+                jsonObject.put("region", region);
+                jsonObject.put("location", location);
 
                 JSONObject obj = api.sendPost(jsonObject);
                 if(obj.has("post_id"))

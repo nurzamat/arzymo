@@ -13,7 +13,8 @@ public class Post{
     private String price_currency = "";
     private String hitcount = "";
     private String birth_year = "";
-    private String displayed_name = "";
+    private String location = "";
+    private String phone = "";
     private User user = null;
     private Category category = null;
     private ArrayList<Image> images = null;
@@ -85,14 +86,6 @@ public class Post{
         this.birth_year = _birth_year;
     }
 
-    public String getDisplayed_name() {
-        return displayed_name;
-    }
-
-    public void setDisplayed_name(String _name) {
-        this.displayed_name = _name;
-    }
-
     public User getUser() {
         return user;
     }
@@ -110,4 +103,19 @@ public class Post{
         this.images = _images;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String _location) {
+        this.location = _location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String _phone) {
+        this.phone = _phone;
+    }
 }
