@@ -129,48 +129,21 @@ public class PostsActivity extends AppCompatActivity {
                         if(posts.length() > 0)
                         {
                             next = next + 1;
-                            JSONArray jimages;
                             JSONObject obj;
                             User user;
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
-
                                     obj = posts.getJSONObject(i);
-                                    Post post = new Post();
-                                    post.setId(obj.getString("id"));
-                                    post.setContent(obj.getString("content"));
-                                    post.setHitcount(obj.getString("hitcount"));
-                                    post.setPrice(obj.getString("price"));
-                                    post.setPriceCurrency(obj.getString("price_currency"));
-                                    post.setBirth_year(obj.getString("birth_year"));
-                                    post.setDisplayed_name(obj.getString("displayed_name"));
-
                                     user = new User();
                                     user.setId(obj.getString("user_id"));
                                     user.setName(obj.getString("user_name"));
                                     user.setUserName(obj.getString("user_username"));
                                     user.setEmail(obj.getString("user_email"));
                                     user.setPhone(obj.getString("user_phone"));
-                                    user.setAvatarUrl("");//todo
-                                    post.setUser(user);
+                                    if(!obj.getString("user_image_name").equals(""))
+                                        user.setAvatarUrl(ApiHelper.MEDIA_URL + "/profile/" + obj.getString("user_image_name"));
 
-                                    post.setCategory(GlobalVar.Category);
-                                    jimages = obj.getJSONArray("images");
-                                    if(jimages.length() > 0)
-                                    {
-                                        post.setThumbnailUrl(ApiHelper.MEDIA_URL + "/" + jimages.getJSONObject(0).getString("original_image"));
-                                        // Images
-                                        ArrayList<Image> images = new ArrayList<Image>();
-                                        JSONObject img;
-                                        Image image;
-                                        for (int j = 0; j < jimages.length(); j++)
-                                        {
-                                            img = jimages.getJSONObject(j);
-                                            image = new Image(img.getString("id"), ApiHelper.MEDIA_URL + "/" + img.getString("original_image"));
-                                            images.add(image);
-                                        }
-                                        post.setImages(images);
-                                    }
+                                    Post post = ApiHelper.initPost(obj, GlobalVar.Category, user);
                                     postList.add(post);
 
                                 } catch (JSONException e) {

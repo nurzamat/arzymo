@@ -1,8 +1,13 @@
 package org.ananasit.rekordo.util;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import org.ananasit.rekordo.AppController;
+import org.ananasit.rekordo.model.Category;
+import org.ananasit.rekordo.model.Image;
+import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedInputStream;
@@ -14,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class ApiHelper {
 
@@ -548,7 +554,7 @@ public class ApiHelper {
       return key;
     }
 
-    public static void initUserFromServer(JSONObject response)
+    public static void initClientUserFromServer(JSONObject response)
     {
         try
         {
@@ -572,7 +578,41 @@ public class ApiHelper {
         catch (JSONException ex)
         {
             ex.printStackTrace();
-            Log.e(TAG, "initUserFromServer: " + ex.getMessage());
+            Log.e(TAG, "initClientUserFromServer: " + ex.getMessage());
         }
+    }
+
+    @NonNull
+    public static Post initPost(JSONObject obj, Category category, User user) throws JSONException
+    {
+        Post post = new Post();
+        post.setId(obj.getString("id"));
+        post.setTitle(obj.getString("title"));
+        post.setContent(obj.getString("content"));
+        post.setHitcount(obj.getString("hitcount"));
+        post.setPrice(obj.getString("price"));
+        post.setPriceCurrency(obj.getString("price_currency"));
+        post.setBirth_year(obj.getString("birth_year"));
+        post.setPhone(obj.getString("phone"));
+        post.setLocation(obj.getString("location"));
+        post.setCategory(category);
+        post.setUser(user);
+        JSONArray jimages = obj.getJSONArray("images");
+        if(jimages.length() > 0)
+        {
+            post.setThumbnailUrl(ApiHelper.MEDIA_URL + "/" + jimages.getJSONObject(0).getString("original_image"));
+            // Images
+            ArrayList<Image> images = new ArrayList<Image>();
+            JSONObject img;
+            Image image;
+            for (int j = 0; j < jimages.length(); j++)
+            {
+                img = jimages.getJSONObject(j);
+                image = new Image(img.getString("id"), ApiHelper.MEDIA_URL + "/" + img.getString("original_image"));
+                images.add(image);
+            }
+            post.setImages(images);
+        }
+        return post;
     }
 }

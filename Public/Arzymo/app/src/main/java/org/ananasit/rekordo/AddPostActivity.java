@@ -550,7 +550,6 @@ public class AddPostActivity extends AppCompatActivity {
                 jsonObject.put("actionType", actionType);
                 jsonObject.put("sex", sex);
                 jsonObject.put("birth_year", birth_year);
-                jsonObject.put("displayed_name", "");
                 jsonObject.put("phone", phone);
                 jsonObject.put("region", region);
                 jsonObject.put("location", location);

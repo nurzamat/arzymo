@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    ApiHelper.initUserFromServer(response);
+                    ApiHelper.initClientUserFromServer(response);
                 }
             }
             catch (Exception ex)

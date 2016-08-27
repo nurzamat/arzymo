@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Post{
     private String thumbnailUrl = "";
     private String id = "";
+    private String title = "";
     private String content = "";
     private String price = "";
     private String price_currency = "";
@@ -117,5 +118,13 @@ public class Post{
 
     public void setPhone(String _phone) {
         this.phone = _phone;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String _title) {
+        this.title = _title;
     }
 }

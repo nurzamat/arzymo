@@ -142,7 +142,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    ApiHelper.initUserFromServer(response);
+                    ApiHelper.initClientUserFromServer(response);
                 }
             }
             catch (Exception ex)

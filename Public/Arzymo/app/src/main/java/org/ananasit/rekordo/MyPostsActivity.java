@@ -1,6 +1,7 @@
 package org.ananasit.rekordo;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import org.ananasit.rekordo.adapter.MyPostListAdapter;
 import org.ananasit.rekordo.model.Category;
 import org.ananasit.rekordo.model.Image;
 import org.ananasit.rekordo.model.Post;
+import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.JsonObjectRequest;
 import org.ananasit.rekordo.util.Utils;
@@ -85,38 +87,15 @@ public class MyPostsActivity extends AppCompatActivity {
                         if(posts.length() > 0)
                         {
                             next = next + 1;
-                            JSONArray jimages;
                             JSONObject obj;
                             Category category;
+                            User user = appcon.getUser();
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
 
                                     obj = posts.getJSONObject(i);
-                                    Post post = new Post();
-                                    post.setId(obj.getString("id"));
-                                    post.setContent(obj.getString("content"));
-                                    post.setHitcount(obj.getString("hitcount"));
-                                    post.setPrice(obj.getString("price"));
-                                    post.setPriceCurrency(obj.getString("price_currency"));
                                     category = Utils.getCategoryByIds(obj.getString("id_category"), obj.getString("id_subcategory"));
-                                    post.setCategory(category);
-                                    post.setUser(appcon.getUser());
-                                    jimages = obj.getJSONArray("images");
-                                    if(jimages.length() > 0)
-                                    {
-                                        post.setThumbnailUrl(ApiHelper.MEDIA_URL + "/" + jimages.getJSONObject(0).getString("original_image"));
-                                        // Images
-                                        ArrayList<Image> images = new ArrayList<Image>();
-                                        JSONObject img;
-                                        Image image;
-                                        for (int j = 0; j < jimages.length(); j++)
-                                        {
-                                            img = jimages.getJSONObject(j);
-                                            image = new Image(img.getString("id"), ApiHelper.MEDIA_URL + "/" + img.getString("original_image"));
-                                            images.add(image);
-                                        }
-                                        post.setImages(images);
-                                    }
+                                    Post post = ApiHelper.initPost(obj, category, user);
                                     postList.add(post);
 
                                 } catch (JSONException e) {

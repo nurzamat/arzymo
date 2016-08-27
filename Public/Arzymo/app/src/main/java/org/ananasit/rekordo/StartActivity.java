@@ -105,7 +105,7 @@ public class StartActivity extends AppCompatActivity {
                     obj = response.getJSONObject("user");
                     if(obj.has("id"))
                     {
-                      ApiHelper.initUserFromServer(obj);
+                      ApiHelper.initClientUserFromServer(obj);
                     }
                 }
             }
