@@ -1,8 +1,5 @@
 package org.ananasit.rekordo.model;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 /**
  * Created by nurzamat on 8/28/16.
  */
@@ -27,20 +24,9 @@ public class Param
 
     public String getQuery()
     {
-        if(query.equals("") || query.equals("0") || query.contains(";"))
-            query = "0";
-        else
-        {
-            try
-            {
-                query = URLEncoder.encode(query, "UTF-8");
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+        if(!query.isEmpty())
         return query;
+        else return "0";
     }
 
     public void setQuery(String _query) {

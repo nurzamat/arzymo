@@ -125,7 +125,7 @@ public class Utils {
 
     public static String getParams(Param param)
     {
-        return param.getQuery().trim()+";"
+        String params = param.getQuery().trim()+";"
                 +param.getActionType()+";"
                 +param.getRegion()+";"
                 +param.getLocation()+";"
@@ -134,6 +134,15 @@ public class Utils {
                 +param.getSex()+";"
                 +param.getAge_from()+";"
                 +param.getAge_to();
+        try
+        {
+            params = URLEncoder.encode(params, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+        }
+        return params;
     }
 
     public static Category getCategoryByIds(String id_category, String id_subcategory)

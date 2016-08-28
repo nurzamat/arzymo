@@ -92,25 +92,29 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     @NonNull
     private String getParams()
     {
-        int _actionType = 0;
-        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
-        if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
-            _actionType = Utils.getActionTypeValue(ActionType.SELL);
-        if(categoryType != null && categoryType.equals(CategoryType.RENT))
-            _actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
-        if(categoryType != null && categoryType.equals(CategoryType.WORK))
-            _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
-
         param = new Param();
         param.setQuery(query);
-        param.setActionType(_actionType);
-        if(categoryType.equals(CategoryType.DATING))
+        int _actionType = 0;
+        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
+        if(categoryType != null)
         {
-            MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
-            param.setSex(myPreferenceManager.getDatingSex());
-            param.setAge_from(myPreferenceManager.getDatingAgeFrom());
-            param.setAge_to(myPreferenceManager.getDatingAgeTo());
+            if(categoryType.equals(CategoryType.SELL_BUY))
+                _actionType = Utils.getActionTypeValue(ActionType.SELL);
+            if(categoryType.equals(CategoryType.RENT))
+                _actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
+            if(categoryType.equals(CategoryType.WORK))
+                _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
+
+            if(categoryType.equals(CategoryType.DATING))
+            {
+                MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
+                param.setSex(myPreferenceManager.getDatingSex());
+                param.setAge_from(myPreferenceManager.getDatingAgeFrom());
+                param.setAge_to(myPreferenceManager.getDatingAgeTo());
+            }
         }
+        param.setActionType(_actionType);
+
         return Utils.getParams(param);
     }
 

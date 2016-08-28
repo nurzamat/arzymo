@@ -106,9 +106,12 @@ public class DialogFilter extends DialogFragment {
         initLocationSpinners();
 
         categoryType = Utils.getCategoryType(GlobalVar.Category);
-        actionLayout(categoryType);
-        datingLayout(categoryType);
-        priceLayout(categoryType);
+        if(categoryType != null)
+        {
+            actionLayout(categoryType);
+            datingLayout(categoryType);
+            priceLayout(categoryType);
+        }
 
         // Watch for button clicks.
         Button button = (Button)v.findViewById(R.id.btnSearch);
@@ -140,7 +143,7 @@ public class DialogFilter extends DialogFragment {
 
                 p.setActionPos(actionPos);
 
-                if(categoryType.equals(CategoryType.DATING))
+                if(categoryType != null && categoryType.equals(CategoryType.DATING))
                 {
                     MyPreferenceManager prefManager =  AppController.getInstance().getPrefManager();
                     if(sex != 2)
