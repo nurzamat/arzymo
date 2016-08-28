@@ -8,15 +8,19 @@ import java.net.URLEncoder;
  */
 public class Param
 {
-    String query = "0";
-    int actionType = 0;
-    String region = "0";
-    String location = "0";
-    String price_from = "0";
-    String price_to = "0";
-    int sex = 2;
-    String age_from = "0";
-    String age_to = "0";
+    //params
+    String query = "0";       //0
+    int actionType = 0;       //1
+    String region = "0";      //2
+    String location = "0";    //3
+    String price_from = "0";  //4
+    String price_to = "0";    //5
+    int sex = 2;              //6
+    String age_from = "0";    //7
+    String age_to = "0";      //8
+    //end params
+
+    int actionPos = 0;
 
     public Param() {
     }
@@ -105,6 +109,14 @@ public class Param
 
     public void setAge_to(String _age_to) {
         this.age_to = _age_to;
+    }
+
+    public int getActionPos() {
+        return actionPos;
+    }
+
+    public void setActionPos(int _actionPos) {
+        this.actionPos = _actionPos;
     }
 
 }

@@ -26,10 +26,9 @@ import org.ananasit.rekordo.util.Utils;
 public class DialogFilter extends DialogFragment {
 
     CategoryType categoryType = null;
-    int mNum;
     int actionType = 0;
-    int sex = 2; //0 - female, 1 - male
     int actionPos = 0;
+    int sex = 2; //0 - female, 1 - male
     String region, location, price_from, price_to, age_from, age_to;
     CheckBox chkMale, chkFemale;
     Spinner region_spinner, city_spinner, action_spinner;
@@ -39,12 +38,28 @@ public class DialogFilter extends DialogFragment {
      * Create a new instance of DialogFilter, providing "num"
      * as an argument.
      */
-    static DialogFilter newInstance(int num) {
+    static DialogFilter newInstance(Param param)
+    {
         DialogFilter f = new DialogFilter();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        if(param != null)
+        {
+            args.putString("region", param.getRegion());
+            args.putString("location", param.getLocation());
+            args.putString("price_from", param.getPrice_from());
+            args.putString("price_to", param.getPrice_to());
+            args.putInt("actionPos", param.getActionPos());
+        }
+        else
+        {
+            args.putString("region", "");
+            args.putString("location", "");
+            args.putString("price_from", "");
+            args.putString("price_to", "");
+            args.putInt("actionPos", 0);
+        }
         f.setArguments(args);
 
         return f;
@@ -56,9 +71,11 @@ public class DialogFilter extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments().getInt("num");
-        //working with num logic num - образно говоря
-        //// TODO: 8/27/16
+        region = getArguments().getString("region");
+        location = getArguments().getString("location");
+        price_from = getArguments().getString("price_from");
+        price_to = getArguments().getString("price_to");
+        actionPos = getArguments().getInt("actionPos");
     }
 
     @Override
@@ -82,6 +99,10 @@ public class DialogFilter extends DialogFragment {
         etPriceFrom = (EditText) v.findViewById(R.id.price_from);
         etPriceTo = (EditText) v.findViewById(R.id.price_to);
 
+        if(!price_from.isEmpty())
+           etPriceFrom.setText(price_from);
+        if(!price_to.isEmpty())
+            etPriceTo.setText(price_to);
         initLocationSpinners();
 
         categoryType = Utils.getCategoryType(GlobalVar.Category);
@@ -145,6 +166,8 @@ public class DialogFilter extends DialogFragment {
         region_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         region_spinner.setAdapter(region_adapter);
+        if(!region.isEmpty())
+            region_spinner.setSelection(region_adapter.getPosition(region));
         region_spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -216,6 +239,8 @@ public class DialogFilter extends DialogFragment {
             city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             city_spinner.setAdapter(city_adapter);
+            if(!location.isEmpty())
+                city_spinner.setSelection(city_adapter.getPosition(location));
             city_spinner.setOnItemSelectedListener(
                     new AdapterView.OnItemSelectedListener() {
                         @Override

@@ -50,6 +50,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     ProgressBar spin;
     String query = "";
     static PostsActivity _postActivity = null;
+    Param param = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +84,13 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 
-        Param p = getParam();
-        params = Utils.getParams(p);
+        params = getParams();
         VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
         listView.setOnScrollListener(new EndlessScrollListener(1));
     }
 
     @NonNull
-    private Param getParam()
+    private String getParams()
     {
         int _actionType = 0;
         CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
@@ -101,14 +101,14 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         if(categoryType != null && categoryType.equals(CategoryType.WORK))
             _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
 
-        Param p = new Param();
-        p.setQuery(query);
-        p.setActionType(_actionType);
+        param = new Param();
+        param.setQuery(query);
+        param.setActionType(_actionType);
         MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
-        p.setSex(myPreferenceManager.getDatingSex());
-        p.setAge_from(myPreferenceManager.getDatingAgeFrom());
-        p.setPrice_to(myPreferenceManager.getDatingAgeTo());
-        return p;
+        param.setSex(myPreferenceManager.getDatingSex());
+        param.setAge_from(myPreferenceManager.getDatingAgeFrom());
+        param.setAge_to(myPreferenceManager.getDatingAgeTo());
+        return Utils.getParams(param);
     }
 
     private void IntentWork(Intent intent)
@@ -235,7 +235,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         {
             // Create the fragment and show it as a dialog.
             FragmentManager fm = getSupportFragmentManager();
-            DialogFragment newFragment = DialogFilter.newInstance(1);
+            DialogFragment newFragment = DialogFilter.newInstance(param);
             newFragment.show(fm, "dialog");
             return true;
         }
@@ -253,6 +253,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     @Override
     public void onSearch(Param _p) {
         // User touched the dialog's Search button
+        param = _p;
         params = Utils.getParams(_p);
         postList.clear();
         adapter.notifyDataSetChanged();
