@@ -334,6 +334,7 @@ public class AddPostActivity extends AppCompatActivity {
             action_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
             action_spinner.setAdapter(action_adapter);
+
             action_spinner.setSelection(actionPos);
             action_spinner.setOnItemSelectedListener(
                     new AdapterView.OnItemSelectedListener() {

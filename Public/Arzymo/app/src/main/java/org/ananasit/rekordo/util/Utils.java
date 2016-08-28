@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Category;
+import org.ananasit.rekordo.model.Param;
 import org.ananasit.rekordo.model.User;
 
 import java.io.UnsupportedEncodingException;
@@ -122,23 +123,17 @@ public class Utils {
         return categoryType;
     }
 
-    public static String getParams(String query, int actionTypeValue)
+    public static String getParams(Param param)
     {
-        if(query.equals("") || query.equals("0") || query.contains(";"))
-            query = "0";
-        else
-        {
-            try
-            {
-                query = URLEncoder.encode(query, "UTF-8");
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
-
-        return query + ";" + actionTypeValue;
+        return param.getQuery().trim()+";"
+                +param.getActionType()+";"
+                +param.getRegion()+";"
+                +param.getLocation()+";"
+                +param.getPrice_from()+";"
+                +param.getPrice_to()+";"
+                +param.getSex()+";"
+                +param.getAge_from()+";"
+                +param.getAge_to();
     }
 
     public static Category getCategoryByIds(String id_category, String id_subcategory)

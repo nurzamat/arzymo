@@ -2,6 +2,7 @@ package org.ananasit.rekordo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import org.ananasit.rekordo.adapter.PostListAdapter;
 import org.ananasit.rekordo.model.Image;
+import org.ananasit.rekordo.model.Param;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ActionType;
@@ -27,6 +29,7 @@ import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.CategoryType;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.JsonObjectRequest;
+import org.ananasit.rekordo.util.MyPreferenceManager;
 import org.ananasit.rekordo.util.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,7 +83,15 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 
-        //by default
+        Param p = getParam();
+        params = Utils.getParams(p);
+        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
+        listView.setOnScrollListener(new EndlessScrollListener(1));
+    }
+
+    @NonNull
+    private Param getParam()
+    {
         int _actionType = 0;
         CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
         if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
@@ -90,9 +101,14 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         if(categoryType != null && categoryType.equals(CategoryType.WORK))
             _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
 
-        params = Utils.getParams(query, _actionType);
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
-        listView.setOnScrollListener(new EndlessScrollListener(1));
+        Param p = new Param();
+        p.setQuery(query);
+        p.setActionType(_actionType);
+        MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
+        p.setSex(myPreferenceManager.getDatingSex());
+        p.setAge_from(myPreferenceManager.getDatingAgeFrom());
+        p.setPrice_to(myPreferenceManager.getDatingAgeTo());
+        return p;
     }
 
     private void IntentWork(Intent intent)
@@ -235,11 +251,11 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
 
     //DialogFilter interface
     @Override
-    public void onSearch(String _params) {
+    public void onSearch(Param _p) {
         // User touched the dialog's Search button
-        params = _params;
+        params = Utils.getParams(_p);
         postList.clear();
         adapter.notifyDataSetChanged();
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, _params));
+        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
     }
 }

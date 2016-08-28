@@ -12,9 +12,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import org.ananasit.rekordo.model.Param;
 import org.ananasit.rekordo.util.ActionType;
 import org.ananasit.rekordo.util.CategoryType;
 import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.MyPreferenceManager;
 import org.ananasit.rekordo.util.Utils;
 
 /**
@@ -22,12 +25,12 @@ import org.ananasit.rekordo.util.Utils;
  */
 public class DialogFilter extends DialogFragment {
 
+    CategoryType categoryType = null;
     int mNum;
-    String params;
     int actionType = 0;
     int sex = 2; //0 - female, 1 - male
     int actionPos = 0;
-    String region, location;
+    String region, location, price_from, price_to, age_from, age_to;
     CheckBox chkMale, chkFemale;
     Spinner region_spinner, city_spinner, action_spinner;
     EditText etAgeFrom, etAgeTo, etPriceFrom, etPriceTo;
@@ -47,7 +50,7 @@ public class DialogFilter extends DialogFragment {
         return f;
     }
     public interface SearchListener {
-        void onSearch(String params);
+        void onSearch(Param p);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class DialogFilter extends DialogFragment {
 
         initLocationSpinners();
 
-        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
+        categoryType = Utils.getCategoryType(GlobalVar.Category);
         actionLayout(categoryType);
         datingLayout(categoryType);
         priceLayout(categoryType);
@@ -90,10 +93,42 @@ public class DialogFilter extends DialogFragment {
         Button button = (Button)v.findViewById(R.id.btnSearch);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 // When button is clicked, call up to owning activity.
-                params = Utils.getParams("", actionType);
-                ((SearchListener)getActivity()).onSearch(params);
+                price_from = etPriceFrom.getText().toString();
+                price_to = etPriceTo.getText().toString();
+                age_from = etAgeFrom.getText().toString();
+                age_to = etAgeTo.getText().toString();
+
+                Param p = new Param();
+                if(actionType != 0)
+                    p.setActionType(actionType);
+                if(!region.isEmpty())
+                    p.setRegion(region);
+                if(!location.isEmpty())
+                    p.setLocation(location);
+                if(sex != 2)
+                    p.setSex(sex);
+                if(!age_from.isEmpty())
+                    p.setAge_from(age_from);
+                if(!age_to.isEmpty())
+                    p.setAge_to(age_to);
+                if(!price_from.isEmpty())
+                    p.setPrice_from(price_from);
+                if(!price_to.isEmpty())
+                    p.setPrice_to(price_to);
+
+                if(categoryType.equals(CategoryType.DATING))
+                {
+                    MyPreferenceManager prefManager =  AppController.getInstance().getPrefManager();
+                    if(sex != 2)
+                        prefManager.saveDatingSex(sex);
+                    if(!age_from.isEmpty())
+                        prefManager.saveDatingAgeFrom(age_from);
+                    if(!age_to.isEmpty())
+                        prefManager.saveDatingAgeTo(age_to);
+                }
+
+                ((SearchListener)getActivity()).onSearch(p);
                 dismiss();
             }
         });
@@ -289,6 +324,32 @@ public class DialogFilter extends DialogFragment {
             sex_params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             age_params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
+            //init fields from pref
+            MyPreferenceManager myPref = AppController.getInstance().getPrefManager();
+            int datingSex = myPref.getDatingSex();
+            String datingAgeFrom = myPref.getDatingAgeFrom();
+            String datingAgeTo = myPref.getDatingAgeTo();
+
+            if(datingSex == 0)
+            {
+                chkFemale.setChecked(true);
+                chkMale.setChecked(false);
+            }
+            if(datingSex == 1)
+            {
+                chkFemale.setChecked(false);
+                chkMale.setChecked(true);
+            }
+            if(!datingAgeFrom.equals("") && !datingAgeFrom.equals("0"))
+            {
+                etAgeFrom.setText(datingAgeFrom);
+            }
+            if(!datingAgeTo.equals("") && !datingAgeTo.equals("0"))
+            {
+                etAgeTo.setText(datingAgeTo);
+            }
+            //
+            //listeners for check boxes
             chkMale.setOnClickListener(new View.OnClickListener() {
 
                 @Override
