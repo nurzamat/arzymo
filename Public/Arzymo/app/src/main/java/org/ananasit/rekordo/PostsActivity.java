@@ -104,10 +104,13 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         param = new Param();
         param.setQuery(query);
         param.setActionType(_actionType);
-        MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
-        param.setSex(myPreferenceManager.getDatingSex());
-        param.setAge_from(myPreferenceManager.getDatingAgeFrom());
-        param.setAge_to(myPreferenceManager.getDatingAgeTo());
+        if(categoryType.equals(CategoryType.DATING))
+        {
+            MyPreferenceManager myPreferenceManager = AppController.getInstance().getPrefManager();
+            param.setSex(myPreferenceManager.getDatingSex());
+            param.setAge_from(myPreferenceManager.getDatingAgeFrom());
+            param.setAge_to(myPreferenceManager.getDatingAgeTo());
+        }
         return Utils.getParams(param);
     }
 
