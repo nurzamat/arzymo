@@ -99,9 +99,9 @@ public class DialogFilter extends DialogFragment {
         etPriceFrom = (EditText) v.findViewById(R.id.price_from);
         etPriceTo = (EditText) v.findViewById(R.id.price_to);
 
-        if(!price_from.isEmpty())
+        if(!price_from.isEmpty() && !price_from.equals("0"))
            etPriceFrom.setText(price_from);
-        if(!price_to.isEmpty())
+        if(!price_to.isEmpty() && !price_to.equals("0"))
             etPriceTo.setText(price_to);
         initLocationSpinners();
 
