@@ -138,6 +138,8 @@ public class DialogFilter extends DialogFragment {
                 if(!price_to.isEmpty())
                     p.setPrice_to(price_to);
 
+                p.setActionPos(actionPos);
+
                 if(categoryType.equals(CategoryType.DATING))
                 {
                     MyPreferenceManager prefManager =  AppController.getInstance().getPrefManager();
