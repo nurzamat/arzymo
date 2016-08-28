@@ -82,7 +82,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/price_hint"
                 android:singleLine="true"
-                android:textColorHint="@color/blue_light"
                 android:inputType="numberDecimal"
                 android:maxLength="18"
                 android:visibility="invisible"/>

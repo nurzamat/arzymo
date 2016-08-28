@@ -13,6 +13,7 @@
     <string name="vacancy">Вакансии</string>
     <string name="resume">Ищу работу</string>
     <string name="action_add_post">Добавить</string>
+    <string name="action_filter">Фильтр</string>
     <string name="send_message">Сообщение</string>
     <string name="call">Позвонить</string>
     <string name="search_go">Поиск</string>
@@ -29,6 +30,11 @@
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="price_hint">Цена    </string>
+    <string name="from"> от </string>
+    <string name="to"> до </string>
+    <string name="sex">Пол</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
     <string name="choose_category_ru">Выберите категорию</string>
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="title_activity_multi_photo_select"></string>

@@ -2,6 +2,8 @@ package org.ananasit.rekordo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,6 +13,8 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -30,7 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostsActivity extends AppCompatActivity {
+public class PostsActivity extends AppCompatActivity implements DialogFilter.SearchListener{
 
     private static final String TAG =  "[category_posts response]";
     private List<Post> postList = new ArrayList<Post>();
@@ -41,7 +45,6 @@ public class PostsActivity extends AppCompatActivity {
     public int next = 1;
     public String params;
     ProgressBar spin;
-    int _actionType = 0;
     String query = "";
     static PostsActivity _postActivity = null;
 
@@ -54,7 +57,7 @@ public class PostsActivity extends AppCompatActivity {
             _postActivity.finish();
         _postActivity = this;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,32 +73,22 @@ public class PostsActivity extends AppCompatActivity {
         if(GlobalVar.Category != null)
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
-        //by default
-        if(_actionType == 0)
-        {
-            CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
-            if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
-            {
-                _actionType = Utils.getActionTypeValue(ActionType.SELL);
-            }
-
-            if(categoryType != null && categoryType.equals(CategoryType.RENT))
-            {
-                _actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
-            }
-
-            if(categoryType != null && categoryType.equals(CategoryType.WORK))
-            {
-                _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
-            }
-        }
-
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
         adapter = new PostListAdapter(PostsActivity.this, postList);
         listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
+
+        //by default
+        int _actionType = 0;
+        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
+        if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
+            _actionType = Utils.getActionTypeValue(ActionType.SELL);
+        if(categoryType != null && categoryType.equals(CategoryType.RENT))
+            _actionType = Utils.getActionTypeValue(ActionType.RENT_GIVE);
+        if(categoryType != null && categoryType.equals(CategoryType.WORK))
+            _actionType = Utils.getActionTypeValue(ActionType.VACANCY);
 
         params = Utils.getParams(query, _actionType);
         VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
@@ -106,9 +99,6 @@ public class PostsActivity extends AppCompatActivity {
     {
         if(intent.getStringExtra("query") != null && !intent.getStringExtra("query").equals(""))
         query = intent.getStringExtra("query");
-
-        _actionType = intent.getIntExtra("actionType", 0);
-
     }
 
     public void VolleyRequest(String url) {
@@ -213,21 +203,7 @@ public class PostsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        CategoryType categoryType = Utils.getCategoryType(GlobalVar.Category);
-        if(categoryType != null && categoryType.equals(CategoryType.SELL_BUY))
-        {
-            getMenuInflater().inflate(R.menu.menu_buy_sell, menu);
-        }
-        else if(categoryType != null && categoryType.equals(CategoryType.RENT))
-        {
-            getMenuInflater().inflate(R.menu.menu_rent, menu);
-        }
-        else if(categoryType != null && categoryType.equals(CategoryType.WORK))
-        {
-            getMenuInflater().inflate(R.menu.menu_work, menu);
-        }
-        else getMenuInflater().inflate(R.menu.menu_posts, menu);
+        getMenuInflater().inflate(R.menu.menu_posts, menu);
         return true;
     }
 
@@ -239,32 +215,14 @@ public class PostsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.action_sell || id == R.id.action_buy || id == R.id.action_rent_give || id == R.id.action_rent_get || id == R.id.action_vacancy || id == R.id.action_resume)
+        if (id == R.id.action_filter)
         {
-            Intent in = new Intent(this, PostsActivity.class);
-
-            if(id == R.id.action_sell)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.SELL));
-            if(id == R.id.action_buy)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.BUY));
-            if(id == R.id.action_rent_give)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RENT_GIVE));
-            if(id == R.id.action_rent_get)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RENT_GET));
-            if(id == R.id.action_vacancy)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.VACANCY));
-            if(id == R.id.action_resume)
-                in.putExtra("actionType", Utils.getActionTypeValue(ActionType.RESUME));
-
-            startActivity(in);
-            finish();
+            // Create the fragment and show it as a dialog.
+            FragmentManager fm = getSupportFragmentManager();
+            DialogFragment newFragment = DialogFilter.newInstance(1);
+            newFragment.show(fm, "dialog");
             return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -273,5 +231,15 @@ public class PostsActivity extends AppCompatActivity {
     {
         //super.onBackPressed();
         finish();
+    }
+
+    //DialogFilter interface
+    @Override
+    public void onSearch(String _params) {
+        // User touched the dialog's Search button
+        params = _params;
+        postList.clear();
+        adapter.notifyDataSetChanged();
+        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, _params));
     }
 }
