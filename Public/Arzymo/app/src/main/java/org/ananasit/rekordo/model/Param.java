@@ -55,8 +55,11 @@ public class Param
         this.actionType = _actionType;
     }
 
-    public String getRegion() {
+    public String getRegion()
+    {
+        if(!region.isEmpty())
         return region;
+        else return "0";
     }
 
     public void setRegion(String _region) {
@@ -64,7 +67,9 @@ public class Param
     }
 
     public String getLocation() {
-        return location;
+        if(!location.isEmpty())
+            return location;
+        else return "0";
     }
 
     public void setLocation(String _location) {
@@ -72,7 +77,9 @@ public class Param
     }
 
     public String getPrice_from() {
-        return price_from;
+        if(!price_from.isEmpty())
+            return price_from;
+        else return "0";
     }
 
     public void setPrice_from(String _price_from) {
@@ -80,7 +87,9 @@ public class Param
     }
 
     public String getPrice_to() {
-        return price_to;
+        if(!price_to.isEmpty())
+            return price_to;
+        else return "0";
     }
 
     public void setPrice_to(String _price_to) {
@@ -96,7 +105,9 @@ public class Param
     }
 
     public String getAge_from() {
-        return age_from;
+        if(!age_from.isEmpty())
+            return age_from;
+        else return "0";
     }
 
     public void setAge_from(String _age_from) {
@@ -104,7 +115,9 @@ public class Param
     }
 
     public String getAge_to() {
-        return age_to;
+        if(!age_to.isEmpty())
+            return age_to;
+        else return "0";
     }
 
     public void setAge_to(String _age_to) {
