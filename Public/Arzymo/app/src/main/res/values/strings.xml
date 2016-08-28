@@ -29,9 +29,9 @@
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
-    <string name="price_hint">Цена    </string>
-    <string name="from"> от </string>
-    <string name="to"> до </string>
+    <string name="price_hint">Цена</string>
+    <string name="from">от</string>
+    <string name="to">до</string>
     <string name="sex">Пол</string>
     <string name="male">Мужской</string>
     <string name="female">Женский</string>

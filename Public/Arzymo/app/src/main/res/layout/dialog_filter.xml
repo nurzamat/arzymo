@@ -42,8 +42,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/city_layout"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:visibility="visible">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/from"
+            android:visibility="invisible"/>
         <Spinner
             android:id="@+id/action_spinner"
             android:layout_width="wrap_content"
@@ -90,23 +95,25 @@
             android:layout_marginRight="10dp"
             android:text="Возраст"/>
         <EditText android:id="@+id/age_from"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:hint="@string/from"
             android:singleLine="true"
             android:inputType="numberDecimal"
-            android:maxLength="18"/>
+            android:maxLength="2"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"/>
+            android:layout_marginRight="10dp"
+            android:text="--"/>
         <EditText android:id="@+id/age_to"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:hint="@string/to"
             android:singleLine="true"
             android:inputType="numberDecimal"
-            android:maxLength="18"/>
+            android:maxLength="2"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/price_layout"
@@ -122,18 +129,20 @@
             android:layout_marginRight="10dp"
             android:text="Цена"/>
         <EditText android:id="@+id/price_from"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:hint="@string/from"
             android:singleLine="true"
             android:inputType="numberDecimal"
-            android:maxLength="18"/>
+            android:maxLength="10"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"/>
+            android:layout_marginRight="10dp"
+            android:text="--"/>
         <EditText android:id="@+id/price_to"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:hint="@string/to"
