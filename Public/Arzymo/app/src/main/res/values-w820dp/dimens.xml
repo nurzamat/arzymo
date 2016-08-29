@@ -10,5 +10,4 @@
     <dimen name="genre">12dip</dimen>
     <dimen name="price">12dip</dimen>
     <dimen name="item_offset">2dp</dimen>
-    <dimen name="header_height">300dp</dimen>
 </resources>

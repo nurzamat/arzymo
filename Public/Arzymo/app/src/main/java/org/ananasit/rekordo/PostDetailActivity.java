@@ -1,5 +1,7 @@
 package org.ananasit.rekordo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,10 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import org.ananasit.rekordo.adapter.CategoriesRecyclerAdapter;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
@@ -25,8 +32,6 @@ import org.json.JSONObject;
 public class PostDetailActivity extends AppCompatActivity {
 
     CollapsingToolbarLayout collapsingToolbar;
-    RecyclerView recyclerView;
-    CategoriesRecyclerAdapter adapter;
     ViewPager mPager;
     PostViewPagerAdapter mAdapter;
     LinearLayout layout;
@@ -36,6 +41,10 @@ public class PostDetailActivity extends AppCompatActivity {
     private boolean like = false;
     User client = null;
     private int count = 0;
+    //content params
+    TextView hitcount, date, location, title, price, content;
+    ImageButton chat, call;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +69,46 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        /*
+        hitcount = (TextView) findViewById(R.id.hitcount);
+        date = (TextView) findViewById(R.id.date);
+        location = (TextView) findViewById(R.id.location);
+        title = (TextView) findViewById(R.id.title);
+        price = (TextView) findViewById(R.id.price);
+        content = (TextView) findViewById(R.id.content);
+        chat = (ImageButton) findViewById(R.id.action_chat);
+        call = (ImageButton) findViewById(R.id.action_call);
+
+        hitcount.setText(p.getHitcount());
+        date.setText(p.getDate_created());
+        location.setText(p.getLocation());
+        title.setText(p.getTitle());
+        price.setText(p.getPrice());
+        content.setText(p.getContent());
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                if(p != null && p.getUser() != null)
+                {
+                    Intent intent = new Intent(PostDetailActivity.this, MessagesActivity.class);
+                    intent.putExtra("interlocutor_id", p.getUser().getId());
+                    intent.putExtra("post_id", p.getId());
+                    intent.putExtra("name", p.getUser().getUserName());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        call.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + "+" + p.getPhone()));
+                startActivity(intent);
+            }
+        });
+
+        /*  // for image full screen logic
         layout = (LinearLayout) findViewById(R.id.layout);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,16 +117,6 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
         */
-
-        recyclerView = (RecyclerView) findViewById(R.id.contentPostDetail);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        //todo
-        // specify an adapter (see also next example)
-        adapter =  new CategoriesRecyclerAdapter(this, GlobalVar._categories);
-        recyclerView.setAdapter(adapter);
 
         ViewPagerWork();
 

@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context="org.ananasit.rekordo.PostDetailActivity">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
@@ -24,7 +25,6 @@
             android:background="@drawable/tile_add_post"
             app:title=" "
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
             <LinearLayout
                 android:id="@+id/layout"
                 android:layout_width="match_parent"

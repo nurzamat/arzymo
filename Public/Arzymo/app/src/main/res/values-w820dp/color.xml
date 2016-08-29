@@ -12,8 +12,6 @@
     <color name="blue">#00abea</color>
     <color name="blue_light">#a1d4e9</color>
     <color name="blue_dark">#62b7da</color>
-    <color name="bg_msg_you">#5eb964</color>
-    <color name="bg_msg_from">#e5e7eb</color>
     <color name="color_primary_red">#f44336</color>
     <color name="color_primary_red_dark">#d32f2f</color>
     <color name="color_primary_green"> #4caf50</color>
@@ -23,8 +21,6 @@
     <color name="color_accent_pink">#ff4081</color>
 
     <color name="material_green">#0a8f08</color>
-    <color name="material_teal">#009688</color>
-    <color name="material_light_teal">#4db6ac</color>
     <color name="colorPrimary">#7B1FA2</color>
     <color name="bg_bubble_self">#E1E1E1</color>
 </resources>

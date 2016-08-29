@@ -590,6 +590,7 @@ public class ApiHelper {
         post.setTitle(obj.getString("title"));
         post.setContent(obj.getString("content"));
         post.setHitcount(obj.getString("hitcount"));
+        post.setDate_created(obj.getString("created_at"));
         post.setPrice(obj.getString("price"));
         post.setPriceCurrency(obj.getString("price_currency"));
         post.setBirth_year(obj.getString("birth_year"));

@@ -14,6 +14,7 @@ public class Post{
     private String price_currency = "";
     private String hitcount = "";
     private String birth_year = "";
+    private String date_created = "";
     private String location = "";
     private String phone = "";
     private User user = null;
@@ -126,5 +127,13 @@ public class Post{
 
     public void setTitle(String _title) {
         this.title = _title;
+    }
+
+    public String getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(String _date_created) {
+        this.date_created = _date_created;
     }
 }

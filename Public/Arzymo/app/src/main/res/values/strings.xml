@@ -6,12 +6,6 @@
     <string name="cancel">Отмена</string>
     <string name="action_settings">Настройки</string>
     <string name="action_like">Нравится</string>
-    <string name="sell">Продаю</string>
-    <string name="buy">Куплю</string>
-    <string name="rent_give">Сдаю</string>
-    <string name="rent_get">Сниму</string>
-    <string name="vacancy">Вакансии</string>
-    <string name="resume">Ищу работу</string>
     <string name="action_add_post">Добавить</string>
     <string name="action_filter">Фильтр</string>
     <string name="send_message">Сообщение</string>
@@ -38,9 +32,6 @@
     <string name="choose_category_ru">Выберите категорию</string>
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="title_activity_multi_photo_select"></string>
-    <string name="select">Выбрать</string>
-    <string name="all_regions">Все регионы</string>
-    <string name="all">Все</string>
 
     <string-array name="price_currencies">
         <item>сом</item>
@@ -181,9 +172,7 @@
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_phone">Enter valid phone number</string>
 
-    <string name="permission_rationale">"Storage permission is needed for fetching images from Gallery."</string>
     <!-- Content descriptions -->
-    <string name="descr_image">Image</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -243,15 +232,6 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_login2">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
 </resources>
