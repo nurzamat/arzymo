@@ -12,13 +12,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-
 import org.ananasit.rekordo.model.Param;
 import org.ananasit.rekordo.util.ActionType;
 import org.ananasit.rekordo.util.CategoryType;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.MyPreferenceManager;
 import org.ananasit.rekordo.util.Utils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nurzamat on 8/27/16.
@@ -165,8 +166,8 @@ public class DialogFilter extends DialogFragment {
     //init work
     private void initLocationSpinners()
     {
-        ArrayAdapter<CharSequence> region_adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.regions, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> region_adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.regions_for_filter, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         region_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -181,6 +182,11 @@ public class DialogFilter extends DialogFragment {
 
                         if(pos != 0)
                             region = parent.getItemAtPosition(pos).toString();
+                        else
+                        {
+                            region = "";
+                            location = "";
+                        }
                         initLocationCity(pos);
                     }
 
@@ -204,42 +210,79 @@ public class DialogFilter extends DialogFragment {
         }
         else
         {
-            // Changes the height and width to the specified *pixels*
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             city_spinner.setVisibility(View.VISIBLE);
-            ArrayAdapter<CharSequence> city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                    R.array.chuy, android.R.layout.simple_spinner_item);
 
+            List<String> list = new ArrayList<String>();
+            list.add("Все");
+            String[] myResArray;
+
+            if(pos == 1)
+            {
+                myResArray = getResources().getStringArray(R.array.chuy);
+
+                for (String value : myResArray)
+                {
+                       list.add(value);
+                }
+            }
             if(pos == 2)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.issyk, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.issyk);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
             if(pos == 3)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.naryn, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.naryn);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
             if(pos == 4)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.talas, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.talas);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
             if(pos == 5)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.jalalabad, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.jalalabad);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
             if(pos == 6)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.osh, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.osh);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
             if(pos == 7)
             {
-                city_adapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.batken, android.R.layout.simple_spinner_item);
+                myResArray = getResources().getStringArray(R.array.batken);
+
+                for (String value : myResArray)
+                {
+                    list.add(value);
+                }
             }
+
+            ArrayAdapter<String> city_adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
+
             // Specify the layout to use when the list of choices appears
             city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // Apply the adapter to the spinner
@@ -252,7 +295,9 @@ public class DialogFilter extends DialogFragment {
                         public void onItemSelected(AdapterView<?> parent, View view,
                                                    int pos, long id) {
 
-                            location = parent.getItemAtPosition(pos).toString();
+                            if(pos != 0)
+                                location = parent.getItemAtPosition(pos).toString();
+                            else location = "";
                         }
 
                         @Override

@@ -39,6 +39,8 @@
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="title_activity_multi_photo_select"></string>
     <string name="select">Выбрать</string>
+    <string name="all_regions">Все регионы</string>
+    <string name="all">Все</string>
 
     <string-array name="price_currencies">
         <item>сом</item>
@@ -60,6 +62,16 @@
     <string-array name="work_resume_vacancy">
         <item>Вакансия</item>
         <item>Ищу работу (резюме)</item>
+    </string-array>
+    <string-array name="regions_for_filter">
+        <item>Все области</item>
+        <item>Чуйская область</item>
+        <item>Иссык-Кульская область</item>
+        <item>Нарынская область</item>
+        <item>Таласская область</item>
+        <item>Джалал-Абадская область</item>
+        <item>Ошская область</item>
+        <item>Баткенская область</item>
     </string-array>
     <string-array name="regions">
         <item>Область</item>
