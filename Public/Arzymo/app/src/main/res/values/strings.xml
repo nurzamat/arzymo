@@ -30,7 +30,7 @@
     <string name="male">Мужской</string>
     <string name="female">Женский</string>
     <string name="choose_category_ru">Выберите категорию</string>
-    <string name="title_activity_categories">CategoriesActivity</string>
+    <string name="title_activity_categories">Категории</string>
     <string name="title_activity_multi_photo_select"></string>
 
     <string-array name="price_currencies">

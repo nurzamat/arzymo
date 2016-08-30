@@ -57,15 +57,6 @@ public class MyLikesActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);

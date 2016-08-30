@@ -32,7 +32,7 @@ public class SubcatsActivity extends AppCompatActivity {
         if(intent != null)
             mode = intent.getStringExtra("mode");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(GlobalVar.Category.getName());
 

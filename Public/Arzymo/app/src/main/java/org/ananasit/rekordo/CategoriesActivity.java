@@ -26,7 +26,7 @@ public class CategoriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         fa = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setSubtitle(GlobalVar.Category.getName());
 
