@@ -1,9 +1,5 @@
 package org.ananasit.rekordo.adapter;
 
-/**
- * Created by User on 16.12.2014.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -25,12 +21,14 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 {
     private Context context;
     private List<Post> postItems;
+    private boolean isListView;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
 
-    public PostListAdapter(Context _context, List<Post> _postItems) {
+    public PostListAdapter(Context _context, List<Post> _postItems, boolean _isListView) {
         context = _context;
         postItems = _postItems;
+        isListView = _isListView;
     }
     public static class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
@@ -70,7 +68,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.post_list_row, parent, false);
+        View view;
+        if(isListView)
+           view = LayoutInflater.from(context).inflate(R.layout.post_list_row, parent, false);
+        else view = LayoutInflater.from(context).inflate(R.layout.post_grid_row, parent, false);
         PostViewHolder vh = new PostViewHolder(view);
         return vh;
     }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import org.ananasit.rekordo.util.ActionType;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.CategoryType;
 import org.ananasit.rekordo.util.EndlessRecyclerOnScrollListener;
+import org.ananasit.rekordo.util.EndlessStraggeredGridOnScrollListener;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.JsonObjectRequest;
 import org.ananasit.rekordo.util.MyPreferenceManager;
@@ -42,6 +44,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     private PostListAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private TextView emptyText;
     AppController appcon = null;
     public int next = 1;
@@ -50,6 +53,9 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     String query = "";
     static PostsActivity _postActivity = null;
     Param param = null;
+    private Menu menu;
+    private boolean isListView;
+    private int spanCount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         if(GlobalVar.Category != null)
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
+        isListView = true;
         //init recycler
         recyclerView = (RecyclerView) findViewById(R.id.list);
         // use this setting to improve performance if you know that changes
@@ -83,12 +90,15 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(PostsActivity.this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        emptyText = (TextView) findViewById(android.R.id.empty);
+        mLayoutManager = new LinearLayoutManager(this);
+        mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
+        if(isListView)
+        recyclerView.setLayoutManager(mLayoutManager);
+        else recyclerView.setLayoutManager(mStaggeredLayoutManager);
+        emptyText = (TextView) findViewById(android.R.id.empty);
         // specify an adapter (see also next example)
-        adapter =  new PostListAdapter(PostsActivity.this, postList);
+        adapter =  new PostListAdapter(this, postList, isListView);
         recyclerView.setAdapter(adapter);
         //end
 
@@ -108,13 +118,30 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         }
         */
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager)
+        addOnScroll(false);
+    }
+
+    private void addOnScroll(boolean _isStraggered) {
+        if(!_isStraggered)
         {
-            @Override
-            public void onLoadMore(int current_page) {
-                VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
-            }
-        });
+            recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager)
+            {
+                @Override
+                public void onLoadMore(int current_page) {
+                    VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
+                }
+            });
+        }
+        else
+        {
+            recyclerView.addOnScrollListener(new EndlessStraggeredGridOnScrollListener(mStaggeredLayoutManager)
+            {
+                @Override
+                public void onLoadMore(int current_page) {
+                    VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
+                }
+            });
+        }
     }
 
     @NonNull
@@ -222,6 +249,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_posts, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -241,14 +269,56 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             newFragment.show(fm, "dialog");
             return true;
         }
+        if (id == R.id.action_toggle) {
+            toggle();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        //super.onBackPressed();
-        finish();
+    private void toggle() {
+        MenuItem item = menu.findItem(R.id.action_toggle);
+        if(isListView)
+        {
+            if(spanCount == 2)
+            {
+                spanCount = 1;
+                recyclerView.setLayoutManager(mLayoutManager);
+                adapter =  new PostListAdapter(this, postList, true);
+                recyclerView.setAdapter(adapter);
+                addOnScroll(false);
+
+                item.setIcon(R.drawable.ic_reorder_horizontal);
+                item.setTitle("Show as big list");
+            }
+            else
+            {
+                isListView = false;
+                spanCount = 1;
+                recyclerView.setLayoutManager(mStaggeredLayoutManager);
+                adapter =  new PostListAdapter(this, postList, false);
+                recyclerView.setAdapter(adapter);
+                addOnScroll(true);
+                mStaggeredLayoutManager.setSpanCount(spanCount);
+                item.setIcon(R.drawable.ic_view_grid);
+                item.setTitle("Show as grid");
+            }
+        }
+        else
+        {
+            if(spanCount == 1)
+            {
+                spanCount = 2;
+                recyclerView.setLayoutManager(mStaggeredLayoutManager);
+                adapter =  new PostListAdapter(this, postList, false);
+                recyclerView.setAdapter(adapter);
+                addOnScroll(true);
+                mStaggeredLayoutManager.setSpanCount(spanCount);
+                item.setIcon(R.drawable.ic_view_list);
+                item.setTitle("Show as list");
+                isListView = true;
+            }
+        }
     }
 
     //DialogFilter interface
@@ -260,5 +330,12 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         postList.clear();
         adapter.notifyDataSetChanged();
         VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        //super.onBackPressed();
+        finish();
     }
 }

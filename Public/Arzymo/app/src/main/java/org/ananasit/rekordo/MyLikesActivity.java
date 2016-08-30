@@ -69,7 +69,7 @@ public class MyLikesActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         emptyText = (TextView) findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
-        adapter = new PostListAdapter(MyLikesActivity.this, postList);
+        adapter = new PostListAdapter(this, postList, true);
         //listView.setAdapter(adapter);
         spin = (ProgressBar) findViewById(R.id.loading);
 

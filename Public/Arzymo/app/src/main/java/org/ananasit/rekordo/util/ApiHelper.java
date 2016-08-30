@@ -25,7 +25,7 @@ public class ApiHelper {
 
     public static final String TAG = "[API]";
     //public static final String ARZYMO_URL = "http://ananasit.org";
-    public static final String ARZYMO_URL = "http://192.168.1.101";
+    public static final String ARZYMO_URL = "http://192.168.1.102";
     public static final String BASE_URL = ARZYMO_URL + "/mobylive/v1";
     public static final String REGISTER_URL = BASE_URL + "/register";
     public static final String CATEGORIES_URL = BASE_URL + "/categories/user/_ID_";
