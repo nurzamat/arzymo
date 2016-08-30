@@ -115,6 +115,7 @@
                 android:id="@+id/action_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="20dp"
                 android:src="@drawable/show_phone"
                 android:layout_toRightOf="@+id/action_chat"/>
         </RelativeLayout>

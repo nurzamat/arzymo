@@ -6,27 +6,25 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import org.ananasit.rekordo.adapter.PostListAdapter;
-import org.ananasit.rekordo.model.Image;
 import org.ananasit.rekordo.model.Param;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ActionType;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.CategoryType;
+import org.ananasit.rekordo.util.EndlessRecyclerOnScrollListener;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.JsonObjectRequest;
 import org.ananasit.rekordo.util.MyPreferenceManager;
@@ -41,8 +39,9 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
 
     private static final String TAG =  "[category_posts response]";
     private List<Post> postList = new ArrayList<Post>();
-    private ListView listView;
     private PostListAdapter adapter;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
     private TextView emptyText;
     AppController appcon = null;
     public int next = 1;
@@ -77,16 +76,45 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         if(GlobalVar.Category != null)
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
-        listView = (ListView) findViewById(R.id.list);
+        //init recycler
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(PostsActivity.this);
+        recyclerView.setLayoutManager(mLayoutManager);
         emptyText = (TextView) findViewById(android.R.id.empty);
-        listView.setEmptyView(emptyText);
-        adapter = new PostListAdapter(PostsActivity.this, postList);
-        listView.setAdapter(adapter);
+
+        // specify an adapter (see also next example)
+        adapter =  new PostListAdapter(PostsActivity.this, postList);
+        recyclerView.setAdapter(adapter);
+        //end
+
         spin = (ProgressBar) findViewById(R.id.loading);
 
         params = getParams();
         VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
-        listView.setOnScrollListener(new EndlessScrollListener(1));
+
+        /*
+        if (postList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyText.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.GONE);
+        }
+        */
+
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager)
+        {
+            @Override
+            public void onLoadMore(int current_page) {
+                VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
+            }
+        });
     }
 
     @NonNull
@@ -188,39 +216,6 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         });
         // Adding request to request queue
         appcon.addToRequestQueue(jsonObjReq);
-    }
-
-    private class EndlessScrollListener implements AbsListView.OnScrollListener {
-
-        private int visibleThreshold = 5;
-        private int currentPage = 0;
-        private int previousTotal = 0;
-        private boolean loading = true;
-
-        public EndlessScrollListener(int visibleThreshold) {
-            this.visibleThreshold = visibleThreshold;
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                             int visibleItemCount, int totalItemCount) {
-            if (loading) {
-                if (totalItemCount > previousTotal) {
-                    loading = false;
-                    previousTotal = totalItemCount;
-                    currentPage++;
-                }
-            }
-            if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-                if (next > 0)
-                    VolleyRequest(ApiHelper.getCategoryPostsUrl(next, params));
-                loading = true;
-            }
-        }
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-        }
     }
 
     @Override

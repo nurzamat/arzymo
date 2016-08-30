@@ -163,13 +163,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(MainActivity.this, SearchResultsActivity.class)));
+        try
+        {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            // Retrieve the SearchView and plug it into SearchManager
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(MainActivity.this, SearchResultsActivity.class)));
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
         return true;
     }
