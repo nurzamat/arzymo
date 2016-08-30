@@ -39,7 +39,7 @@ import java.util.List;
 
 public class PostsActivity extends AppCompatActivity implements DialogFilter.SearchListener{
 
-    private static final String TAG =  "[category_posts response]";
+    private static final String TAG =  PostsActivity.class.getSimpleName();
     private List<Post> postList = new ArrayList<Post>();
     private PostListAdapter adapter;
     private RecyclerView recyclerView;
@@ -47,7 +47,6 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private TextView emptyText;
     AppController appcon = null;
-    public int next = 1;
     public String params;
     ProgressBar spin;
     String query = "";
@@ -62,6 +61,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
         IntentWork(getIntent());
+
         if(_postActivity != null)
             _postActivity.finish();
         _postActivity = this;
@@ -71,7 +71,6 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_exit));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,8 +82,10 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
         isListView = true;
-        //init recycler
+
         recyclerView = (RecyclerView) findViewById(R.id.list);
+        spin = (ProgressBar) findViewById(R.id.loading);
+        emptyText = (TextView) findViewById(android.R.id.empty);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -94,31 +95,18 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
         if(isListView)
-        recyclerView.setLayoutManager(mLayoutManager);
+          recyclerView.setLayoutManager(mLayoutManager);
         else recyclerView.setLayoutManager(mStaggeredLayoutManager);
-        emptyText = (TextView) findViewById(android.R.id.empty);
+
         // specify an adapter (see also next example)
         adapter =  new PostListAdapter(this, postList, isListView);
         recyclerView.setAdapter(adapter);
         //end
 
-        spin = (ProgressBar) findViewById(R.id.loading);
-
         params = getParams();
         VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
 
-        /*
-        if (postList.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-            emptyText.setVisibility(View.VISIBLE);
-        }
-        else {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyText.setVisibility(View.GONE);
-        }
-        */
-
-        addOnScroll(false);
+       addOnScroll(false);
     }
 
     private void addOnScroll(boolean _isStraggered) {
@@ -196,7 +184,6 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
                         JSONArray posts = response.getJSONArray("posts");
                         if(posts.length() > 0)
                         {
-                            next = next + 1;
                             JSONObject obj;
                             User user;
                             for (int i = 0; i < posts.length(); i++) {
@@ -219,14 +206,20 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
                                 }
                             }
                         }
-                        else next = 0;
                     }
                     // notifying list adapter about data changes
                     // so that it renders the list view with updated data
                     adapter.notifyDataSetChanged();
                     if(!(postList.size() > 0))
-                        emptyText.setText(R.string.no_posts);
-
+                    {
+                        recyclerView.setVisibility(View.GONE);
+                        emptyText.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        emptyText.setVisibility(View.GONE);
+                    }
                     spin.setVisibility(View.GONE);
 
                 } catch (JSONException e) {

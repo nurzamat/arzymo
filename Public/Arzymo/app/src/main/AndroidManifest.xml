@@ -7,11 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <application
         android:name=".AppController"
         android:allowBackup="true"
@@ -36,18 +31,14 @@
             android:label="@string/title_activity_main">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:value=".SearchResultsActivity" />
         </activity>
         <activity
             android:name=".SubcatsActivity"
             android:label="@string/title_activity_subcats" />
         <activity
             android:name=".PostsActivity"
-            android:launchMode="singleInstance"
             android:label="@string/title_activity_posts">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".CategoriesActivity"
@@ -68,9 +59,6 @@
         <activity
             android:name=".MyPostsActivity"
             android:label="@string/title_activity_my_posts">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -102,15 +90,12 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MyLikesActivity"
-            android:label="@string/title_activity_my_likes"
-            android:theme="@style/AppTheme" />
+            android:label="@string/title_activity_my_likes" />
         <activity android:name=".ChatRoomsActivity" />
         <activity android:name=".ChatRoomMessagesActivity" />
         <activity android:name=".ChatsActivity" />
         <activity android:name=".MessagesActivity" />
-        <activity
-            android:name=".MyProfileActivity"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".MyProfileActivity"/>
 
         <!-- START Added for GCM -->
         <service android:name=".gcm.MyInstanceIDListenerService">
