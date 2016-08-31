@@ -15,7 +15,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Post;
@@ -24,6 +25,7 @@ import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.Utils;
 import org.json.JSONObject;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -38,9 +40,9 @@ public class PostDetailActivity extends AppCompatActivity {
     User client = null;
     private int count = 0;
     //content params
-    TextView hitcount, timestamp, location, title, price, content;
+    TextView hitcount, timestamp, location, title, price, price_currency, content, username, name;
     ImageButton chat, call;
-
+    CircleImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,10 @@ public class PostDetailActivity extends AppCompatActivity {
             collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
             collapsingToolbar.setTitle(" ");
         }
-        else setContentView(R.layout.activity_post_detail_no_image);
+        else
+        {
+            setContentView(R.layout.activity_post_detail_no_image);
+        }
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,16 +75,56 @@ public class PostDetailActivity extends AppCompatActivity {
         location = (TextView) findViewById(R.id.location);
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
+        price_currency = (TextView) findViewById(R.id.price_currency);
         content = (TextView) findViewById(R.id.content);
+        username = (TextView) findViewById(R.id.username);
+        name = (TextView) findViewById(R.id.name);
         chat = (ImageButton) findViewById(R.id.action_chat);
         call = (ImageButton) findViewById(R.id.action_call);
-
+        profile_image = (CircleImageView) findViewById(R.id.profile_image);
+        //sets
         hitcount.setText(p.getHitcount());
         timestamp.setText(Utils.getTimeAgo(p.getDate_created()));
+        if(!p.getLocation().equals("null"))
         location.setText(p.getLocation());
         title.setText(p.getTitle());
-        price.setText(p.getPrice());
         content.setText(p.getContent());
+        //set price
+        try
+        {
+            String _price = p.getPrice().trim();
+            if(!_price.equals("0.00"))
+            {
+                double number = Double.parseDouble(_price);
+                int res = (int)number; //целая часть
+                double res2 = number - res; //дробная часть
+
+                if(res2 > 0)
+                    price.setText(_price);
+                else price.setText(""+res);
+
+                price_currency.setText(p.getPriceCurrency());
+            }
+
+            if(!p.getUser().getAvatarUrl().equals(""))
+            {
+                Glide.with(this).load(p.getUser().getAvatarUrl())
+                        .thumbnail(0.5f)
+                        .centerCrop()
+                        .placeholder(R.drawable.aka)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(profile_image);
+            }
+
+            username.setText(p.getUser().getUserName());
+            name.setText(p.getUser().getName());
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
         chat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -186,13 +231,13 @@ public class PostDetailActivity extends AppCompatActivity {
                 if(like)
                 {
                     like = false;
-                    menuItem.setIcon(R.drawable.ic_action_about);
+                    menuItem.setIcon(R.drawable.ic_heart_outline);
                     url = ApiHelper.POST_URL + "/" + p.getId() + "/" + client.getId() + "/like/" + 0;
                 }
                 else
                 {
                     like = true;
-                    menuItem.setIcon(R.drawable.ic_action_like);
+                    menuItem.setIcon(R.drawable.ic_heart);
                     url = ApiHelper.POST_URL + "/" + p.getId() + "/" + client.getId() + "/like/" + 1;
                 }
 

@@ -5,11 +5,7 @@
 
     <item
         android:id="@+id/action_like"
-        android:icon="@drawable/ic_action_like"
+        android:icon="@drawable/ic_heart"
         android:title="@string/action_like"
-        app:showAsAction="ifRoom"/>
-    <!--<item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />-->
+        app:showAsAction="always"/>
 </menu>

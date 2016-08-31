@@ -89,7 +89,7 @@
             android:id="@+id/show_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/show_phone"
+            android:background="@drawable/ic_action_call"
             android:layout_marginTop="2dp"
             android:layout_marginRight="20dp"
             android:layout_below="@+id/separator"
@@ -98,7 +98,7 @@
             android:id="@+id/show_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/show_chat"
+            android:background="@drawable/ic_action_chat"
             android:layout_marginTop="2dp"
             android:layout_below="@+id/separator"
             android:layout_alignParentRight="true"/>

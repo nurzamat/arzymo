@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:hint="Тема"
+            android:maxLength="40"
             android:singleLine="true"
             android:layout_below="@+id/sex_layout"/>
         <EditText android:id="@+id/content"

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
@@ -14,6 +15,7 @@ import org.ananasit.rekordo.AppController;
 import org.ananasit.rekordo.PostDetailActivity;
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Post;
+import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.Utils;
 import java.util.List;
@@ -24,6 +26,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<Post> postItems;
     private boolean isListView;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    User user = AppController.getInstance().getUser();
 
 
     public PostListAdapter(Context _context, List<Post> _postItems, boolean _isListView) {
@@ -35,6 +38,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public ProgressBar spin;
         public NetworkImageView thumbnail;
+        public ImageView eye;
         public TextView  hitcount, timestamp, location, title, price, price_currency;
         private ItemClickListener clickListener;
 
@@ -42,8 +46,9 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(parent);
             spin = (ProgressBar) parent.findViewById(R.id.progressBar1);
             thumbnail = (NetworkImageView) parent.findViewById(R.id.thumbnail);
-            title = (TextView) parent.findViewById(R.id.title);
+            eye = (ImageView) parent.findViewById(R.id.eye);
             hitcount = (TextView) parent.findViewById(R.id.hitcount);
+            title = (TextView) parent.findViewById(R.id.title);
             timestamp = (TextView) parent.findViewById(R.id.date);
             location = (TextView) parent.findViewById(R.id.location);
             price = (TextView) parent.findViewById(R.id.price);
@@ -87,10 +92,26 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         PostViewHolder holder = (PostViewHolder) viewHolder;
         Post post = postItems.get(position);
         holder.title.setText(post.getTitle());
-        holder.hitcount.setText(post.getHitcount());
-        //set price
+
+        //set price & hitcount
         try
         {
+            if(isListView)
+            {
+                if(post.getUser().getId().equals(user.getId()))
+                {
+                    holder.eye.setVisibility(View.VISIBLE);
+                    holder.hitcount.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    holder.eye.setVisibility(View.INVISIBLE);
+                    holder.hitcount.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            holder.hitcount.setText(post.getHitcount());
+
             String price = post.getPrice().trim();
             if(!price.equals("0.00"))
             {
