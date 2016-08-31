@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -17,6 +18,10 @@ import org.ananasit.rekordo.model.User;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 public class Utils {
@@ -182,6 +187,65 @@ public class Utils {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public static String getTimeStamp(String dateStr)
+    {
+        if(GlobalVar.today == null)
+        {
+            Calendar calendar = Calendar.getInstance();
+            GlobalVar.today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            GlobalVar.today = GlobalVar.today.length() < 2 ? "0" + GlobalVar.today : GlobalVar.today;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestamp = "";
+
+        try {
+            Date date = format.parse(dateStr);
+            SimpleDateFormat todayFormat = new SimpleDateFormat("dd");
+            String dateToday = todayFormat.format(date);
+            format = dateToday.equals(GlobalVar.today) ? new SimpleDateFormat("hh:mm a") : new SimpleDateFormat("dd LLL, hh:mm a");
+            String date1 = format.format(date);
+            timestamp = date1.toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return timestamp;
+    }
+
+    public static long getDateInMillis(String srcDate) {
+        SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        long dateInMillis = 0;
+        try {
+            Date date = desiredFormat.parse(srcDate);
+            dateInMillis = date.getTime();
+            return dateInMillis;
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public static CharSequence getTimeAgo(String srcDate) {
+
+        long dateInMillis = getDateInMillis(srcDate);
+
+        CharSequence timeAgo = "";
+        try
+        {
+            timeAgo = DateUtils.getRelativeTimeSpanString(dateInMillis, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        return timeAgo;
     }
 
 }

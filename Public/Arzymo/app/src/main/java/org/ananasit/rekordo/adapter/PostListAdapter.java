@@ -15,6 +15,7 @@ import org.ananasit.rekordo.PostDetailActivity;
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.Utils;
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -34,7 +35,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public ProgressBar spin;
         public NetworkImageView thumbnail;
-        public TextView  hitcount, date, location, title, price;
+        public TextView  hitcount, timestamp, location, title, price, price_currency;
         private ItemClickListener clickListener;
 
         public PostViewHolder(View parent) {
@@ -43,9 +44,10 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             thumbnail = (NetworkImageView) parent.findViewById(R.id.thumbnail);
             title = (TextView) parent.findViewById(R.id.title);
             hitcount = (TextView) parent.findViewById(R.id.hitcount);
-            date = (TextView) parent.findViewById(R.id.date);
+            timestamp = (TextView) parent.findViewById(R.id.date);
             location = (TextView) parent.findViewById(R.id.location);
             price = (TextView) parent.findViewById(R.id.price);
+            price_currency = (TextView) parent.findViewById(R.id.price_currency);
             parent.setTag(parent);
             parent.setOnClickListener(this);
             parent.setOnLongClickListener(this);
@@ -86,9 +88,32 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Post post = postItems.get(position);
         holder.title.setText(post.getTitle());
         holder.hitcount.setText(post.getHitcount());
-        holder.price.setText(post.getPrice());
+        //set price
+        try
+        {
+            String price = post.getPrice().trim();
+            if(!price.equals("0.00"))
+            {
+                double number = Double.parseDouble(price);
+                int res = (int)number; //целая часть
+                double res2 = number - res; //дробная часть
+
+                if(res2 > 0)
+                    holder.price.setText(price);
+                else holder.price.setText(""+res);
+
+                holder.price_currency.setText(post.getPriceCurrency());
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        //set location
+        if(!post.getLocation().equals("null"))
         holder.location.setText(post.getLocation());
-        holder.date.setText(post.getDate_created());
+        //holder.timestamp.setText(Utils.getTimeStamp(post.getDate_created(), GlobalVar.today));
+        holder.timestamp.setText(Utils.getTimeAgo(post.getDate_created()));
 
         holder.spin.setVisibility(View.VISIBLE);
         String image_url = post.getThumbnailUrl();

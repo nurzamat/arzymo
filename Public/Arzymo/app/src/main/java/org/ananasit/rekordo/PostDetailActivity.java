@@ -8,25 +8,21 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.ananasit.rekordo.adapter.CategoriesRecyclerAdapter;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.Utils;
 import org.json.JSONObject;
 
 public class PostDetailActivity extends AppCompatActivity {
@@ -42,7 +38,7 @@ public class PostDetailActivity extends AppCompatActivity {
     User client = null;
     private int count = 0;
     //content params
-    TextView hitcount, date, location, title, price, content;
+    TextView hitcount, timestamp, location, title, price, content;
     ImageButton chat, call;
 
 
@@ -70,7 +66,7 @@ public class PostDetailActivity extends AppCompatActivity {
         });
 
         hitcount = (TextView) findViewById(R.id.hitcount);
-        date = (TextView) findViewById(R.id.date);
+        timestamp = (TextView) findViewById(R.id.date);
         location = (TextView) findViewById(R.id.location);
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
@@ -79,7 +75,7 @@ public class PostDetailActivity extends AppCompatActivity {
         call = (ImageButton) findViewById(R.id.action_call);
 
         hitcount.setText(p.getHitcount());
-        date.setText(p.getDate_created());
+        timestamp.setText(Utils.getTimeAgo(p.getDate_created()));
         location.setText(p.getLocation());
         title.setText(p.getTitle());
         price.setText(p.getPrice());

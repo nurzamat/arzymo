@@ -18,4 +18,5 @@ public class GlobalVar {
     public static SparseBooleanArray mSparseBooleanArray = new SparseBooleanArray();
     public static Post _Post = null;
     public static Category Category = null;
+    public static String today = null;
 }

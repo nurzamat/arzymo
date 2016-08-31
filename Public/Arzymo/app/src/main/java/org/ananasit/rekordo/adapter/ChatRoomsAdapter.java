@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import org.ananasit.rekordo.R;
 import org.ananasit.rekordo.model.ChatRoom;
+import org.ananasit.rekordo.util.GlobalVar;
+import org.ananasit.rekordo.util.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +25,6 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
 
     private Context mContext;
     private ArrayList<ChatRoom> chatRoomArrayList;
-    private static String today;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name, message, timestamp, count;
@@ -41,9 +42,6 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
     public ChatRoomsAdapter(Context mContext, ArrayList<ChatRoom> chatRoomArrayList) {
         this.mContext = mContext;
         this.chatRoomArrayList = chatRoomArrayList;
-
-        Calendar calendar = Calendar.getInstance();
-        today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
@@ -66,32 +64,12 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.View
             holder.count.setVisibility(View.GONE);
         }
 
-        holder.timestamp.setText(getTimeStamp(chatRoom.getTimestamp()));
+        holder.timestamp.setText(Utils.getTimeStamp(chatRoom.getTimestamp()));
     }
 
     @Override
     public int getItemCount() {
         return chatRoomArrayList.size();
-    }
-
-    public static String getTimeStamp(String dateStr) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timestamp = "";
-
-        today = today.length() < 2 ? "0" + today : today;
-
-        try {
-            Date date = format.parse(dateStr);
-            SimpleDateFormat todayFormat = new SimpleDateFormat("dd");
-            String dateToday = todayFormat.format(date);
-            format = dateToday.equals(today) ? new SimpleDateFormat("hh:mm a") : new SimpleDateFormat("dd LLL, hh:mm a");
-            String date1 = format.format(date);
-            timestamp = date1.toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return timestamp;
     }
 
     public interface ClickListener {
