@@ -44,7 +44,23 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         CategoryViewHolder holder = (CategoryViewHolder) viewHolder;
         Category category = mItemList.get(position);
         holder.title.setText(category.getName());
-        holder.icon.setImageResource(R.drawable.from);
+        if(position == 0)
+        holder.icon.setImageResource(R.drawable.ic_swap_vertical);//1
+        if(position == 1)
+            holder.icon.setImageResource(R.drawable.ic_nature_people);  //2
+        if(position == 2)
+            holder.icon.setImageResource(R.drawable.ic_home_outline); //3
+        if(position == 3)
+            holder.icon.setImageResource(R.drawable.ic_calendar_clock); //4
+        if(position == 4)
+            holder.icon.setImageResource(R.drawable.ic_tennis);   //5
+        if(position == 5)
+            holder.icon.setImageResource(R.drawable.ic_counter);   //6
+        if(position == 6)
+            holder.icon.setImageResource(R.drawable.ic_currency_usd); //7
+        if(position == 7)
+            holder.icon.setImageResource(R.drawable.ic_human_male_female);
+
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
