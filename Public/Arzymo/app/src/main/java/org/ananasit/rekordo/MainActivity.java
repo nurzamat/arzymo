@@ -1,5 +1,6 @@
 package org.ananasit.rekordo;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -49,20 +50,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(MainActivity.this, AddPostActivity.class);
-                startActivity(in);
-            }
-        });
-
         //toolbar.setLogo(R.drawable.logo_toolbar);
         //toolbar.setTitle("title");
         toolbar.setSubtitle("Arzymo");
         initViewPagerAndTabs();
 
         user = AppController.getInstance().getUser();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in;
+                if(user != null)
+                    in = new Intent(MainActivity.this, AddPostActivity.class);
+                else
+                    in = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(in);
+            }
+        });
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -201,7 +205,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_post) {
-            Intent in = new Intent(MainActivity.this, AddPostActivity.class);
+            Intent in;
+            if(user != null)
+                in = new Intent(MainActivity.this, AddPostActivity.class);
+            else
+                in = new Intent(MainActivity.this, SignupActivity.class);
             startActivity(in);
         }
         if (id == R.id.action_search) {
