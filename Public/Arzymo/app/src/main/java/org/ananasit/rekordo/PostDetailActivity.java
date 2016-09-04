@@ -43,6 +43,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView hitcount, timestamp, location, title, price, price_currency, content, username, name;
     ImageButton chat, call;
     CircleImageView profile_image;
+    boolean nav_ads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        nav_ads = getIntent().getBooleanExtra("nav_ads", false);
 
         hitcount = (TextView) findViewById(R.id.hitcount);
         timestamp = (TextView) findViewById(R.id.date);
@@ -217,9 +220,16 @@ public class PostDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         mOptionsMenu = menu;
-        if(like)
-            getMenuInflater().inflate(R.menu.menu_yes_like, menu);
-        else getMenuInflater().inflate(R.menu.menu_no_like, menu);
+        if(nav_ads)
+        {
+            getMenuInflater().inflate(R.menu.menu_edit_post, menu);
+        }
+        else
+        {
+            if(like)
+                getMenuInflater().inflate(R.menu.menu_yes_like, menu);
+            else getMenuInflater().inflate(R.menu.menu_no_like, menu);
+        }
 
         return true;
     }

@@ -25,14 +25,17 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<Post> postItems;
     private boolean isListView;
+    private boolean nav_ads;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     User user = AppController.getInstance().getUser();
 
 
-    public PostListAdapter(Context _context, List<Post> _postItems, boolean _isListView) {
+    public PostListAdapter(Context _context, List<Post> _postItems, boolean _isListView, boolean _nav_ads)
+    {
         context = _context;
         postItems = _postItems;
         isListView = _isListView;
+        nav_ads = _nav_ads;
     }
     public static class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
@@ -153,6 +156,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 } else {
                     GlobalVar._Post = postItems.get(position);
                     Intent i = new Intent(context, PostDetailActivity.class);
+                    if(nav_ads)
+                        i.putExtra("nav_ads",true);
                     context.startActivity(i);
                 }
             }

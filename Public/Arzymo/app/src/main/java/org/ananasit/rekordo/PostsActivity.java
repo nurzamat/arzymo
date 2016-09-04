@@ -103,7 +103,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         else recyclerView.setLayoutManager(mStaggeredLayoutManager);
 
         // specify an adapter (see also next example)
-        adapter =  new PostListAdapter(this, postList, isListView);
+        adapter =  new PostListAdapter(this, postList, isListView, nav_ads);
         recyclerView.setAdapter(adapter);
         //end
         params = getParams();
@@ -290,7 +290,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             {
                 spanCount = 1;
                 recyclerView.setLayoutManager(mLayoutManager);
-                adapter =  new PostListAdapter(this, postList, true);
+                adapter =  new PostListAdapter(this, postList, true, nav_ads);
                 recyclerView.setAdapter(adapter);
                 addOnScroll(false);
 
@@ -302,7 +302,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
                 isListView = false;
                 spanCount = 1;
                 recyclerView.setLayoutManager(mStaggeredLayoutManager);
-                adapter =  new PostListAdapter(this, postList, false);
+                adapter =  new PostListAdapter(this, postList, false, nav_ads);
                 recyclerView.setAdapter(adapter);
                 addOnScroll(true);
                 mStaggeredLayoutManager.setSpanCount(spanCount);
@@ -316,7 +316,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             {
                 spanCount = 2;
                 recyclerView.setLayoutManager(mStaggeredLayoutManager);
-                adapter =  new PostListAdapter(this, postList, false);
+                adapter =  new PostListAdapter(this, postList, false, nav_ads);
                 recyclerView.setAdapter(adapter);
                 addOnScroll(true);
                 mStaggeredLayoutManager.setSpanCount(spanCount);
