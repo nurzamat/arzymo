@@ -97,7 +97,10 @@ public class MainActivity extends AppCompatActivity {
                     // For rest of the options we just show a toast on click
                     case R.id.nav_ads:
                         if(user != null)
-                            in = new Intent(MainActivity.this, MyPostsActivity.class);
+                        {
+                            in = new Intent(MainActivity.this, PostsActivity.class);
+                            in.putExtra("nav_ads",true);
+                        }
                         else
                             in = new Intent(MainActivity.this, SignupActivity.class);
                         startActivity(in);

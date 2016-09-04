@@ -55,6 +55,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     private Menu menu;
     private boolean isListView;
     private int spanCount = 1;
+    boolean nav_ads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,10 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             }
         });
 
-        if(GlobalVar.Category != null)
+        nav_ads = getIntent().getBooleanExtra("nav_ads", false);
+        if(nav_ads)
+            toolbar.setSubtitle("Мои объявления");
+        else if(GlobalVar.Category != null)
         toolbar.setSubtitle(GlobalVar.Category.getName());
 
         isListView = true;
@@ -102,11 +106,9 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         adapter =  new PostListAdapter(this, postList, isListView);
         recyclerView.setAdapter(adapter);
         //end
-
         params = getParams();
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
-
-       addOnScroll(false);
+        VolleyRequest(1);
+        addOnScroll(false);
     }
 
     private void addOnScroll(boolean _isStraggered) {
@@ -116,7 +118,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             {
                 @Override
                 public void onLoadMore(int current_page) {
-                    VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
+                    VolleyRequest(current_page);
                 }
             });
         }
@@ -126,7 +128,7 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
             {
                 @Override
                 public void onLoadMore(int current_page) {
-                    VolleyRequest(ApiHelper.getCategoryPostsUrl(current_page, params));
+                    VolleyRequest(current_page);
                 }
             });
         }
@@ -167,11 +169,20 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         query = intent.getStringExtra("query");
     }
 
-    public void VolleyRequest(String url) {
+    public void VolleyRequest(int current_page) {
 
         if(appcon == null)
         appcon = AppController.getInstance();
 
+        String url;
+        if(nav_ads)
+        {
+            url = ApiHelper.getMyPostsUrl(appcon.getUser().getId(), current_page);
+        }
+        else
+        {
+            url = ApiHelper.getCategoryPostsUrl(current_page, params);
+        }
         spin.setVisibility(View.VISIBLE);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -241,7 +252,9 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_posts, menu);
+        if(nav_ads)
+        getMenuInflater().inflate(R.menu.menu_my_posts, menu);
+        else getMenuInflater().inflate(R.menu.menu_posts, menu);
         this.menu = menu;
         return true;
     }
@@ -316,13 +329,14 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
 
     //DialogFilter interface
     @Override
-    public void onSearch(Param _p) {
+    public void onSearch(Param _p)
+    {
         // User touched the dialog's Search button
         param = _p;
         params = Utils.getParams(_p);
         postList.clear();
         adapter.notifyDataSetChanged();
-        VolleyRequest(ApiHelper.getCategoryPostsUrl(1, params));
+        VolleyRequest(1);
     }
 
     @Override
