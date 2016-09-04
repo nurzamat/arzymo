@@ -1,6 +1,5 @@
 package org.ananasit.rekordo;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;

@@ -1,7 +1,9 @@
 package org.ananasit.rekordo;
 
-import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,7 +14,7 @@ import org.ananasit.rekordo.util.LruBitmapCache;
 import org.ananasit.rekordo.util.MyPreferenceManager;
 import org.ananasit.rekordo.util.SslHttpStack;
 
-public class AppController extends Application {
+public class AppController extends MultiDexApplication {
 
     public static final String TAG = AppController.class.getSimpleName();
 
@@ -97,5 +99,13 @@ public class AppController extends Application {
     {
         this._user = user;
         getPrefManager().saveUser(user);
+    }
+
+    //multidex
+    @Override
+    protected void attachBaseContext(Context base)
+    {
+      super.attachBaseContext(base);
+      MultiDex.install(this);
     }
 }

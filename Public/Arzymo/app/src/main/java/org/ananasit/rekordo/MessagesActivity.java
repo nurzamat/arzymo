@@ -149,7 +149,9 @@ public class MessagesActivity extends AppCompatActivity {
             return;
         }
 
-        String endPoint = ApiHelper.CHAT_MESSAGE.replace("_ID_", chatId);
+        //String endPoint = ApiHelper.CHAT_MESSAGE.replace("_ID_", chatId);
+
+        String endPoint = ApiHelper.CHAT_MESSAGE + chatId + "/message";
 
         Log.e(TAG, "endpoint: " + endPoint);
 
@@ -244,7 +246,9 @@ public class MessagesActivity extends AppCompatActivity {
      * */
     private void fetchChatThread() {
 
-        String endPoint = ApiHelper.CHAT_MESSAGES.replace("_ID_", chatId) + "/"+selfUserId+"/"+interlocutor_id+"/"+post_id;
+        //String endPoint = ApiHelper.CHAT_MESSAGES.replace("_ID_", chatId) + "/"+selfUserId+"/"+interlocutor_id+"/"+post_id;
+
+        String endPoint = ApiHelper.CHAT_MESSAGES + chatId + "/"+selfUserId+"/"+interlocutor_id+"/"+post_id;
 
         Log.e(TAG, "endPoint: " + endPoint);
 

@@ -43,8 +43,8 @@ public class ApiHelper {
     public static final String CHAT_ROOM_MESSAGE = BASE_URL + "/chat_rooms/_ID_/message";
     //private chat
     public static final String CHATS = BASE_URL + "/users/_ID_/chats";
-    public static final String CHAT_MESSAGES = BASE_URL + "/chats/_ID_";
-    public static final String CHAT_MESSAGE = BASE_URL + "/chats/_ID_/message";
+    public static final String CHAT_MESSAGES = BASE_URL + "/chats/";
+    public static final String CHAT_MESSAGE = BASE_URL + "/chats/";
 
     public JSONObject signup(String username, String email, String password) throws ApiException, IOException,
             JSONException {
@@ -390,7 +390,7 @@ public class ApiHelper {
             httpUrlConnection.setRequestProperty("Authorization", user.getApi_key());
 
             //Start content wrapper:
-        DataOutputStream dataOS = new DataOutputStream(httpUrlConnection.getOutputStream());
+            DataOutputStream dataOS = new DataOutputStream(httpUrlConnection.getOutputStream());
             dataOS.writeBytes(twoHyphens + boundary + crlf);
             dataOS.writeBytes("Content-Disposition: form-data; name=\"" + attachmentName + "\";filename=\"" + file.getName() + "\"" + crlf);
             dataOS.writeBytes(crlf);

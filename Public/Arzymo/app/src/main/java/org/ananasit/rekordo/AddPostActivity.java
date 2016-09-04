@@ -18,13 +18,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
 import org.ananasit.rekordo.model.Category;
@@ -35,9 +42,12 @@ import org.ananasit.rekordo.util.CategoryType;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.Utils;
 import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
 
+    private String TAG = AddPostActivity.class.getSimpleName();
     ViewPager mPager;
     PagerAdapter mAdapter;
     CirclePageIndicator mIndicator;
@@ -49,7 +59,6 @@ public class AddPostActivity extends AppCompatActivity {
     String phone = "";
     String region = "";
     String location = "";
-    String result;
     EditText etContent, etPrice, etTitle, etBirth_year, etPhone;
     Button categoryBtn, postBtn;
     Category category = null;
@@ -59,6 +68,7 @@ public class AddPostActivity extends AppCompatActivity {
     int actionPos = 0;
     int sex = 2; //0 - female, 1 - male
     String birth_year = "";
+    String idCategory, idSubcategory;
     public static Context context;
 
     @Override
@@ -460,8 +470,10 @@ public class AddPostActivity extends AppCompatActivity {
         }
         else
         {
-            AddPostTask task = new AddPostTask();
-            task.execute(ApiHelper.POST_URL);
+            //AddPostTask task = new AddPostTask();
+            //task.execute(ApiHelper.POST_URL);
+            //volley
+            sendPost();
         }
     }
 
@@ -512,10 +524,118 @@ public class AddPostActivity extends AppCompatActivity {
         return val;
     }
 
-    // add mode
-    private class AddPostTask extends AsyncTask<String, Void, String> {
+    private void sendPost()
+    {
+        if(category.getIdParent().equals(""))
+        {
+            idCategory = category.getId();
+            idSubcategory = "0";
+        }
+        else
+        {
+            idCategory = category.getIdParent();
+            idSubcategory = category.getId();
+        }
+        if(price.equals(""))
+            price = "0.00";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                ApiHelper.POST_URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "response: " + response);
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    // check for error
+                    if (obj.getBoolean("error") == false)
+                    {
+                        String new_post_id = "";
+                        if(obj.has("post_id"))
+                            new_post_id = obj.getString("post_id");
+                        if(GlobalVar.image_paths.size() == 0)
+                        {
+                            Toast.makeText(AddPostActivity.this, "Добавлено", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        if(!new_post_id.equals("") && GlobalVar.image_paths.size() > 0)
+                        {
+                            String url = ApiHelper.POST_URL + "/" + new_post_id + "/images";
+                            SendImagesTask task = new SendImagesTask();
+                            task.execute(url);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "json parse error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getApplicationContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idCategory", idCategory);
+                params.put("idSubcategory", idSubcategory);
+                params.put("title", title);
+                params.put("content", content);
+                params.put("price", price);
+                params.put("price_currency", price_currency);
+                params.put("actionType", String.valueOf(actionType));
+                params.put("sex", String.valueOf(sex));
+                params.put("birth_year", birth_year);
+                params.put("phone", phone);
+                params.put("region", region);
+                params.put("location", location);
+
+                Log.e(TAG, "Params: " + params.toString());
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                //params.put("Accept", "application/json");
+                //params.put("Content-type", "application/json");
+                params.put("Authorization", AppController.getInstance().getUser().getApi_key());
+                return params;
+            }
+
+        };
+
+        // disabling retry policy so that it won't make
+        // multiple http calls
+        int socketTimeout = 0;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        strReq.setRetryPolicy(policy);
+
+        //Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+    }
+
+    private class SendImagesTask extends AsyncTask<String, Void, String> {
 
         ProgressDialog dialog;
+        String result = "";
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -528,59 +648,22 @@ public class AddPostActivity extends AppCompatActivity {
 
             try
             {
-                result = "";
-                ApiHelper api = new ApiHelper();
-
-                JSONObject jsonObject = new JSONObject();
-                if(category.getIdParent().equals(""))
+                int length = GlobalVar.image_paths.size();
+                if(length > 0)
                 {
-                    jsonObject.put("idCategory", category.getId());
-                    jsonObject.put("idSubcategory", 0);
-                }
-                else
-                {
-                    jsonObject.put("idCategory", category.getIdParent());
-                    jsonObject.put("idSubcategory", category.getId());
-                }
-
-                jsonObject.put("title", title);
-                jsonObject.put("content", content);
-                jsonObject.put("price", price);
-                jsonObject.put("price_currency", price_currency);
-                jsonObject.put("api_key", ApiHelper.getApiKey());
-                jsonObject.put("actionType", actionType);
-                jsonObject.put("sex", sex);
-                jsonObject.put("birth_year", birth_year);
-                jsonObject.put("phone", phone);
-                jsonObject.put("region", region);
-                jsonObject.put("location", location);
-
-                JSONObject obj = api.sendPost(jsonObject);
-                if(obj.has("post_id"))
-                {
-
-                    String url = ApiHelper.POST_URL + "/" + obj.getString("post_id") + "/images";
-                    int length = GlobalVar.image_paths.size();
-                    if(length > 0)
-                    {
-                        JSONObject jobj;
-                        for (int i = 0; i <length; i++) {
-                            jobj = api.sendImage(url, GlobalVar.image_paths.get(i), true);
-                            if(jobj.has("id"))
-                                continue;
-                        }
+                    ApiHelper api = new ApiHelper();
+                    JSONObject jobj;
+                    for (int i = 0; i <length; i++) {
+                        jobj = api.sendImage(urls[0], GlobalVar.image_paths.get(i), true);
+                        if(jobj.has("id"))
+                            continue;
                     }
-
-                    result = "Добавлено";
                 }
-                else result = "Ошибка";
-
             }
             catch (Exception ex)
             {
-                String exText = ex.getMessage();
-                Log.d("AddPostActivity", "Exception: " + exText);
-                return "Ошибка";
+                ex.printStackTrace();
+                result = ex.getMessage();
             }
 
             return result;
@@ -590,11 +673,11 @@ public class AddPostActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             dialog.dismiss();
-            Toast.makeText(AddPostActivity.this, result, Toast.LENGTH_SHORT).show();
+            if(result.equals(""))
+            Toast.makeText(AddPostActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
             //clear images
             //GlobalVar._bitmaps.clear();
             GlobalVar.image_paths.clear();
-
             finish();
         }
     }
