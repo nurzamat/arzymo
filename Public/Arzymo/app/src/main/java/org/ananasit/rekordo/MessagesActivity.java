@@ -263,7 +263,14 @@ public class MessagesActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(response);
 
                     // check for error
-                    if (obj.getBoolean("error") == false) {
+                    if (obj.getBoolean("error") == false)
+                    {
+                        if(chatId.equals("0"))
+                        {
+                            JSONObject chat = obj.getJSONObject("chat");
+                            chatId = chat.getString("chat_id");
+                        }
+
                         JSONArray commentsObj = obj.getJSONArray("messages");
 
                         for (int i = 0; i < commentsObj.length(); i++) {

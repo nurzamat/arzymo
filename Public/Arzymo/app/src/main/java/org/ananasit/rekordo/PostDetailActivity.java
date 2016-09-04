@@ -136,6 +136,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     if(p != null && p.getUser() != null)
                     {
                         Intent intent = new Intent(PostDetailActivity.this, MessagesActivity.class);
+                        intent.putExtra("chat_id", "0");
                         intent.putExtra("interlocutor_id", p.getUser().getId());
                         intent.putExtra("post_id", p.getId());
                         intent.putExtra("name", p.getUser().getUserName());

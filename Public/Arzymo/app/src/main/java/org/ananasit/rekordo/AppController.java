@@ -12,7 +12,6 @@ import com.android.volley.toolbox.Volley;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.LruBitmapCache;
 import org.ananasit.rekordo.util.MyPreferenceManager;
-import org.ananasit.rekordo.util.SslHttpStack;
 
 public class AppController extends MultiDexApplication {
 
@@ -38,8 +37,9 @@ public class AppController extends MultiDexApplication {
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
 
-            SslHttpStack stack = new SslHttpStack(true);
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+            //SslHttpStack stack = new SslHttpStack(true);
+            //mRequestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
         return mRequestQueue;
