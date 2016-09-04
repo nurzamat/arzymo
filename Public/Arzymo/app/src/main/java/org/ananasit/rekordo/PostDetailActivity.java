@@ -123,13 +123,19 @@ public class PostDetailActivity extends AppCompatActivity {
             username.setText(p.getUser().getUserName());
             name.setText(p.getUser().getName());
 
+            //buttons
+            client = AppController.getInstance().getUser();
+
+            if(client.getId().equals(p.getUser().getId()))
+            {
+                chat.setEnabled(false);
+                call.setEnabled(false);
+            }
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
         }
-
-        client = AppController.getInstance().getUser();
 
         chat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
