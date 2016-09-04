@@ -126,16 +126,26 @@ public class PostDetailActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
 
+        client = AppController.getInstance().getUser();
+
         chat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                if(p != null && p.getUser() != null)
+                if(client != null)
                 {
-                    Intent intent = new Intent(PostDetailActivity.this, MessagesActivity.class);
-                    intent.putExtra("interlocutor_id", p.getUser().getId());
-                    intent.putExtra("post_id", p.getId());
-                    intent.putExtra("name", p.getUser().getUserName());
-                    startActivity(intent);
+                    if(p != null && p.getUser() != null)
+                    {
+                        Intent intent = new Intent(PostDetailActivity.this, MessagesActivity.class);
+                        intent.putExtra("interlocutor_id", p.getUser().getId());
+                        intent.putExtra("post_id", p.getId());
+                        intent.putExtra("name", p.getUser().getUserName());
+                        startActivity(intent);
+                    }
+                }
+                else
+                {
+                    Intent in = new Intent(PostDetailActivity.this, SignupActivity.class);
+                    startActivity(in);
                 }
             }
         });
@@ -143,9 +153,17 @@ public class PostDetailActivity extends AppCompatActivity {
         call.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + "+" + p.getPhone()));
-                startActivity(intent);
+                if(client != null)
+                {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + "+" + p.getPhone()));
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent in = new Intent(PostDetailActivity.this, SignupActivity.class);
+                    startActivity(in);
+                }
             }
         });
 
@@ -160,8 +178,6 @@ public class PostDetailActivity extends AppCompatActivity {
         */
 
         ViewPagerWork();
-
-        client = AppController.getInstance().getUser();
 
         if(client != null && !p.getUser().getId().equals(client.getId()))
         {
