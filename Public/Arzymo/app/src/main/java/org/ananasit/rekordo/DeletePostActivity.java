@@ -24,15 +24,15 @@ public class DeletePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_delete_post);
         Intent i = getIntent();
-        //final int position = i.getIntExtra("position", 0);
-        String id = i.getStringExtra("id");
+        final int position = i.getIntExtra("position", 0);
+        final String id = i.getStringExtra("id");
 
         pDialog = new ProgressDialog(DeletePostActivity.this);
         // Showing progress dialog before making http request
         pDialog.setMessage("Загрузка...");
         pDialog.show();
         String url = ApiHelper.POST_URL + "/" + id;
-        finish();
+
         DeleteRequest dr = new DeleteRequest(url,
                 new Response.Listener<String>()
                 {
@@ -42,9 +42,7 @@ public class DeletePostActivity extends AppCompatActivity {
                         Log.d(TAG, response);
                         if(response.equals("")) // if response is ok
                         {
-                            //MyPostsFragment.adapter.deleteItem(position);
-                            //MyPostsFragment.adapter.notifyDataSetChanged();
-                            Toast.makeText(DeletePostActivity.this, "Удалено", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PostDetailActivity._activity, "Удалено", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -57,11 +55,14 @@ public class DeletePostActivity extends AppCompatActivity {
                     }
                 }
         );
-        hidePDialog();
         // Adding request to request queue
         AppController appcon = AppController.getInstance();
         appcon.addToRequestQueue(dr);
+
+        PostsActivity._postActivity.updateList(position);
+        hidePDialog();
         finish();
+        PostDetailActivity._activity.finish();
     }
 
     private void hidePDialog() {

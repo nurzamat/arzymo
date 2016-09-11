@@ -156,6 +156,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 } else {
                     GlobalVar._Post = postItems.get(position);
                     Intent i = new Intent(context, PostDetailActivity.class);
+                    i.putExtra("position",position);
                     if(nav_ads)
                         i.putExtra("nav_ads",true);
                     context.startActivity(i);

@@ -327,6 +327,19 @@ public class PostsActivity extends AppCompatActivity implements DialogFilter.Sea
         }
     }
 
+    public void updateList(int position)
+    {
+        try
+        {
+            this.postList.remove(position);
+            this.adapter.notifyDataSetChanged();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
     //DialogFilter interface
     @Override
     public void onSearch(Param _p)
