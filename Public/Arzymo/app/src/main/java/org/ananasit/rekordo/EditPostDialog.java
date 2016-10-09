@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.util.ApiHelper;
+import org.ananasit.rekordo.util.CategoryType;
 
 import java.util.regex.Pattern;
 
@@ -155,13 +156,35 @@ public class EditPostDialog extends DialogFragment {
             }
 
             etContent.setText(content);
-            etPrice.setText(price);
             etPhone.setText(phone);
+
+
+            etPrice.setText(price);
             price_spinner.setSelection(adapter.getPosition(price_currency));
+            if(!price.equals("") && !price.equals("0.00"))
+                priceLayout(CategoryType.SELL_BUY);
+
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
         }
+    }
+
+    private void priceLayout(final CategoryType catType)
+    {
+        ViewGroup.LayoutParams params = price_layout.getLayoutParams();
+
+        if(catType.equals(CategoryType.SELL_BUY) || catType.equals(CategoryType.RENT))
+        {
+            price_layout.setVisibility(View.VISIBLE);
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        else
+        {
+            price_layout.setVisibility(View.INVISIBLE);
+            params.height = 0;
+        }
+        price_layout.setLayoutParams(params);
     }
 }

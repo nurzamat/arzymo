@@ -1,6 +1,5 @@
 package org.ananasit.rekordo;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -24,12 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.ananasit.rekordo.adapter.PostViewPagerAdapter;
 import org.ananasit.rekordo.lib.CirclePageIndicator;
-import org.ananasit.rekordo.model.Param;
+import org.ananasit.rekordo.model.Category;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
@@ -248,6 +246,7 @@ public class PostDetailActivity extends AppCompatActivity implements EditPostDia
             ex.printStackTrace();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -500,16 +499,9 @@ public class PostDetailActivity extends AppCompatActivity implements EditPostDia
                 ApiHelper api = new ApiHelper();
 
                 JSONObject jsonObject = new JSONObject();
-                if(p.getCategory().getIdParent().equals(""))
-                {
-                    jsonObject.put("idCategory", p.getCategory().getId());
-                    jsonObject.put("idSubcategory", 0);
-                }
-                else
-                {
-                    jsonObject.put("idCategory", p.getCategory().getIdParent());
-                    jsonObject.put("idSubcategory", p.getCategory().getId());
-                }
+                //category не трогаем пока, ноль
+                jsonObject.put("idCategory", 0);
+                jsonObject.put("idSubcategory", 0);
                 jsonObject.put("title", p.getTitle());
                 jsonObject.put("content", p.getContent());
                 jsonObject.put("price", p.getPrice());
@@ -543,6 +535,17 @@ public class PostDetailActivity extends AppCompatActivity implements EditPostDia
             else
             {
                 Toast.makeText(PostDetailActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        title.setText(p.getTitle());
+                        content.setText(p.getContent());
+                        price.setText(p.getPrice());
+                        price_currency.setText(p.getPriceCurrency());
+                    }
+                });
             }
         }
     }
