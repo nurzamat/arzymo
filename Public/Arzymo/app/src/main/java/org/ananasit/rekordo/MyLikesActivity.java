@@ -16,12 +16,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 
 import org.ananasit.rekordo.adapter.PostListAdapter;
+import org.ananasit.rekordo.model.Category;
 import org.ananasit.rekordo.model.Image;
 import org.ananasit.rekordo.model.Post;
 import org.ananasit.rekordo.model.User;
 import org.ananasit.rekordo.util.ApiHelper;
 import org.ananasit.rekordo.util.GlobalVar;
 import org.ananasit.rekordo.util.JsonObjectRequest;
+import org.ananasit.rekordo.util.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,6 +94,7 @@ public class MyLikesActivity extends AppCompatActivity {
                             next = next + 1;
                             JSONObject obj;
                             User user;
+                            Category category;
                             for (int i = 0; i < posts.length(); i++) {
                                 try {
 
@@ -105,7 +108,8 @@ public class MyLikesActivity extends AppCompatActivity {
                                     if(!obj.getString("user_image_name").equals(""))
                                         user.setAvatarUrl(ApiHelper.MEDIA_URL + "/profile/" + obj.getString("user_image_name"));
 
-                                    Post post = ApiHelper.initPost(obj, GlobalVar.Category, user);
+                                    category = Utils.getCategoryByIds(obj.getString("id_category"), obj.getString("id_subcategory"));
+                                    Post post = ApiHelper.initPost(obj, category, user);
                                     postList.add(post);
 
                                 } catch (JSONException e) {
